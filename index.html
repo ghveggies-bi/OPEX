@@ -69,8 +69,9 @@
   }
   .blob-2 {
     width: 460px; height: 460px;
-    background: var(--ns-yellow);
+    background: var(--ns-green);
     top: 30%; right: -180px;
+    opacity: 0.14;
     animation: drift-b 40s ease-in-out infinite alternate;
   }
   .blob-3 {
@@ -101,6 +102,9 @@
 
   /* ---------- Card hover elevation ---------- */
   .card-hover {
+    position: relative;
+    z-index: 0; /* contexto de apilamiento propio, contiene el brillo de cursor */
+    overflow: hidden;
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .card-hover:hover {
@@ -139,7 +143,7 @@
     left: 0; bottom: 0;
     width: 0%;
     height: 2px;
-    background: var(--ns-yellow);
+    background: var(--fresh-green);
     transition: width 0.3s ease;
   }
   .nav-link:hover::after { width: 100%; }
@@ -147,6 +151,29 @@
   .stem-note a {
     color: inherit;
     text-decoration: none;
+  }
+
+  /* ---------- Contorno de tarjeta iluminado por el cursor ---------- */
+  .card-glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1; /* detrás del icono/texto, encima del fondo blanco de la tarjeta */
+    border-radius: 1.25rem; /* igual a rounded-2xl de la tarjeta */
+    padding: 2px; /* grosor del contorno iluminado */
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), var(--fresh-green) 0%, transparent 72%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+  .card-hover:hover .card-glow {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-glow { display: none; }
   }
 </style>
 </head>
@@ -159,31 +186,32 @@
 </div>
 
 <!-- Header -->
-<header class="relative z-10 border-b border-ns-green/10 bg-white/70 backdrop-blur-sm sticky top-0">
+<header class="relative z-20 border-b border-ns-green/10 bg-white sticky top-0">
   <div class="max-w-6xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
     <a href="index.html" class="flex items-baseline gap-3">
       <span class="font-display text-2xl font-extrabold text-ns-green tracking-tight">OPEX</span>
       <span class="hidden sm:inline text-xs text-ink font-medium">GHVeggies · Excelencia Operativa</span>
     </a>
     <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-ns-green-deep">
+      <a href="procesos.html" class="nav-link">Procesos</a>
       <a href="ridder.html" class="nav-link">Costos de Mano de Obra</a>
       <a href="bi.html" class="nav-link">BI</a>
-      <a href="procesos.html" class="nav-link">Procesos</a>
     </nav>
   </div>
 </header>
 
 <!-- Hero -->
 <main class="relative z-10">
-  <section class="max-w-6xl mx-auto px-6 md:px-10 pt-20 pb-16 md:pt-28 md:pb-24">
+  <section class="max-w-6xl mx-auto px-6 md:px-10 pt-20 pb-14 md:pt-28 md:pb-16 text-left">
     <p class="eyebrow text-fresh-green reveal">Portal de excelencia operativa</p>
-    <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-ns-green-deep mt-4 max-w-3xl leading-[1.08] reveal">
-      OPEX: donde GHVeggies conecta datos, gente y operación.
+    <h1 class="font-display text-5xl md:text-6xl font-extrabold text-ns-green-deep mt-4 tracking-tight reveal" style="transition-delay:.08s;">
+      OPEX
     </h1>
-    <p class="text-lg text-ink mt-6 max-w-2xl leading-relaxed reveal">
-      Un punto de entrada único a las tres líneas que sostienen la operación diaria de GHVeggies:
-      el control de costos de personal en campo, la inteligencia de datos que los hace accionables,
-      y la disciplina de procesos que convierte todo eso en mejora continua.
+    <p class="text-lg text-ink mt-5 max-w-2xl leading-relaxed reveal" style="transition-delay:.14s;">
+      OPEX es el departamento de excelencia operativa de GHVeggies. Coordinamos la mejora
+      continua de procesos, el control de costos de mano de obra en campo y la inteligencia
+      de datos que sostiene las decisiones del negocio. Este portal concentra el trabajo
+      de las tres líneas.
     </p>
   </section>
 
@@ -191,8 +219,37 @@
   <section class="max-w-6xl mx-auto px-6 md:px-10 pb-24 md:pb-32">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
 
+      <!-- Card: Procesos -->
+      <a href="procesos.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5">
+        <div class="card-glow"></div>
+        <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <path d="M4 12a8 8 0 0 1 13.66-5.66L20 8"></path>
+            <path d="M20 4v4h-4"></path>
+            <path d="M20 12a8 8 0 0 1-13.66 5.66L4 16"></path>
+            <path d="M4 20v-4h4"></path>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow text-fresh-green mb-2">Excelencia operativa</p>
+          <h2 class="font-display text-2xl font-bold text-ns-green-deep">Procesos</h2>
+        </div>
+        <p class="text-ink leading-relaxed flex-1">
+          La línea que mejora, implementa y ejecuta la excelencia operativa en todas
+          las áreas de GHVeggies.
+        </p>
+        <span class="inline-flex items-center gap-2 text-ns-green font-semibold text-sm">
+          Entrar
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform group-hover:translate-x-1">
+            <path d="M5 12h14"></path>
+            <path d="M13 6l6 6-6 6"></path>
+          </svg>
+        </span>
+      </a>
+
       <!-- Card: Ridder / Costos de Mano de Obra -->
-      <a href="ridder.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5">
+      <a href="ridder.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5" style="transition-delay: 80ms">
+        <div class="card-glow"></div>
         <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
             <circle cx="9" cy="8" r="3"></circle>
@@ -219,7 +276,8 @@
       </a>
 
       <!-- Card: BI -->
-      <a href="bi.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5" style="transition-delay: 80ms">
+      <a href="bi.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5" style="transition-delay: 160ms">
+        <div class="card-glow"></div>
         <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
             <ellipse cx="12" cy="5.5" rx="7.5" ry="2.5"></ellipse>
@@ -244,33 +302,6 @@
         </span>
       </a>
 
-      <!-- Card: Procesos -->
-      <a href="procesos.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5" style="transition-delay: 160ms">
-        <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
-            <path d="M4 12a8 8 0 0 1 13.66-5.66L20 8"></path>
-            <path d="M20 4v4h-4"></path>
-            <path d="M20 12a8 8 0 0 1-13.66 5.66L4 16"></path>
-            <path d="M4 20v-4h4"></path>
-          </svg>
-        </div>
-        <div>
-          <p class="eyebrow text-fresh-green mb-2">Excelencia operativa</p>
-          <h2 class="font-display text-2xl font-bold text-ns-green-deep">Procesos</h2>
-        </div>
-        <p class="text-ink leading-relaxed flex-1">
-          La línea que mejora, implementa y ejecuta la excelencia operativa en todas
-          las áreas de GHVeggies.
-        </p>
-        <span class="inline-flex items-center gap-2 text-ns-green font-semibold text-sm">
-          Entrar
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform group-hover:translate-x-1">
-            <path d="M5 12h14"></path>
-            <path d="M13 6l6 6-6 6"></path>
-          </svg>
-        </span>
-      </a>
-
     </div>
   </section>
 </main>
@@ -278,7 +309,7 @@
 <!-- Footer -->
 <footer class="relative z-10 border-t border-ns-green/10">
   <div class="max-w-6xl mx-auto px-6 md:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ink">
-    <p>GHVeggies · OPEX · Querétaro, México</p>
+    <p><span class="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle" style="background:var(--ns-yellow);"></span>GHVeggies · OPEX · Querétaro, México</p>
     <p>Excelencia operativa, con datos.</p>
   </div>
 </footer>
@@ -294,6 +325,15 @@
   }, { threshold: 0.15 });
 
   document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+  // Brillo de tarjeta que sigue al cursor (solo mientras el mouse está encima)
+  document.querySelectorAll('.card-hover').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+      card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+    });
+  });
 </script>
 
 </body>
