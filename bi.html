@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BI · Avance de Proyectos</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* ===== Fuentes de marca — configuradas LOCALMENTE =====
+     Estas tres familias son comerciales y no existen en ningún CDN público.
+     Ajusta las rutas 'src' a donde subas los archivos reales de fuente en el repo
+     (por ejemplo /fonts/AntiqueOliveCompact.woff2). Mientras no existan los
+     archivos, el navegador cae automáticamente al fallback sans-serif. */
+  @font-face{
+    font-family:'Antique Olive Compact';
+    src:url('fonts/AntiqueOliveCompact.woff2') format('woff2'),
+        url('fonts/AntiqueOliveCompact.woff') format('woff');
+    font-weight:700; font-display:swap;
+  }
+  @font-face{
+    font-family:'Antique Olive';
+    src:url('fonts/AntiqueOlive.woff2') format('woff2'),
+        url('fonts/AntiqueOlive.woff') format('woff');
+    font-weight:400 700; font-display:swap;
+  }
+  @font-face{
+    font-family:'Gotham';
+    src:url('fonts/GothamBook.woff2') format('woff2'),
+        url('fonts/GothamBook.woff') format('woff');
+    font-weight:400; font-display:swap;
+  }
+
+  :root{
+    --cream:#FFFCEB;
+    --verde:#307338;
+    --verde-claro:#79BF00;
+    --amarillo:#FBE122;
+  }
+
+  html,body{height:100%}
+  body{
+    background:var(--cream);
+    color:var(--verde);
+    font-family:'Gotham','Helvetica Neue',Arial,sans-serif;
+    overflow:hidden;
+  }
+
+  .f-title{
+    font-family:'Antique Olive Compact','Arial Narrow',Arial,sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.01em;
+  }
+  .f-subtitle{
+    font-family:'Antique Olive','Helvetica Neue',Arial,sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .f-body{ font-family:'Gotham','Helvetica Neue',Arial,sans-serif; }
+
+  /* ===== estructura del slider ===== */
+  #track{
+    display:flex;
+    height:100%;
+    transition:transform .55s cubic-bezier(.65,0,.35,1);
+  }
+  .slide{
+    min-width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:2.5rem 6vw;
+  }
+
+  /* flechas — minimalistas, sin sombreados fuertes */
+  .nav-arrow{
+    width:44px;height:44px;border-radius:9999px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--cream);
+    border:1.5px solid var(--verde);
+    color:var(--verde);
+    transition:background .2s ease,color .2s ease,border-color .2s ease;
+  }
+  .nav-arrow:hover{ background:var(--verde-claro); border-color:var(--verde-claro); color:#fff; }
+  .nav-arrow:focus-visible{ outline:2px solid var(--amarillo); outline-offset:2px; }
+
+  /* dots — único lugar donde el amarillo puede dominar (acento de control) */
+  .dot{
+    width:8px;height:8px;border-radius:9999px;
+    background:transparent;
+    border:1.5px solid var(--verde-claro);
+    transition:background .2s ease,border-color .2s ease,transform .2s ease;
+  }
+  .dot.active{ background:var(--amarillo); border-color:var(--amarillo); transform:scale(1.25); }
+
+  /* tarjetas — planas, sin blur ni degradados */
+  .card{
+    background:#fff;
+    border:1px solid #E7E2C8;
+    border-radius:14px;
+  }
+
+  .bar-track{ background:#EFEAD0; border-radius:9999px; overflow:hidden; height:8px; }
+  .bar-fill{ background:var(--verde-claro); height:100%; border-radius:9999px; }
+
+  /* placeholders de imagen mientras no existan los archivos reales */
+  .img-slot{ position:relative; overflow:hidden; background:#F3EFDA; border:1px solid #E7E2C8; }
+  .img-slot img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .img-slot .ph{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    flex-direction:column; gap:.4rem; text-align:center; padding:.5rem;
+    color:var(--verde); opacity:.55;
+  }
+  .img-slot .ph svg{ width:26px;height:26px; }
+  .img-slot .ph span{ font-size:11px; font-family:'Gotham',sans-serif; text-transform:uppercase; letter-spacing:.06em; }
+
+  /* typewriter */
+  .caret{
+    display:inline-block; width:2px; margin-left:2px;
+    background:var(--verde); animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0 } }
+
+  @media (max-width:768px){
+    .nav-arrow{ width:38px;height:38px; }
+  }
+</style>
+</head>
+<body class="relative">
+
+  <!-- flechas laterales -->
+  <button id="prevBtn" aria-label="Diapositiva anterior" class="nav-arrow absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button id="nextBtn" aria-label="Siguiente diapositiva" class="nav-arrow absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+
+  <!-- indicadores -->
+  <div id="dots" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-3"></div>
+
+  <div id="sliderContainer" class="w-full h-full overflow-hidden">
+    <div id="track">
+
+      <!-- ============ SLIDE 1 — AVANCE DE PROYECTOS ============ -->
+      <section class="slide">
+        <div class="w-full max-w-5xl">
+          <h1 class="f-title text-3xl md:text-5xl text-center mb-10">Avance de Proyectos</h1>
+          <div class="grid md:grid-cols-2 gap-6">
+
+            <!-- DataWarehouse -->
+            <div class="card p-7">
+              <h2 class="f-subtitle text-lg mb-1">DataWarehouse</h2>
+              <div class="flex items-end gap-3 mb-4">
+                <span class="f-title text-4xl" style="color:var(--verde-claro)">30%</span>
+              </div>
+              <div class="bar-track mb-6"><div class="bar-fill" style="width:30%"></div></div>
+              <ul class="space-y-3 f-body text-sm">
+                <li class="flex items-start gap-3">
+                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Mapeo de Procesos
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Inventario de archivos
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Carga de empaque en modelo SQL (Prueba)
+                </li>
+              </ul>
+            </div>
+
+            <!-- BI Mano de Obra -->
+            <div class="card p-7">
+              <h2 class="f-subtitle text-lg mb-1">BI Mano de Obra</h2>
+              <div class="flex items-end gap-3 mb-4">
+                <span class="f-title text-4xl" style="color:var(--verde)">Funcional 100%</span>
+              </div>
+              <div class="bar-track mb-6"><div class="bar-fill" style="width:100%;background:var(--verde)"></div></div>
+              <ul class="grid grid-cols-2 gap-x-4 gap-y-3 f-body text-sm">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Invernadero</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Asistencia</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Costo de MO</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Auditoría</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Eficiencia MO</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Jornales</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Almacén</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 2 — ARQUITECTURA Y MAPEO ============ -->
+      <section class="slide">
+        <div class="w-full max-w-5xl">
+          <h1 class="f-title text-3xl md:text-5xl text-center mb-8">Arquitectura DataWarehouse</h1>
+          <div class="grid grid-cols-3 grid-rows-2 gap-4 h-[60vh] max-h-[520px]">
+            <div class="img-slot col-span-2 row-span-2 rounded-xl" data-label="Arquitectura IA">
+              <img src="arquitectura-ia.jpg" alt="Arquitectura IA" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Arquitectura IA</span></div>
+            </div>
+            <div class="img-slot rounded-xl" data-label="Ejemplo CTS Finanzas">
+              <img src="bi1.jpg" alt="Ejemplo CTS Finanzas" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>CTS Finanzas</span></div>
+            </div>
+            <div class="img-slot rounded-xl" data-label="Mapeo de procesos">
+              <img src="bi2.jpg" alt="Mapeo de procesos" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Mapeo de procesos</span></div>
+            </div>
+            <div class="img-slot rounded-xl" data-label="Infografía">
+              <img src="bi3.jpg" alt="Infografía" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Infografía</span></div>
+            </div>
+            <div class="img-slot rounded-xl" data-label="Inventario de archivos">
+              <img src="bi4.jpg" alt="Inventario de archivos" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Inventario</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 3 — MÓDULOS DE MANO DE OBRA ============ -->
+      <section class="slide">
+        <div class="w-full max-w-5xl">
+          <h1 class="f-title text-3xl md:text-5xl text-center mb-8">Módulos de Mano de Obra</h1>
+          <div class="grid grid-cols-4 gap-4">
+            <figure class="img-slot rounded-lg aspect-square" data-label="Invernadero">
+              <img src="bi5.jpg" alt="Invernadero" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Invernadero</span></div>
+            </figure>
+            <figure class="img-slot rounded-lg aspect-square" data-label="Asistencia">
+              <img src="bi6.jpg" alt="Asistencia" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Asistencia</span></div>
+            </figure>
+            <figure class="img-slot rounded-lg aspect-square" data-label="Costo de MO">
+              <img src="bi7.jpg" alt="Costo de Mano de Obra" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Costo de MO</span></div>
+            </figure>
+            <figure class="img-slot rounded-lg aspect-square" data-label="Auditoría">
+              <img src="bi8.jpg" alt="Auditoría" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Auditoría</span></div>
+            </figure>
+            <figure class="img-slot rounded-lg aspect-square" data-label="Eficiencia MO">
+              <img src="bi9.jpg" alt="Eficiencia MO" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Eficiencia MO</span></div>
+            </figure>
+            <figure class="img-slot rounded-lg aspect-square" data-label="Jornales">
+              <img src="bi10.jpg" alt="Jornales" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Jornales</span></div>
+            </figure>
+            <figure class="img-slot rounded-lg aspect-square" data-label="Almacén">
+              <img src="bi11.jpg" alt="Almacén" onerror="phFallback(this)">
+              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Almacén</span></div>
+            </figure>
+          </div>
+          <p class="f-body text-center text-xs mt-6" style="color:var(--verde);opacity:.6">7 módulos operando sobre BI Mano de Obra</p>
+        </div>
+      </section>
+
+      <!-- ============ SLIDE 4 — VISIÓN Y SIGUIENTES PASOS ============ -->
+      <section class="slide">
+        <div class="w-full max-w-2xl text-center">
+          <h1 class="f-title text-3xl md:text-5xl mb-3">Siguientes Pasos con IA</h1>
+          <p class="f-subtitle text-sm mb-10" style="color:var(--verde-claro)">Del tablero a la conversación</p>
+          <div class="card px-8 py-10 md:px-12 md:py-14">
+            <p class="f-body text-xs uppercase tracking-widest mb-4" style="color:var(--verde);opacity:.55">Pregúntale a tus datos</p>
+            <p class="f-title text-xl md:text-2xl normal-case leading-snug min-h-[4.5rem] flex items-center justify-center">
+              <span id="dynamicText"></span><span class="caret" id="caret">&nbsp;</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    // ---------- placeholders de imagen ----------
+    function phFallback(img){
+      img.style.display = 'none';
+      const ph = img.nextElementSibling;
+      if(ph){ ph.hidden = false; }
+    }
+
+    // ---------- slider ----------
+    const track = document.getElementById('track');
+    const slides = document.querySelectorAll('.slide');
+    const dotsWrap = document.getElementById('dots');
+    let current = 0;
+
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('aria-label', 'Ir a la diapositiva ' + (i + 1));
+      d.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(d);
+    });
+    const dots = dotsWrap.querySelectorAll('.dot');
+
+    function goTo(i){
+      current = (i + slides.length) % slides.length;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+    }
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    window.addEventListener('keydown', (e) => {
+      if(e.key === 'ArrowRight') goTo(current + 1);
+      if(e.key === 'ArrowLeft') goTo(current - 1);
+    });
+
+    // ---------- typewriter fluido (sin parpadeo, sin errores) ----------
+    const QUESTIONS = [
+      "¿Qué eficiencia tuvo la cuadrilla de bajada hoy?",
+      "¿Qué invernadero requiere refuerzo de mano de obra esta semana?",
+      "¿Cómo evolucionó el costo de MO frente al año pasado?",
+      "¿Cuál es el jornal con mayor variación hoy?"
+    ];
+    const dynamicText = document.getElementById('dynamicText');
+    let qi = 0, ci = 0, deleting = false;
+
+    function typeTick(){
+      const full = QUESTIONS[qi % QUESTIONS.length];
+      if(!deleting){
+        ci++;
+        dynamicText.textContent = full.slice(0, ci);
+        if(ci >= full.length){ deleting = true; setTimeout(typeTick, 2200); return; }
+      } else {
+        ci--;
+        dynamicText.textContent = full.slice(0, ci);
+        if(ci <= 0){ deleting = false; qi++; setTimeout(typeTick, 400); return; }
+      }
+      setTimeout(typeTick, deleting ? 22 : 48);
+    }
+    typeTick();
+  </script>
+</body>
+</html>
