@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPEX · GHVeggies</title>
+<meta name="description" content="OPEX — portal de excelencia operativa de GHVeggies: Costos de Mano de Obra, Business Intelligence y Procesos.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23307338'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-weight='700' font-size='34' fill='%23FBE122' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Playfair Display"', 'serif'],
+          body: ['Inter', 'sans-serif'],
+        },
+        colors: {
+          'ns-green': '#307338',
+          'ns-green-deep': '#1F4F26',
+          'fresh-green': '#79BF00',
+          'ns-yellow': '#FBE122',
+          'cream': '#FFFCEB',
+          'ink': '#456349',
+        },
+        borderRadius: {
+          '2xl': '1.25rem',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  :root {
+    --ns-green: #307338;
+    --ns-green-deep: #1F4F26;
+    --fresh-green: #79BF00;
+    --ns-yellow: #FBE122;
+    --cream: #FFFCEB;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: var(--ns-green-deep); }
+  h1, h2, h3, .font-display { font-family: 'Playfair Display', serif; }
+
+  /* ---------- Ambient blobs (no dependen del cursor) ---------- */
+  .blob-field {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .blob {
+    position: absolute;
+    filter: blur(60px);
+    opacity: 0.28;
+    border-radius: 50%;
+    will-change: transform;
+  }
+  .blob-1 {
+    width: 520px; height: 520px;
+    background: var(--fresh-green);
+    top: -160px; left: -140px;
+    animation: drift-a 34s ease-in-out infinite alternate;
+  }
+  .blob-2 {
+    width: 460px; height: 460px;
+    background: var(--ns-yellow);
+    top: 30%; right: -180px;
+    animation: drift-b 40s ease-in-out infinite alternate;
+  }
+  .blob-3 {
+    width: 380px; height: 380px;
+    background: var(--ns-green);
+    bottom: -160px; left: 22%;
+    opacity: 0.16;
+    animation: drift-c 46s ease-in-out infinite alternate;
+  }
+  @keyframes drift-a {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(60px, 90px) scale(1.08); }
+    100% { transform: translate(-40px, 40px) scale(0.96); }
+  }
+  @keyframes drift-b {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(-70px, 60px) scale(1.1); }
+    100% { transform: translate(-20px, -60px) scale(0.94); }
+  }
+  @keyframes drift-c {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(50px, -40px) scale(1.06); }
+    100% { transform: translate(-60px, 20px) scale(0.98); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blob { animation: none; }
+  }
+
+  /* ---------- Card hover elevation ---------- */
+  .card-hover {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 48px -18px rgba(31, 79, 38, 0.35);
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  .eyebrow {
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .nav-link {
+    position: relative;
+    padding-bottom: 4px;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--ns-yellow);
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  .stem-note a {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body class="relative">
+
+<div class="blob-field" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- Header -->
+<header class="relative z-10 border-b border-ns-green/10 bg-white/70 backdrop-blur-sm sticky top-0">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
+    <a href="index.html" class="flex items-baseline gap-3">
+      <span class="font-display text-2xl font-extrabold text-ns-green tracking-tight">OPEX</span>
+      <span class="hidden sm:inline text-xs text-ink font-medium">GHVeggies · Excelencia Operativa</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-ns-green-deep">
+      <a href="ridder.html" class="nav-link">Costos de Mano de Obra</a>
+      <a href="bi.html" class="nav-link">BI</a>
+      <a href="procesos.html" class="nav-link">Procesos</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<main class="relative z-10">
+  <section class="max-w-6xl mx-auto px-6 md:px-10 pt-20 pb-16 md:pt-28 md:pb-24">
+    <p class="eyebrow text-fresh-green reveal">Portal de excelencia operativa</p>
+    <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-ns-green-deep mt-4 max-w-3xl leading-[1.08] reveal">
+      OPEX: donde GHVeggies conecta datos, gente y operación.
+    </h1>
+    <p class="text-lg text-ink mt-6 max-w-2xl leading-relaxed reveal">
+      Un punto de entrada único a las tres líneas que sostienen la operación diaria de GHVeggies:
+      el control de costos de personal en campo, la inteligencia de datos que los hace accionables,
+      y la disciplina de procesos que convierte todo eso en mejora continua.
+    </p>
+  </section>
+
+  <!-- Tarjetas principales -->
+  <section class="max-w-6xl mx-auto px-6 md:px-10 pb-24 md:pb-32">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+
+      <!-- Card: Ridder / Costos de Mano de Obra -->
+      <a href="ridder.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5">
+        <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <circle cx="9" cy="8" r="3"></circle>
+            <path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"></path>
+            <circle cx="17.5" cy="8.5" r="2.4"></circle>
+            <path d="M15.3 14.7c2.5.3 4.2 2.2 4.2 5"></path>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow text-fresh-green mb-2">Ridder</p>
+          <h2 class="font-display text-2xl font-bold text-ns-green-deep">Costos de Mano de Obra</h2>
+        </div>
+        <p class="text-ink leading-relaxed flex-1">
+          Control de costos de personal, supervisión de la calidad de cosecha y pago justo
+          a los trabajadores según su desempeño real en campo.
+        </p>
+        <span class="inline-flex items-center gap-2 text-ns-green font-semibold text-sm">
+          Entrar
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform group-hover:translate-x-1">
+            <path d="M5 12h14"></path>
+            <path d="M13 6l6 6-6 6"></path>
+          </svg>
+        </span>
+      </a>
+
+      <!-- Card: BI -->
+      <a href="bi.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5" style="transition-delay: 80ms">
+        <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <ellipse cx="12" cy="5.5" rx="7.5" ry="2.5"></ellipse>
+            <path d="M4.5 5.5v6c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5v-6"></path>
+            <path d="M4.5 11.5v6c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5v-6"></path>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow text-fresh-green mb-2">Business Intelligence</p>
+          <h2 class="font-display text-2xl font-bold text-ns-green-deep">BI</h2>
+        </div>
+        <p class="text-ink leading-relaxed flex-1">
+          Gobierno del Data Warehouse corporativo de GHVeggies y la capa de consulta con
+          inteligencia artificial que lo convierte en decisiones.
+        </p>
+        <span class="inline-flex items-center gap-2 text-ns-green font-semibold text-sm">
+          Entrar
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform group-hover:translate-x-1">
+            <path d="M5 12h14"></path>
+            <path d="M13 6l6 6-6 6"></path>
+          </svg>
+        </span>
+      </a>
+
+      <!-- Card: Procesos -->
+      <a href="procesos.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5" style="transition-delay: 160ms">
+        <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <path d="M4 12a8 8 0 0 1 13.66-5.66L20 8"></path>
+            <path d="M20 4v4h-4"></path>
+            <path d="M20 12a8 8 0 0 1-13.66 5.66L4 16"></path>
+            <path d="M4 20v-4h4"></path>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow text-fresh-green mb-2">Excelencia operativa</p>
+          <h2 class="font-display text-2xl font-bold text-ns-green-deep">Procesos</h2>
+        </div>
+        <p class="text-ink leading-relaxed flex-1">
+          La línea que mejora, implementa y ejecuta la excelencia operativa en todas
+          las áreas de GHVeggies.
+        </p>
+        <span class="inline-flex items-center gap-2 text-ns-green font-semibold text-sm">
+          Entrar
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform group-hover:translate-x-1">
+            <path d="M5 12h14"></path>
+            <path d="M13 6l6 6-6 6"></path>
+          </svg>
+        </span>
+      </a>
+
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="relative z-10 border-t border-ns-green/10">
+  <div class="max-w-6xl mx-auto px-6 md:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ink">
+    <p>GHVeggies · OPEX · Querétaro, México</p>
+    <p>Excelencia operativa, con datos.</p>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
+
+</body>
+</html>
