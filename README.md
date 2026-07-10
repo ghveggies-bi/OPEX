@@ -11,7 +11,12 @@ Para mantener la consistencia en el repositorio, utiliza estrictamente la siguie
 *   `bi.html` — Dashboards, reportes avanzados y Business Intelligence.
 
 ### 🧠 Generación de Contenido con IA
-*   `prompts/` — En esta carpeta se encuentran guardados de forma estructurada los contextos que deben adjuntarse obligatoriamente a la IA que se encargará de generar los slides.
+*   `prompts/` — Carpeta que contiene los contextos estructurados que deben adjuntarse obligatoriamente a la IA encargada de generar los slides.
+
+### 🖼️ Recursos Visuales
+*   `images/` — Carpeta donde se deben almacenar, de forma consecutiva, las imágenes que integrarán los slides. Independientemente de la extensión del archivo (`.png`, `.jpg`, etc.), el formato de nombrado debe ser estrictamente el siguiente:
+    *   Módulo de procesos: `procesos1`, `procesos2`, `procesos3`, ...
+    *   Módulo de Ridder: `ridder1`, `ridder2`, `ridder3`, ...
 
 ---
 *Mantenimiento y control interno de la estructura de datos.*
