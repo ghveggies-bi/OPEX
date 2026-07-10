@@ -1,6 +1,10 @@
 # OPEX
 Proyectos y seguimiento del departamento OPEX.
 
+🔗 **Acceso a la publicación:** [https://ghveggies-bi.github.io/OPEX/](https://ghveggies-bi.github.io/OPEX/)
+
+---
+
 ## 📂 Estructura del Proyecto
 
 Para mantener la consistencia en el repositorio, utiliza estrictamente la siguiente nomenclatura y organización de archivos:
