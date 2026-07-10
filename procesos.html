@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Procesos · OPEX · Gestión Integral</title>
+
+  <!-- =========================================================
+       FUENTES OPEX
+       ========================================================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind por CDN: sin frameworks adicionales ni build step -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Playfair Display"', 'serif'],
+            body: ['Inter', 'sans-serif']
+          },
+          colors: {
+            'ns-green': '#307338',
+            'ns-green-deep': '#1F4F26',
+            'fresh-green': '#79BF00',
+            'cream': '#FFFCEB'
+          },
+          borderRadius: {
+            '2xl': '1.25rem',
+            '3xl': '1.75rem'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* =========================================================
+       VARIABLES · IDENTIDAD VISUAL OPEX
+       ========================================================= */
+    :root {
+      --ns-green: #307338;
+      --ns-green-deep: #1F4F26;
+      --fresh-green: #79BF00;
+      --cream: #FFFCEB;
+      --white: #FFFFFF;
+      --line-soft: rgba(48, 115, 56, .18);
+      --text-soft: rgba(31, 79, 38, .74);
+      --shadow-soft: 0 20px 50px -36px rgba(31, 79, 38, .68);
+      --shadow-hover: 0 30px 72px -42px rgba(31, 79, 38, .76);
+      --ease-organic: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--ns-green-deep);
+      overflow: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    .font-display {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* =========================================================
+       FONDO AMBIENTAL · OPEX
+       Blobs de un solo color con blur, sin gradientes llamativos
+       ========================================================= */
+    .blob-field {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(64px);
+      opacity: .18;
+      will-change: transform;
+    }
+
+    .blob-1 {
+      width: 520px;
+      height: 520px;
+      background: var(--fresh-green);
+      top: -190px;
+      left: -170px;
+      animation: driftA 34s ease-in-out infinite alternate;
+    }
+
+    .blob-2 {
+      width: 460px;
+      height: 460px;
+      background: var(--ns-green);
+      top: 28%;
+      right: -190px;
+      opacity: .13;
+      animation: driftB 40s ease-in-out infinite alternate;
+    }
+
+    .blob-3 {
+      width: 380px;
+      height: 380px;
+      background: var(--ns-green);
+      bottom: -170px;
+      left: 18%;
+      opacity: .14;
+      animation: driftC 46s ease-in-out infinite alternate;
+    }
+
+    @keyframes driftA {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(68px, 86px) scale(1.08); }
+      100% { transform: translate(-38px, 42px) scale(.97); }
+    }
+
+    @keyframes driftB {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-76px, 58px) scale(1.1); }
+      100% { transform: translate(-18px, -62px) scale(.94); }
+    }
+
+    @keyframes driftC {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(52px, -42px) scale(1.06); }
+      100% { transform: translate(-58px, 22px) scale(.98); }
+    }
+
+    /* =========================================================
+       MOTOR DE DOS SLIDES
+       ========================================================= */
+    .slides-track {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      height: 100vh;
+      width: 200vw;
+      transition: transform .68s var(--ease-organic);
+      will-change: transform;
+    }
+
+    .slide {
+      position: relative;
+      width: 100vw;
+      min-width: 100vw;
+      height: 100vh;
+      padding: clamp(26px, 4.3vw, 58px) clamp(22px, 5.4vw, 82px);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .slide-inner {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      height: 100%;
+      max-height: 920px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(18px, 2.5vw, 34px);
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .55s ease-in-out, transform .55s var(--ease-organic);
+    }
+
+    .slide.is-active .slide-inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .eyebrow {
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-size: .72rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--fresh-green);
+    }
+
+    .intro {
+      max-width: 1010px;
+      color: rgba(31, 79, 38, .82);
+    }
+
+    /* =========================================================
+       NAVEGACIÓN DE SLIDES
+       ========================================================= */
+    .nav-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 30;
+      width: 52px;
+      height: 52px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, .9);
+      border: 1px solid rgba(31, 79, 38, .12);
+      box-shadow: 0 8px 24px -14px rgba(31, 79, 38, .35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: opacity .28s ease, transform .28s var(--ease-organic), border-color .28s ease;
+    }
+
+    .nav-arrow:hover {
+      transform: translateY(-50%) scale(1.04);
+      border-color: rgba(121, 191, 0, .38);
+    }
+
+    .nav-arrow.prev { left: 24px; }
+    .nav-arrow.next { right: 24px; }
+    .nav-arrow.is-disabled { opacity: .28; pointer-events: none; }
+    .nav-arrow svg { position: relative; z-index: 1; }
+
+    .nav-glow {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      border-radius: inherit;
+      padding: 2px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+      background: radial-gradient(90px circle at var(--mx,50%) var(--my,50%), var(--fresh-green) 0%, transparent 72%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .nav-arrow:hover .nav-glow { opacity: 1; }
+
+    .slide-counter {
+      position: fixed;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      font-size: .75rem;
+      letter-spacing: .13em;
+      color: var(--ns-green);
+      font-weight: 800;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(48,115,56,.10);
+      border-radius: 999px;
+      padding: 8px 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* =========================================================
+       SLIDE 1 · METODOLOGÍA DE PROCESOS
+       ========================================================= */
+    .flow-viewport {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: visible;
+      padding: 12px 4px 20px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(48, 115, 56, .34) transparent;
+    }
+
+    .flow-viewport::-webkit-scrollbar { height: 8px; }
+    .flow-viewport::-webkit-scrollbar-track { background: transparent; }
+    .flow-viewport::-webkit-scrollbar-thumb {
+      background: rgba(48, 115, 56, .26);
+      border-radius: 999px;
+    }
+
+    .process-flow {
+      --card-w: clamp(150px, 11.2vw, 184px);
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(7, var(--card-w));
+      gap: clamp(16px, 1.45vw, 24px);
+      min-width: max-content;
+      isolation: isolate;
+      padding: 12px 2px 16px;
+    }
+
+    .process-flow::before,
+    .process-flow::after {
+      content: '';
+      position: absolute;
+      left: calc(var(--card-w) / 2);
+      right: calc(var(--card-w) / 2);
+      top: 50%;
+      height: 2px;
+      transform: translateY(-50%);
+      border-radius: 999px;
+      z-index: 0;
+    }
+
+    .process-flow::before { background: rgba(48, 115, 56, .22); }
+    .process-flow::after {
+      background: var(--fresh-green);
+      opacity: .34;
+      filter: blur(.15px);
+    }
+
+    .process-card {
+      position: relative;
+      z-index: 1;
+      min-height: 178px;
+      border: 1px solid rgba(48, 115, 56, .14);
+      border-radius: 1.45rem;
+      background: rgba(255, 252, 235, .9);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 15px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+      cursor: default;
+      transform: translateY(0) scale(1);
+      transition:
+        min-height .42s var(--ease-organic),
+        transform .42s var(--ease-organic),
+        opacity .34s ease-in-out,
+        filter .34s ease-in-out,
+        box-shadow .42s var(--ease-organic),
+        border-color .34s ease-in-out,
+        background .34s ease-in-out;
+    }
+
+    .process-card::after {
+      content: '';
+      position: absolute;
+      width: 82px;
+      height: 82px;
+      border-radius: 999px;
+      right: -34px;
+      top: -34px;
+      background: var(--fresh-green);
+      opacity: .08;
+      filter: blur(2px);
+      transform: scale(.8);
+      transition: opacity .34s ease-in-out, transform .42s var(--ease-organic);
+    }
+
+    .flow-active .process-card:not(.is-active) {
+      opacity: .46;
+      filter: saturate(.84) blur(.15px);
+      transform: translateY(4px) scale(.975);
+    }
+
+    .process-card.is-active {
+      min-height: 246px;
+      transform: translateY(-12px) scale(1.045);
+      background: rgba(255, 255, 255, .96);
+      border-color: rgba(121, 191, 0, .46);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .process-card.is-active::after {
+      opacity: .16;
+      transform: scale(1.2);
+    }
+
+    .step-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .step-number {
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      color: var(--ns-green);
+      opacity: .78;
+    }
+
+    .icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: var(--ns-green);
+      color: #fff;
+      box-shadow: 0 13px 24px -18px rgba(31, 79, 38, .7);
+      flex: 0 0 auto;
+      transition: transform .42s var(--ease-organic), background .34s ease-in-out;
+    }
+
+    .process-card.is-active .icon-wrap {
+      transform: translateY(-2px) scale(1.06);
+      background: var(--fresh-green);
+    }
+
+    .icon-wrap svg,
+    .line-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .step-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: clamp(1.02rem, .95vw, 1.18rem);
+      line-height: 1.07;
+      color: var(--ns-green-deep);
+      letter-spacing: -.015em;
+      margin: 0;
+    }
+
+    .date-badge {
+      width: max-content;
+      max-width: 100%;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .67rem;
+      font-weight: 800;
+      letter-spacing: .03em;
+      color: var(--ns-green);
+      background: rgba(255, 255, 255, .78);
+      border: 1px solid rgba(48, 115, 56, .16);
+      border-radius: 999px;
+      padding: 6px 9px;
+    }
+
+    .date-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--fresh-green);
+    }
+
+    .description-carousel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transform: translateY(10px);
+      transition:
+        grid-template-rows .42s var(--ease-organic),
+        opacity .34s ease-in-out,
+        transform .42s var(--ease-organic);
+    }
+
+    .description-carousel > div { overflow: hidden; }
+
+    .process-card.is-active .description-carousel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .step-description {
+      margin: 8px 0 0;
+      font-size: .77rem;
+      line-height: 1.45;
+      color: rgba(31, 79, 38, .82);
+    }
+
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: -2px;
+    }
+
+    .kpi-card,
+    .status-card,
+    .metric-card,
+    .future-pill,
+    .training-card,
+    .story-card {
+      border: 1px solid rgba(48, 115, 56, .13);
+      background: rgba(255, 252, 235, .86);
+      border-radius: 1.35rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .kpi-card {
+      min-height: 92px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform .32s var(--ease-organic), box-shadow .32s var(--ease-organic), border-color .28s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(121, 191, 0, .36);
+    }
+
+    .line-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: var(--ns-green);
+      background: rgba(255, 255, 255, .86);
+      border: 1px solid rgba(48, 115, 56, .12);
+      flex: 0 0 auto;
+    }
+
+    /* =========================================================
+       SLIDE 2 · DASHBOARD EJECUTIVO SEED
+       ========================================================= */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) 320px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .dashboard-main {
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .story-card {
+      padding: 18px 20px;
+      background: rgba(255,255,255,.84);
+      backdrop-filter: blur(12px);
+    }
+
+    .story-label {
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--fresh-green);
+      margin-bottom: 8px;
+    }
+
+    .story-text {
+      color: var(--text-soft);
+      line-height: 1.58;
+      font-size: .94rem;
+    }
+
+    .columns-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .panel {
+      border: 1px solid rgba(48, 115, 56, .13);
+      background: rgba(255, 252, 235, .86);
+      border-radius: 1.5rem;
+      padding: 18px;
+      box-shadow: var(--shadow-soft);
+      min-width: 0;
+    }
+
+    .panel.neutral {
+      background: rgba(250, 250, 247, .88);
+      border-color: rgba(31, 79, 38, .10);
+    }
+
+    .panel-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: 1.26rem;
+      color: var(--ns-green-deep);
+      margin-bottom: 12px;
+    }
+
+    .status-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .status-card {
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.78);
+      box-shadow: none;
+      font-size: .84rem;
+      font-weight: 700;
+      color: rgba(31,79,38,.82);
+      transition: transform .28s var(--ease-organic), border-color .28s ease, background .28s ease;
+    }
+
+    .status-card:hover {
+      transform: translateX(3px);
+      border-color: rgba(121, 191, 0, .34);
+      background: rgba(255,255,255,.95);
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--fresh-green);
+      flex: 0 0 auto;
+    }
+
+    .neutral .status-dot {
+      background: rgba(48, 115, 56, .32);
+    }
+
+    .future-panel {
+      border: 1px solid rgba(48, 115, 56, .13);
+      border-radius: 1.55rem;
+      background: rgba(255,255,255,.84);
+      box-shadow: var(--shadow-soft);
+      padding: 18px;
+    }
+
+    .future-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(120px, 1fr));
+      gap: 12px;
+      align-items: stretch;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .future-pill {
+      position: relative;
+      min-height: 82px;
+      padding: 14px 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: .82rem;
+      font-weight: 800;
+      color: var(--ns-green-deep);
+      background: rgba(255, 252, 235, .9);
+      box-shadow: none;
+    }
+
+    .future-pill:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -13px;
+      top: 50%;
+      transform: translateY(-52%);
+      color: var(--fresh-green);
+      font-weight: 900;
+      z-index: 2;
+    }
+
+    .training-card {
+      margin-top: 14px;
+      padding: 16px 18px;
+      background: rgba(255, 252, 235, .95);
+      border-color: rgba(121, 191, 0, .42);
+      box-shadow: 0 22px 58px -42px rgba(121, 191, 0, .7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .training-card::after {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 999px;
+      right: -54px;
+      top: -58px;
+      background: var(--fresh-green);
+      opacity: .12;
+      filter: blur(2px);
+    }
+
+    .dashboard-side {
+      display: grid;
+      gap: 13px;
+    }
+
+    .metric-card {
+      padding: 18px;
+      background: rgba(255,255,255,.86);
+      backdrop-filter: blur(12px);
+      transition: transform .32s var(--ease-organic), border-color .28s ease, box-shadow .32s var(--ease-organic);
+    }
+
+    .metric-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(121, 191, 0, .36);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .metric-value {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+      line-height: .88;
+      font-weight: 800;
+      color: var(--ns-green);
+      letter-spacing: -.04em;
+    }
+
+    .metric-label {
+      margin-top: 8px;
+      font-size: .82rem;
+      line-height: 1.35;
+      font-weight: 800;
+      color: rgba(31,79,38,.76);
+    }
+
+    .connector-note {
+      font-size: .87rem;
+      color: rgba(31,79,38,.72);
+      line-height: 1.55;
+      max-width: 900px;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+    @media (max-width: 1250px) {
+      .slide { padding-left: 58px; padding-right: 58px; }
+      .process-flow { --card-w: 158px; }
+      .dashboard-grid { grid-template-columns: 1fr 260px; }
+    }
+
+    @media (max-width: 980px) {
+      body { overflow: hidden; }
+      .slide { padding: 28px 24px 62px; align-items: flex-start; overflow-y: auto; }
+      .slide-inner { min-height: auto; justify-content: flex-start; padding: 12px 0 42px; max-height: none; }
+      .nav-arrow { top: auto; bottom: 18px; transform: none; width: 46px; height: 46px; }
+      .nav-arrow:hover { transform: scale(1.04); }
+      .nav-arrow.prev { left: 20px; }
+      .nav-arrow.next { right: 20px; }
+      .slide-counter { bottom: 22px; }
+      .process-flow { --card-w: 158px; }
+      .kpi-strip { grid-template-columns: 1fr; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .dashboard-side { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .columns-2 { grid-template-columns: 1fr; }
+      .future-row { grid-template-columns: repeat(5, 150px); }
+      .metric-value { font-size: 3rem; }
+    }
+
+    @media (max-width: 680px) {
+      .dashboard-side { grid-template-columns: 1fr; }
+      .flow-viewport { padding-bottom: 14px; }
+      .intro { font-size: .94rem; line-height: 1.7; }
+      .story-text { font-size: .88rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .blob,
+      .slides-track,
+      .slide-inner,
+      .process-card,
+      .process-card::after,
+      .icon-wrap,
+      .description-carousel,
+      .kpi-card,
+      .status-card,
+      .metric-card {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Fondo ambiental OPEX -->
+  <div class="blob-field" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Carril de slides -->
+  <div class="slides-track" id="track">
+    <!-- ======================================================
+         SLIDE 1 · GESTIÓN INTEGRAL DE PROCESOS
+         ====================================================== -->
+    <section class="slide is-active" data-slide aria-labelledby="slide1-title">
+      <div class="slide-inner">
+        <!-- Encabezado -->
+        <header class="max-w-6xl">
+          <p class="eyebrow">Gestión Integral</p>
+          <h1 id="slide1-title" class="font-display text-5xl md:text-7xl font-extrabold mt-3 tracking-[-0.035em] text-ns-green-deep">
+            Procesos
+          </h1>
+          <h2 class="font-display text-2xl md:text-4xl font-bold mt-3 text-ns-green">
+            Gestión Integral de Procesos y Desempeño Operativo
+          </h2>
+          <p class="intro mt-5 text-base md:text-lg leading-8">
+            Modelo integral para identificar, priorizar, documentar, implementar, medir y mejorar los procesos de la organización, asegurando estandarización, trazabilidad, continuidad operativa y mejora continua basada en datos.
+          </p>
+        </header>
+
+        <!-- Flujo horizontal de metodología -->
+        <section class="flow-viewport" aria-label="Flujo de metodología de procesos">
+          <div class="process-flow" id="processFlow">
+            <!-- 1. Identificación y Priorización -->
+            <article class="process-card" tabindex="0" data-step="1">
+              <div class="step-top">
+                <span class="step-number">01</span>
+                <span class="icon-wrap" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="M16 16l4 4"></path><path d="M7 19h10"></path><path d="M9 11l1.5 1.5L14 9"></path></svg>
+                </span>
+              </div>
+              <h3 class="step-title">Identificación y Priorización</h3>
+              <span class="date-badge">Semana 28</span>
+              <div class="description-carousel"><div><p class="step-description">Detectar y clasificar los procesos con mayor impacto para la operación junto con líderes y áreas clave, considerando riesgo, impacto y valor para definir el orden de trabajo.</p></div></div>
+            </article>
+
+            <!-- 2. Validación -->
+            <article class="process-card" tabindex="0" data-step="2">
+              <div class="step-top">
+                <span class="step-number">02</span>
+                <span class="icon-wrap" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6 4h12v16H6z"></path><path d="M9 8h6"></path><path d="M9 12h5"></path><path d="M9 16h3"></path><path d="M16 15l1.5 1.5L21 13"></path></svg>
+                </span>
+              </div>
+              <h3 class="step-title">Validación</h3>
+              <span class="date-badge">Semana 29</span>
+              <div class="description-carousel"><div><p class="step-description">Revisar, depurar y validar la información disponible para asegurar que el proceso tenga una base clara, vigente y trazable antes de documentarse.</p></div></div>
+            </article>
+
+            <!-- 3. Levantamiento -->
+            <article class="process-card" tabindex="0" data-step="3">
+              <div class="step-top">
+                <span class="step-number">03</span>
+                <span class="icon-wrap" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 7h16"></path><path d="M7 7v10"></path><path d="M17 7v10"></path><path d="M7 17h10"></path><path d="M10 11h4"></path></svg>
+                </span>
+              </div>
+              <h3 class="step-title">Levantamiento</h3>
+              <span class="date-badge">Semanas 29–30</span>
+              <div class="description-carousel"><div><p class="step-description">Documentar el proceso mediante trabajo colaborativo entre OPEX, Calidad y el dueño del proceso. Se capacita al área responsable para crear y mantener su documentación de forma estandarizada.</p></div></div>
+            </article>
+
+            <!-- 4. Aprobación -->
+            <article class="process-card" tabindex="0" data-step="4">
+              <div class="step-top">
+                <span class="step-number">04</span>
+                <span class="icon-wrap" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M20 7L9 18l-5-5"></path><path d="M16 5h3v3"></path></svg>
+                </span>
+              </div>
+              <h3 class="step-title">Aprobación</h3>
+              <span class="date-badge">Semana 33</span>
+              <div class="description-carousel"><div><p class="step-description">Validar contenido, responsabilidades, versiones y cumplimiento antes de publicar, asegurando una liberación controlada del proceso.</p></div></div>
+            </article>
+
+            <!-- 5. Implementación -->
+            <article class="process-card" tabindex="0" data-step="5">
+              <div class="step-top">
+                <span class="step-number">05</span>
+                <span class="icon-wrap" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path><path d="M5 7v10"></path></svg>
+                </span>
+              </div>
+              <h3 class="step-title">Implementación</h3>
+              <span class="date-badge">Semanas 34–35</span>
+              <div class="description-carousel"><div><p class="step-description">Comunicar, capacitar y asegurar la adopción del proceso dentro de la operación, conectando la documentación con la ejecución diaria.</p></div></div>
+            </article>
+
+            <!-- 6. Medición -->
+            <article class="process-card" tabindex="0" data-step="6">
+              <div class="step-top">
+                <span class="step-number">06</span>
+                <span class="icon-wrap" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 16l4-4 4 3 6-7"></path><path d="M4 20h16"></path><path d="M20 8v5h-5"></path></svg>
+                </span>
+              </div>
+              <h3 class="step-title">Medición</h3>
+              <span class="date-badge">Semana 36</span>
+              <div class="description-carousel"><div><p class="step-description">Definir KPIs que permitan evaluar desempeño, cumplimiento y efectividad del proceso para tomar decisiones con base en datos.</p></div></div>
+            </article>
+
+            <!-- 7. Mejora Continua -->
+            <article class="process-card" tabindex="0" data-step="7">
+              <div class="step-top">
+                <span class="step-number">07</span>
+                <span class="icon-wrap" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"></path><path d="M21 4v6h-6"></path><path d="M9 12l2 2 4-5"></path></svg>
+                </span>
+              </div>
+              <h3 class="step-title">Mejora Continua</h3>
+              <span class="date-badge">Semanas 37–38</span>
+              <div class="description-carousel"><div><p class="step-description">Analizar indicadores, auditorías y oportunidades para impulsar mejoras permanentes y cerrar el ciclo de gestión operativa.</p></div></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Indicadores de seguimiento -->
+        <section aria-labelledby="kpi-title">
+          <div class="flex items-end justify-between gap-4 mb-3">
+            <div>
+              <p class="eyebrow">Seguimiento operativo</p>
+              <h3 id="kpi-title" class="font-display text-2xl md:text-3xl font-extrabold text-ns-green-deep mt-1">Indicadores de seguimiento</h3>
+            </div>
+          </div>
+          <div class="kpi-strip">
+            <article class="kpi-card">
+              <span class="line-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16"></path><path d="M7 16V9"></path><path d="M12 16V5"></path><path d="M17 16v-3"></path></svg></span>
+              <h4 class="font-bold text-ns-green-deep leading-snug">Procesos realizados vs. procesos planeados</h4>
+            </article>
+            <article class="kpi-card">
+              <span class="line-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 7L9 18l-5-5"></path><path d="M5 20h14"></path></svg></span>
+              <h4 class="font-bold text-ns-green-deep leading-snug">Procesos implementados</h4>
+            </article>
+            <article class="kpi-card">
+              <span class="line-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"></path><path d="M21 4v6h-6"></path><path d="M9 12l2 2 4-5"></path></svg></span>
+              <h4 class="font-bold text-ns-green-deep leading-snug">SEEDs cerrados satisfactoriamente</h4>
+            </article>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SLIDE 2 · EVOLUCIÓN DE LA METODOLOGÍA SEED
+         ====================================================== -->
+    <section class="slide" data-slide aria-labelledby="slide2-title">
+      <div class="slide-inner">
+        <!-- Encabezado -->
+        <header class="max-w-6xl">
+          <p class="eyebrow">Mejora Continua · SEEDs</p>
+          <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3">
+            <div>
+              <h1 id="slide2-title" class="font-display text-4xl md:text-6xl font-extrabold tracking-[-0.035em] text-ns-green-deep">
+                Evolución de la Metodología SEED
+              </h1>
+              <p class="connector-note mt-3">
+                Los SEEDs representan la materialización de oportunidades de mejora detectadas en la operación y permiten asegurar el seguimiento estructurado de acciones correctivas y preventivas.
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <div class="dashboard-grid">
+          <!-- Columna principal del dashboard -->
+          <div class="dashboard-main">
+            <!-- Dónde estábamos -->
+            <article class="story-card">
+              <p class="story-label">¿Dónde estábamos?</p>
+              <p class="story-text">
+                La gestión de SEEDs dependía principalmente del seguimiento manual y de criterios distintos entre predios, generando poca estandarización y menor trazabilidad.
+              </p>
+            </article>
+
+            <!-- Dónde estamos -->
+            <section aria-label="Dónde estamos" class="columns-2">
+              <article class="panel">
+                <p class="story-label">¿Dónde estamos?</p>
+                <h3 class="panel-title">Lo que ya funciona</h3>
+                <div class="status-list">
+                  <div class="status-card"><span class="status-dot"></span>Activación basada en Power BI.</div>
+                  <div class="status-card"><span class="status-dot"></span>Base de datos centralizada.</div>
+                  <div class="status-card"><span class="status-dot"></span>Seguimiento semanal.</div>
+                  <div class="status-card"><span class="status-dot"></span>Planner para gestionar acciones.</div>
+                  <div class="status-card"><span class="status-dot"></span>Criterios estandarizados de activación.</div>
+                </div>
+              </article>
+
+              <article class="panel neutral">
+                <p class="story-label">¿Dónde estamos?</p>
+                <h3 class="panel-title">Lo que aún nos detiene</h3>
+                <div class="status-list">
+                  <div class="status-card"><span class="status-dot"></span>Seguimiento no siempre oportuno.</div>
+                  <div class="status-card"><span class="status-dot"></span>Resistencia para elaborar o actualizar SEEDs.</div>
+                  <div class="status-card"><span class="status-dot"></span>Acciones correctivas demasiado generales.</div>
+                  <div class="status-card"><span class="status-dot"></span>Algunas evidencias llegan fuera de tiempo.</div>
+                </div>
+              </article>
+            </section>
+
+            <!-- Dónde queremos estar -->
+            <section class="future-panel" aria-labelledby="future-title">
+              <p class="story-label">¿Dónde queremos estar?</p>
+              <h3 id="future-title" class="panel-title">Modelo de madurez esperado</h3>
+              <div class="future-row" aria-label="Pilares de madurez SEED">
+                <div class="future-pill">Seguimiento disciplinado</div>
+                <div class="future-pill">Responsables claramente definidos</div>
+                <div class="future-pill">Evidencia completa</div>
+                <div class="future-pill">Cierre basado en resultados</div>
+                <div class="future-pill">Mejora continua</div>
+              </div>
+
+              <article class="training-card">
+                <p class="story-label">Iniciativa estratégica</p>
+                <h4 class="font-display text-2xl font-extrabold text-ns-green-deep mb-2">Capacitación continua</h4>
+                <p class="story-text relative z-10">
+                  Capacitar nuevamente a los responsables y dueños de proceso en la metodología SEED para asegurar una aplicación homogénea, fortalecer la calidad de los análisis y mejorar la ejecución de las acciones correctivas.
+                </p>
+              </article>
+            </section>
+          </div>
+
+          <!-- Indicadores rápidos -->
+          <aside class="dashboard-side" aria-label="Indicadores rápidos SEED">
+            <div class="story-label">Indicadores rápidos</div>
+            <article class="metric-card">
+              <div class="metric-value">12</div>
+              <div class="metric-label">SEEDs activos</div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-value">20</div>
+              <div class="metric-label">Casos en revisión o pendientes</div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-value">1</div>
+              <div class="metric-label">SEED cerrado documentado</div>
+            </article>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Navegación visual -->
+  <button class="nav-arrow prev" id="prevBtn" aria-label="Slide anterior">
+    <div class="nav-glow"></div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F4F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6" /></svg>
+  </button>
+
+  <button class="nav-arrow next" id="nextBtn" aria-label="Siguiente slide">
+    <div class="nav-glow"></div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F4F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6" /></svg>
+  </button>
+
+  <div class="slide-counter" id="counter">01 / 02</div>
+
+  <script>
+    /* =========================================================
+       MOTOR DE NAVEGACIÓN · 2 SLIDES
+       ========================================================= */
+    const track = document.getElementById('track');
+    const slides = [...document.querySelectorAll('[data-slide]')];
+    const counter = document.getElementById('counter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentSlide = 0;
+
+    function renderSlides() {
+      track.style.transform = `translateX(-${currentSlide * 100}vw)`;
+      slides.forEach((slide, index) => slide.classList.toggle('is-active', index === currentSlide));
+      counter.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+      prevBtn.classList.toggle('is-disabled', currentSlide === 0);
+      nextBtn.classList.toggle('is-disabled', currentSlide === slides.length - 1);
+    }
+
+    function goToSlide(delta) {
+      currentSlide = Math.min(Math.max(currentSlide + delta, 0), slides.length - 1);
+      renderSlides();
+    }
+
+    nextBtn.addEventListener('click', () => goToSlide(1));
+    prevBtn.addEventListener('click', () => goToSlide(-1));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight') goToSlide(1);
+      if (event.key === 'ArrowLeft') goToSlide(-1);
+    });
+
+    document.querySelectorAll('.nav-arrow').forEach((button) => {
+      button.addEventListener('mousemove', (event) => {
+        const rect = button.getBoundingClientRect();
+        button.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+        button.style.setProperty('--my', `${event.clientY - rect.top}px`);
+      });
+    });
+
+    /* =========================================================
+       SLIDE 1 · HOVER PARA FLUJO DE PROCESOS
+       Estado inicial: ningún paso activo, sin descripciones visibles
+       ========================================================= */
+    const flow = document.getElementById('processFlow');
+    const cards = [...document.querySelectorAll('.process-card')];
+
+    function activateCard(card) {
+      flow.classList.add('flow-active');
+      cards.forEach((item) => item.classList.toggle('is-active', item === card));
+    }
+
+    function resetFlow() {
+      flow.classList.remove('flow-active');
+      cards.forEach((item) => item.classList.remove('is-active'));
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener('mouseenter', () => activateCard(card));
+      card.addEventListener('mouseleave', resetFlow);
+      card.addEventListener('focus', () => activateCard(card));
+      card.addEventListener('blur', resetFlow);
+    });
+
+    renderSlides();
+  </script>
+</body>
+</html>
