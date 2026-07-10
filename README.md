@@ -1,10 +1,10 @@
 # OPEX
 Proyectos y seguimiento del departamento OPEX.
 
-Nombres para HTML en proyecto.
+Nombres para HTML en proyecto:
 
-procesos.html
+-procesos.html
 
-ridder.html
+-ridder.html
 
-bi.html
+-bi.html
