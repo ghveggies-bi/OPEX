@@ -1,10 +1,13 @@
 # OPEX
 Proyectos y seguimiento del departamento OPEX.
 
-Nombres para HTML en proyecto:
+## 📂 Estructura del Proyecto
 
--procesos.html
+Para mantener la consistencia en el repositorio, utiliza estrictamente los siguientes nombres de archivo para los módulos HTML:
 
--ridder.html
+*   `procesos.html` — Seguimiento y mapeo de procesos del departamento.
+*   `ridder.html` — Integración, control y métricas de sistemas Ridder.
+*   `bi.html` — Dashboards, reportes avanzados y Business Intelligence.
 
--bi.html
+---
+*Mantenimiento y control interno de la estructura de datos.*
