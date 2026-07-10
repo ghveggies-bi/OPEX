@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ridder — Reporte Labor Cost · Tomate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vine:#1F3A2E;
+    --paper:#F1EBDA;
+    --paper-dark:#E4D9BF;
+    --tomato:#C0392B;
+    --tomato-dark:#8F2A20;
+    --soil:#5C4630;
+    --leaf:#2E7D46;
+    --leaf-dark:#1F5C33;
+    --gold:#F0B429;
+    --gold-dark:#D69A12;
+    --ink:#2B2620;
+    --ink-light:#6f624c;
+    --good:#2E7D46;
+    --bad:#C0392B;
+    --flat:#B8860B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 15% 10%, #274a3a 0%, transparent 45%),
+      radial-gradient(circle at 85% 90%, #16281f 0%, transparent 50%),
+      var(--vine);
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:48px 16px 80px;
+  }
+  .board{ width:100%; max-width:1080px; position:relative; }
+  .field-label{
+    color:#cfe0d1; font-family:'IBM Plex Mono', monospace; font-size:12px;
+    letter-spacing:.18em; text-transform:uppercase; text-align:center;
+    margin-bottom:14px; opacity:.75;
+  }
+  .ledger{
+    position:relative; background:var(--paper);
+    background-image:linear-gradient(var(--paper-dark) 1px, transparent 1px);
+    background-size:100% 34px;
+    border-radius:6px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.55), 0 2px 0 rgba(0,0,0,.15) inset;
+    transform:rotate(-0.25deg);
+    padding:38px 36px 28px;
+    border:1px solid rgba(92,70,48,.25);
+  }
+  .stamp{
+    position:absolute; top:-26px; right:-18px; width:112px; height:112px;
+    border-radius:50%; background:var(--leaf-dark);
+    border:3px dashed rgba(255,255,255,.55); color:#eafaf0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transform:rotate(9deg); box-shadow:0 12px 24px -8px rgba(0,0,0,.5);
+    font-family:'IBM Plex Mono', monospace; text-align:center; line-height:1.15;
+  }
+  .stamp small{ font-size:9px; letter-spacing:.1em; text-transform:uppercase; opacity:.85; }
+  .stamp strong{ font-size:15px; }
+  header{ border-bottom:1px dashed var(--soil); padding-bottom:18px; margin-bottom:22px; }
+  .eyebrow{ margin:0 0 6px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--leaf); }
+  h1{ margin:0 0 6px; font-family:'Fraunces', serif; font-weight:600; font-size:32px; color:var(--ink); letter-spacing:-.01em; }
+  .sub{ margin:0; font-size:13.5px; color:var(--ink-light); }
+  .tabs{ display:flex; gap:6px; }
+  .tab{
+    font-family:'Inter', sans-serif; font-weight:600; font-size:13px; color:var(--ink-light);
+    background:var(--paper-dark); border:1px solid rgba(92,70,48,.3); border-bottom:none;
+    padding:10px 16px 12px; border-radius:8px 8px 0 0; cursor:pointer; transform:translateY(1px);
+    transition:background .15s ease, color .15s ease;
+  }
+  .tab.active{ background:#fff9ec; color:var(--ink); border-color:rgba(92,70,48,.35); }
+  .sheet-wrap{
+    background:#fff9ec; border:1px solid rgba(92,70,48,.35); border-radius:0 8px 8px 8px;
+    padding:26px 24px; min-height:360px;
+  }
+  .sheet{ animation:fade .35s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  label{ display:block; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-light); margin-bottom:5px; font-weight:600; }
+  input[type=text], input[type=number], input[type=date]{
+    width:100%; font-family:'Inter', sans-serif; font-size:13.5px; padding:8px 9px;
+    border:1px solid rgba(92,70,48,.4); border-radius:5px; background:#fffdf6; color:var(--ink);
+  }
+  input:focus{ outline:2px solid var(--leaf); outline-offset:1px; }
+  .field{ margin-bottom:14px; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .grid5{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+  @media(max-width:760px){ .grid2,.grid3,.grid5{ grid-template-columns:1fr 1fr; } }
+  .btn{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; letter-spacing:.03em;
+    color:#eafaf0; background:var(--leaf-dark); border:none; padding:10px 16px; border-radius:5px; cursor:pointer;
+    transition:background .15s ease;
+  }
+  .btn:hover{ background:#164226; }
+  .btn.red{ background:var(--tomato); color:#fbe9e4; }
+  .btn.red:hover{ background:var(--tomato-dark); }
+  .btn.ghost{ background:transparent; color:var(--soil); border:1px solid var(--soil); }
+  .btn.ghost:hover{ background:rgba(92,70,48,.08); }
+  .section-title{ font-family:'Fraunces', serif; font-size:17px; font-weight:600; margin:22px 0 10px; color:var(--ink); }
+  .section-title:first-child{ margin-top:0; }
+  table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  th{ background:var(--gold); color:#3a2a08; font-size:11px; text-transform:uppercase; letter-spacing:.04em; padding:8px 8px; text-align:center; border:1px solid #caa020; }
+  td{ padding:7px 8px; border-bottom:1px solid rgba(92,70,48,.2); text-align:center; font-family:'IBM Plex Mono', monospace; }
+  td.name{ text-align:left; font-family:'Inter', sans-serif; font-weight:600; }
+  .del{ background:none; border:none; color:var(--tomato); cursor:pointer; font-size:15px; padding:2px 6px; }
+  .empty{ color:var(--ink-light); font-size:13.5px; padding:20px 4px; text-align:center; border:1px dashed rgba(92,70,48,.4); border-radius:6px; margin-top:10px; }
+  .kpis{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
+  @media(max-width:760px){ .kpis{ grid-template-columns:1fr; } }
+  .kpi{ background:#fffdf6; border:1px solid rgba(92,70,48,.3); border-left:4px solid var(--leaf); border-radius:6px; padding:14px 16px; }
+  .kpi .big{ font-family:'Fraunces', serif; font-size:26px; font-weight:700; color:var(--ink); }
+  .kpi .big.money{ color:var(--leaf-dark); }
+  .kpi .lbl{ font-size:11.5px; color:var(--ink-light); margin-top:2px; }
+  .arrow-up{ color:var(--good); font-weight:700; }
+  .arrow-down{ color:var(--bad); font-weight:700; }
+  .arrow-flat{ color:var(--flat); font-weight:700; }
+  .table-scroll{ overflow-x:auto; margin-bottom:8px; }
+  .charts-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:20px; }
+  .chart-card{ border:1px solid var(--leaf); border-radius:6px; padding:10px; background:#fffdf6; }
+  .chart-card h4{ margin:0 0 6px; font-family:'Fraunces', serif; font-size:13.5px; text-align:center; }
+  svg text{ font-family:'IBM Plex Mono', monospace; }
+  .pager{ display:flex; align-items:center; justify-content:space-between; margin-top:20px; }
+  .pager button{ background:none; border:none; font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--soil); cursor:pointer; letter-spacing:.05em; }
+  .pager button:disabled{ opacity:.3; cursor:default; }
+  .dots{ display:flex; gap:6px; }
+  .dot{ width:6px; height:6px; border-radius:50%; background:rgba(92,70,48,.35); }
+  .dot.active{ background:var(--tomato); }
+  .hint{ font-size:12px; color:var(--ink-light); margin:0 0 14px; }
+</style>
+</head>
+<body>
+<div class="board">
+  <p class="field-label">Cuaderno de campo · Labor Cost</p>
+  <div class="ledger">
+    <div class="stamp">
+      <small>Ahorro vs Ppto.</small>
+      <strong id="stampAhorro">$0</strong>
+    </div>
+    <header>
+      <p class="eyebrow">Reporte semanal de mano de obra</p>
+      <h1 id="projTitle">Labor Cost — Tomate</h1>
+      <p class="sub" id="projSub">Captura los datos del proyecto y de cada semana para generar el reporte.</p>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="0">Proyecto y actividades</button>
+      <button class="tab" data-tab="1">Captura semanal</button>
+      <button class="tab" data-tab="2">Resumen / Reporte</button>
+    </nav>
+
+    <div class="sheet-wrap">
+
+      <!-- PANEL 1: PROYECTO + ACTIVIDADES -->
+      <section class="sheet" data-panel="0">
+        <div class="section-title">Datos del proyecto</div>
+        <div class="grid3">
+          <div class="field"><label for="pName">Nombre del proyecto</label><input type="text" id="pName" placeholder="Reporte Semanal Labor Cost"></div>
+          <div class="field"><label for="pEmpresa">Empresa / Rancho</label><input type="text" id="pEmpresa" placeholder="GreenHouse Veggies"></div>
+          <div class="field"><label for="pCliente">Cliente / Marca</label><input type="text" id="pCliente" placeholder="NatureSweet"></div>
+        </div>
+        <button class="btn" id="saveProj">Guardar datos del proyecto</button>
+
+        <div class="section-title">Actividades y línea base histórica</div>
+        <p class="hint">Agrega o quita las actividades que necesites (Anillo, Bajada de tomate, Desbrote, Deshoje, Despunte, etc.) con su valor histórico de referencia.</p>
+        <button class="btn" id="addActivity">+ Agregar actividad</button>
+        <div class="table-scroll">
+          <table id="activityTable"></table>
+        </div>
+      </section>
+
+      <!-- PANEL 2: CAPTURA SEMANAL -->
+      <section class="sheet" data-panel="1" hidden>
+        <div class="section-title">Registrar una nueva semana</div>
+        <div class="grid5">
+          <div class="field"><label for="wLabel">Semana</label><input type="text" id="wLabel" placeholder="Sem 25"></div>
+          <div class="field"><label for="wPresupuesto">Presupuesto neto</label><input type="number" id="wPresupuesto" step="0.01" placeholder="$0.00"></div>
+          <div class="field"><label for="wCostoReal">Costo neto real</label><input type="number" id="wCostoReal" step="0.01" placeholder="$0.00"></div>
+          <div class="field"><label for="wHorasExtra">Horas extras</label><input type="number" id="wHorasExtra" step="1" placeholder="0"></div>
+          <div class="field"><label for="wAusentismo">Ausentismo</label><input type="number" id="wAusentismo" step="1" placeholder="0"></div>
+        </div>
+        <div class="grid5">
+          <div class="field"><label for="wRotacion">Rotación %</label><input type="number" id="wRotacion" step="0.1" placeholder="0"></div>
+        </div>
+
+        <div class="section-title">Datos por actividad de esta semana</div>
+        <div class="table-scroll"><table id="weekActivityForm"></table></div>
+        <button class="btn" id="addWeek">Agregar semana</button>
+
+        <div class="section-title">Semanas registradas</div>
+        <div class="table-scroll"><table id="weekListTable"></table></div>
+      </section>
+
+      <!-- PANEL 3: RESUMEN / REPORTE -->
+      <section class="sheet" data-panel="2" hidden>
+        <div class="kpis" id="kpiArea"></div>
+        <div class="section-title">Actividad — semana más reciente vs histórico</div>
+        <div class="table-scroll"><table id="reportTable1"></table></div>
+        <div class="section-title">Concepto por semana</div>
+        <div class="table-scroll"><table id="reportTable2"></table></div>
+        <div class="section-title">Surcos promedio por persona</div>
+        <div class="table-scroll"><table id="reportTable3"></table></div>
+        <div class="section-title">Tendencia por actividad</div>
+        <div class="charts-grid" id="chartsArea"></div>
+      </section>
+
+    </div>
+
+    <div class="pager">
+      <button id="prevBtn">← Anterior</button>
+      <div class="dots" id="pageDots"></div>
+      <button id="nextBtn">Siguiente →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const state = {
+    project: { name:'', empresa:'', cliente:'' },
+    activities: [
+      { id: 1, name:'Anillo',              medianaHist:36,  eficienciaHist:36,  jornalesHist:5.58, costoSurcoHist:67.13 },
+      { id: 2, name:'Bajada de Tomate',     medianaHist:112, eficienciaHist:112, jornalesHist:1.79, costoSurcoHist:28.50 },
+      { id: 3, name:'Desbrote Tomate',      medianaHist:67,  eficienciaHist:67,  jornalesHist:3.00, costoSurcoHist:35.92 },
+      { id: 4, name:'Deshoje de 3 a 4 hojas',medianaHist:42, eficienciaHist:42,  jornalesHist:4.79, costoSurcoHist:53.35 },
+      { id: 5, name:'Despunte de 1 a 3 brazos',medianaHist:63,eficienciaHist:63, jornalesHist:3.19, costoSurcoHist:35.57 }
+    ],
+    weeks: []
+  };
+  let actSeq = 6, weekSeq = 1;
+  let current = 0;
+  const panels = document.querySelectorAll('.sheet');
+  const tabs = document.querySelectorAll('.tab');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const dotsWrap = document.getElementById('pageDots');
+  const money = n => '$' + Number(n||0).toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const pct = n => (n===null || n===undefined || isNaN(n)) ? '—' : Math.round(n) + '%';
+
+  function buildDots(){
+    dotsWrap.innerHTML = '';
+    panels.forEach((_,i)=>{
+      const d = document.createElement('span');
+      d.className = 'dot' + (i===current?' active':'');
+      dotsWrap.appendChild(d);
+    });
+  }
+  function showPanel(i){
+    current = i;
+    panels.forEach((p,idx)=> p.hidden = idx!==i);
+    tabs.forEach((t,idx)=> t.classList.toggle('active', idx===i));
+    prevBtn.disabled = i===0;
+    nextBtn.disabled = i===panels.length-1;
+    buildDots();
+    if(i===1) renderWeekActivityForm();
+    if(i===2) renderReport();
+  }
+  tabs.forEach(t=> t.addEventListener('click', ()=> showPanel(Number(t.dataset.tab))));
+  prevBtn.addEventListener('click', ()=>{ if(current>0) showPanel(current-1); });
+  nextBtn.addEventListener('click', ()=>{ if(current<panels.length-1) showPanel(current+1); });
+
+  // ---------- PANEL 1: proyecto + actividades ----------
+  document.getElementById('saveProj').addEventListener('click', ()=>{
+    state.project.name = document.getElementById('pName').value.trim();
+    state.project.empresa = document.getElementById('pEmpresa').value.trim();
+    state.project.cliente = document.getElementById('pCliente').value.trim();
+    document.getElementById('projTitle').textContent = state.project.name || 'Labor Cost — Tomate';
+    const bits = [];
+    if(state.project.empresa) bits.push(state.project.empresa);
+    if(state.project.cliente) bits.push('Cliente: ' + state.project.cliente);
+    document.getElementById('projSub').textContent = bits.length ? bits.join(' · ') : 'Datos del proyecto guardados.';
+  });
+
+  document.getElementById('addActivity').addEventListener('click', ()=>{
+    state.activities.push({ id: actSeq++, name:'Nueva actividad', medianaHist:0, eficienciaHist:0, jornalesHist:0, costoSurcoHist:0 });
+    renderActivityTable();
+  });
+
+  function renderActivityTable(){
+    const t = document.getElementById('activityTable');
+    let html = '<tr><th>Actividad</th><th>Mediana histórica surcos</th><th>Eficiencia hist. 2025</th><th>Jornales prom. hist. 2025</th><th>Costo/surco histórico</th><th></th></tr>';
+    state.activities.forEach(a=>{
+      html += `<tr>
+        <td class="name"><input type="text" data-f="name" data-id="${a.id}" value="${a.name}" style="min-width:160px;"></td>
+        <td><input type="number" step="0.01" data-f="medianaHist" data-id="${a.id}" value="${a.medianaHist}" style="width:90px;text-align:center;"></td>
+        <td><input type="number" step="0.01" data-f="eficienciaHist" data-id="${a.id}" value="${a.eficienciaHist}" style="width:90px;text-align:center;"></td>
+        <td><input type="number" step="0.01" data-f="jornalesHist" data-id="${a.id}" value="${a.jornalesHist}" style="width:90px;text-align:center;"></td>
+        <td><input type="number" step="0.01" data-f="costoSurcoHist" data-id="${a.id}" value="${a.costoSurcoHist}" style="width:90px;text-align:center;"></td>
+        <td><button class="del" data-delact="${a.id}" title="Quitar actividad">✕</button></td>
+      </tr>`;
+    });
+    t.innerHTML = html;
+    t.querySelectorAll('input').forEach(inp=>{
+      inp.addEventListener('change', ()=>{
+        const act = state.activities.find(x=> x.id === Number(inp.dataset.id));
+        if(!act) return;
+        const f = inp.dataset.f;
+        act[f] = (f==='name') ? inp.value : Number(inp.value)||0;
+      });
+    });
+    t.querySelectorAll('[data-delact]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = Number(btn.dataset.delact);
+        state.activities = state.activities.filter(a=> a.id !== id);
+        state.weeks.forEach(w=> delete w.byActivity[id]);
+        renderActivityTable();
+      });
+    });
+  }
+
+  // ---------- PANEL 2: captura semanal ----------
+  function renderWeekActivityForm(){
+    const t = document.getElementById('weekActivityForm');
+    let html = '<tr><th>Actividad</th><th>Surcos prom./persona</th><th>Jornales promedio</th><th>Costo/surco real</th></tr>';
+    state.activities.forEach(a=>{
+      html += `<tr>
+        <td class="name">${a.name}</td>
+        <td><input type="number" step="0.01" id="wa_surcos_${a.id}" style="width:100px;text-align:center;"></td>
+        <td><input type="number" step="0.01" id="wa_jornales_${a.id}" style="width:100px;text-align:center;"></td>
+        <td><input type="number" step="0.01" id="wa_costo_${a.id}" style="width:100px;text-align:center;"></td>
+      </tr>`;
+    });
+    t.innerHTML = html;
+  }
+
+  document.getElementById('addWeek').addEventListener('click', ()=>{
+    const label = document.getElementById('wLabel').value.trim() || ('Sem ' + weekSeq);
+    const byActivity = {};
+    state.activities.forEach(a=>{
+      byActivity[a.id] = {
+        surcos: Number(document.getElementById('wa_surcos_'+a.id).value)||0,
+        jornales: Number(document.getElementById('wa_jornales_'+a.id).value)||0,
+        costoSurco: Number(document.getElementById('wa_costo_'+a.id).value)||0
+      };
+    });
+    state.weeks.push({
+      id: weekSeq++,
+      label,
+      presupuesto: Number(document.getElementById('wPresupuesto').value)||0,
+      costoReal: Number(document.getElementById('wCostoReal').value)||0,
+      horasExtra: Number(document.getElementById('wHorasExtra').value)||0,
+      ausentismo: Number(document.getElementById('wAusentismo').value)||0,
+      rotacion: Number(document.getElementById('wRotacion').value)||0,
+      byActivity
+    });
+    ['wLabel','wPresupuesto','wCostoReal','wHorasExtra','wAusentismo','wRotacion'].forEach(id=> document.getElementById(id).value = '');
+    renderWeekActivityForm();
+    renderWeekList();
+    updateStamp();
+  });
+
+  function renderWeekList(){
+    const wrap = document.getElementById('weekListTable').parentElement;
+    wrap.querySelectorAll('.empty').forEach(e=>e.remove());
+    const t = document.getElementById('weekListTable');
+    if(state.weeks.length === 0){
+      t.innerHTML = '';
+      const p = document.createElement('div'); p.className='empty'; p.textContent='Aún no hay semanas registradas.';
+      wrap.appendChild(p);
+      return;
+    }
+    let html = '<tr><th>Semana</th><th>Presupuesto</th><th>Costo real</th><th>Ahorro</th><th>H. extra</th><th>Ausent.</th><th>Rotación</th><th></th></tr>';
+    state.weeks.forEach(w=>{
+      html += `<tr>
+        <td class="name">${w.label}</td>
+        <td>${money(w.presupuesto)}</td>
+        <td>${money(w.costoReal)}</td>
+        <td>${money(w.presupuesto - w.costoReal)}</td>
+        <td>${w.horasExtra}</td>
+        <td>${w.ausentismo}</td>
+        <td>${w.rotacion}%</td>
+        <td><button class="del" data-delweek="${w.id}" title="Eliminar semana">✕</button></td>
+      </tr>`;
+    });
+    t.innerHTML = html;
+    t.querySelectorAll('[data-delweek]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        state.weeks = state.weeks.filter(w=> w.id !== Number(btn.dataset.delweek));
+        renderWeekList();
+        updateStamp();
+      });
+    });
+  }
+
+  function updateStamp(){
+    const total = state.weeks.reduce((s,w)=> s + (w.presupuesto - w.costoReal), 0);
+    document.getElementById('stampAhorro').textContent = money(total);
+  }
+
+  // ---------- PANEL 3: resumen / reporte ----------
+  function linreg(points){
+    const n = points.length;
+    if(n < 2) return null;
+    let sx=0, sy=0, sxy=0, sxx=0;
+    points.forEach((y,x)=>{ sx+=x; sy+=y; sxy+=x*y; sxx+=x*x; });
+    const denom = (n*sxx - sx*sx);
+    if(denom === 0) return null;
+    const m = (n*sxy - sx*sy) / denom;
+    const b = (sy - m*sx) / n;
+    return {m,b};
+  }
+
+  function renderReport(){
+    const acts = state.activities;
+    const weeks = state.weeks;
+    const latest = weeks[weeks.length - 1];
+
+    let mejoras = [], reducciones = [];
+    acts.forEach(a=>{
+      const wd = latest ? latest.byActivity[a.id] : null;
+      if(wd && a.eficienciaHist > 0 && wd.surcos > 0){
+        mejoras.push((wd.surcos - a.eficienciaHist)/a.eficienciaHist*100);
+      }
+      if(wd && a.jornalesHist > 0){
+        reducciones.push((a.jornalesHist - wd.jornales)/a.jornalesHist*100);
+      }
+    });
+    const kpiMejora = mejoras.length ? mejoras.reduce((s,v)=>s+v,0)/mejoras.length : null;
+    const kpiReduccion = reducciones.length ? reducciones.reduce((s,v)=>s+v,0)/reducciones.length : null;
+    const ahorroTotal = weeks.reduce((s,w)=> s + (w.presupuesto - w.costoReal), 0);
+
+    document.getElementById('kpiArea').innerHTML = `
+      <div class="kpi"><div class="big">${pct(kpiMejora)}</div><div class="lbl">Mejora promedio de eficiencia</div></div>
+      <div class="kpi"><div class="big">${pct(kpiReduccion)}</div><div class="lbl">Reducción de jornales por actividad</div></div>
+      <div class="kpi"><div class="big money">${money(ahorroTotal)}</div><div class="lbl">Ahorro vs presupuesto</div></div>
+    `;
+
+    let t1 = '<tr><th>Actividad</th><th>Eficiencia hist.</th><th>Eficiencia actual</th><th>% Mejora</th><th>Jornales hist.</th><th>Jornales actual</th><th>Costo/surco hist.</th><th>Costo/surco actual</th></tr>';
+    acts.forEach(a=>{
+      const wd = latest ? latest.byActivity[a.id] : null;
+      const mej = (wd && a.eficienciaHist>0 && wd.surcos>0) ? (wd.surcos-a.eficienciaHist)/a.eficienciaHist*100 : null;
+      t1 += `<tr>
+        <td class="name">${a.name}</td>
+        <td>${a.eficienciaHist}</td>
+        <td>${wd ? wd.surcos : '—'}</td>
+        <td>${pct(mej)}</td>
+        <td>${a.jornalesHist}</td>
+        <td>${wd ? wd.jornales : '—'}</td>
+        <td>${money(a.costoSurcoHist)}</td>
+        <td>${wd ? money(wd.costoSurco) : '—'}</td>
+      </tr>`;
+    });
+    document.getElementById('reportTable1').innerHTML = t1;
+
+    if(weeks.length){
+      let t2 = '<tr><th>Concepto</th>' + weeks.map(w=>`<th>${w.label}</th>`).join('') + '</tr>';
+      const rows2 = [
+        { label:'Presupuesto neto', get:w=>money(w.presupuesto) },
+        { label:'Costo neto real', get:w=>money(w.costoReal) },
+        { label:'Horas extras', get:w=>w.horasExtra },
+        { label:'Ausentismo', get:w=>w.ausentismo },
+        { label:'Rotación', get:w=>w.rotacion + '%' }
+      ];
+      rows2.forEach(r=>{
+        t2 += `<tr><td class="name">${r.label}</td>` + weeks.map(w=>`<td>${r.get(w)}</td>`).join('') + '</tr>';
+      });
+      document.getElementById('reportTable2').innerHTML = t2;
+    } else {
+      document.getElementById('reportTable2').innerHTML = '<tr><th>Concepto</th></tr>';
+    }
+
+    let t3 = '<tr><th>Actividad</th><th>Mediana histórica</th>' + weeks.map(w=>`<th>${w.label}</th>`).join('') + '<th>Promedio</th></tr>';
+    acts.forEach(a=>{
+      let prev = a.medianaHist;
+      let cells = '';
+      let vals = [];
+      weeks.forEach(w=>{
+        const v = w.byActivity[a.id] ? w.byActivity[a.id].surcos : 0;
+        vals.push(v);
+        let arrow = '<span class="arrow-flat">➡</span>';
+        if(v > prev) arrow = '<span class="arrow-up">▲</span>';
+        else if(v < prev) arrow = '<span class="arrow-down">▼</span>';
+        cells += `<td>${arrow} ${v}</td>`;
+        prev = v;
+      });
+      const avg = vals.length ? (vals.reduce((s,v)=>s+v,0)/vals.length) : 0;
+      t3 += `<tr><td class="name">${a.name}</td><td>${a.medianaHist}</td>${cells}<td><strong>${avg.toFixed(2)}</strong></td></tr>`;
+    });
+    document.getElementById('reportTable3').innerHTML = t3;
+
+    const chartsWrap = document.getElementById('chartsArea');
+    if(!acts.length){
+      chartsWrap.innerHTML = '<div class="empty">Agrega actividades para ver sus gráficas.</div>';
+      return;
+    }
+    let chartsHtml = '';
+    acts.forEach(a=>{
+      const points = [a.medianaHist, ...weeks.map(w=> w.byActivity[a.id] ? w.byActivity[a.id].surcos : 0)];
+      const labels = ['Mediana', ...weeks.map(w=>w.label)];
+      const w = 240, h = 170, pad = 26;
+      const max = Math.max(...points, 1);
+      const barW = (w - pad*2) / points.length;
+      let bars = '';
+      points.forEach((val,i)=>{
+        const barH = (val/max) * (h - pad*2);
+        const x = pad + i*barW + barW*0.15;
+        const y = h - pad - barH;
+        bars += `<rect x="${x}" y="${y}" width="${barW*0.7}" height="${barH}" fill="#8bb96f" rx="2"></rect>`;
+        bars += `<text x="${x+barW*0.35}" y="${h-pad+11}" font-size="7" fill="#5C4630" text-anchor="middle" transform="rotate(20 ${x+barW*0.35} ${h-pad+11})">${labels[i]}</text>`;
+      });
+      const reg = linreg(points);
+      let trend = '';
+      if(reg){
+        const x1 = pad + 0*barW + barW*0.5, x2 = pad + (points.length-1)*barW + barW*0.5;
+        const y1raw = reg.m*0 + reg.b, y2raw = reg.m*(points.length-1) + reg.b;
+        const y1 = h - pad - (y1raw/max)*(h-pad*2);
+        const y2 = h - pad - (y2raw/max)*(h-pad*2);
+        trend = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#C0392B" stroke-width="1.6" stroke-dasharray="4 3"></line>`;
+      }
+      chartsHtml += `<div class="chart-card"><h4>${a.name}</h4>
+        <svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}">
+          <line x1="${pad}" y1="${h-pad}" x2="${w-pad}" y2="${h-pad}" stroke="#5C4630" stroke-width="1"></line>
+          ${bars}${trend}
+        </svg></div>`;
+    });
+    chartsWrap.innerHTML = chartsHtml;
+  }
+
+  renderActivityTable();
+  renderWeekActivityForm();
+  renderWeekList();
+  showPanel(0);
+</script>
+</body>
+</html>
