@@ -90,9 +90,12 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:center;
-    padding:2.5rem 6vw 6rem; /* espacio extra abajo para no empalmar con la cápsula fija */
+    justify-content:flex-start; /* ancla arriba: el contenido crece hacia abajo, nunca invade la cápsula */
+    padding:4.2rem 6vw 7rem;
+    overflow-y:auto; /* red de seguridad: si algún día el contenido no cupiera, hace scroll en vez de taparse */
+    scrollbar-width:none;
   }
+  .slide::-webkit-scrollbar{ display:none; }
 
   /* tarjetas — blancas con sombra suave, mismo estándar que el index */
   .card{
@@ -143,8 +146,112 @@
   .bar-fill{ background:var(--verde-claro); height:100%; border-radius:9999px; }
 
   /* placeholders de imagen mientras no existan los archivos reales */
-  .img-slot{ position:relative; overflow:hidden; background:#F3EFDA; border:1px solid #E7E2C8; }
+  .img-slot{ position:relative; overflow:hidden; background:#F5F9EF; border:1px solid #E2ECD8; cursor:pointer; transition:transform .25s ease; }
+  .img-slot:hover{ transform:translateY(-2px); }
   .img-slot img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .img-caption{
+    margin-top:.4rem;
+    text-align:center;
+    font-family:'Inter',sans-serif;
+    font-size:.6rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  /* lightbox — popup flotante, NO oscurece la pantalla; clic para expandir, clic de nuevo para regresar */
+  .lightbox-overlay{
+    position:fixed; inset:0; z-index:70;
+    background:transparent;
+    display:flex; align-items:center; justify-content:center;
+    padding:6vw;
+    cursor:pointer;
+    opacity:0; pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .lightbox-overlay.open{ opacity:1; pointer-events:auto; }
+  .lightbox-figure{
+    background:#ffffff;
+    border-radius:20px;
+    padding:16px 18px 12px;
+    max-width:min(960px,92vw); max-height:86vh; text-align:center;
+    box-shadow:0 24px 56px -14px rgba(31,79,38,.32), 0 6px 20px -8px rgba(31,79,38,.18);
+    transform:scale(.94); opacity:0;
+    transition:transform .32s cubic-bezier(.22,1,.36,1), opacity .28s ease;
+  }
+  .lightbox-overlay.open .lightbox-figure{ transform:scale(1); opacity:1; }
+  .lightbox-figure img{
+    max-width:100%; max-height:68vh; width:auto; height:auto;
+    border-radius:12px; display:block; margin:0 auto;
+  }
+  .lightbox-figure svg{
+    max-width:100%; max-height:68vh; width:auto; height:auto;
+    display:block; margin:0 auto;
+  }
+  .lightbox-figure figcaption{
+    margin-top:.6rem;
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:.68rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    opacity:.6;
+  }
+  @media (prefers-reduced-motion:reduce){
+    .lightbox-overlay, .lightbox-figure{ transition:none; }
+  }
+
+  /* Tailwind aplica box-sizing:border-box global; eso descuadra el cálculo interno de
+     Mermaid para sus etiquetas HTML y termina recortando el texto de los nodos.
+     Se revierte específicamente dentro del SVG del diagrama (original y su copia ampliada). */
+  #archDiagram svg foreignObject, #archDiagram svg foreignObject *,
+  #lightboxBody svg foreignObject, #lightboxBody svg foreignObject *{
+    box-sizing:content-box !important;
+  }
+  #archDiagram .nodeLabel, #archDiagram .label, #archDiagram foreignObject div,
+  #lightboxBody .nodeLabel, #lightboxBody .label, #lightboxBody foreignObject div{
+    white-space:normal !important;
+    line-height:1.4 !important;
+    padding:1px 3px !important;
+    overflow:visible !important;
+  }
+  #archDiagram svg, #lightboxBody svg{ overflow:visible; }
+
+  /* tarjeta del diagrama — expandible, con señal sutil de que se puede seleccionar */
+  .diagram-expandable{
+    position:relative;
+    cursor:pointer;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .diagram-expandable:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 30px -16px rgba(31,79,38,.28);
+    border-color:#BFE28C;
+  }
+  .diagram-expand-hint{
+    position:absolute; top:12px; right:12px; z-index:5;
+    width:26px; height:26px; border-radius:9999px;
+    display:flex; align-items:center; justify-content:center;
+    background:#ffffff; border:1px solid #E2ECD8;
+    color:var(--verde);
+    opacity:0; transform:scale(.85);
+    transition:opacity .22s ease, transform .22s ease;
+    pointer-events:none;
+  }
+  .diagram-expandable:hover .diagram-expand-hint{ opacity:1; transform:scale(1); }
+
+  /* leyenda de niveles del diagrama */
+  .legend-item{
+    display:inline-flex; align-items:center; gap:.4rem;
+    font-family:'Inter',sans-serif; font-size:.62rem;
+    letter-spacing:.02em; color:var(--muted);
+  }
+  .legend-item i{
+    display:inline-block; width:9px; height:9px; border-radius:3px; flex-shrink:0;
+  }
+
+  /* tarjeta con tinte suave, para el lado positivo del contraste Hoy/En marcha */
+  .card--positive{ background:#F5F9EF; }
   .img-slot .ph{
     position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
     flex-direction:column; gap:.4rem; text-align:center; padding:.5rem;
@@ -229,14 +336,22 @@
     </button>
   </footer>
 
+  <!-- lightbox reutilizable — clic en una imagen o en el diagrama lo abre, clic aquí lo cierra -->
+  <div id="lightbox" class="lightbox-overlay" hidden>
+    <figure class="lightbox-figure">
+      <div id="lightboxBody"></div>
+      <figcaption id="lightboxCaption"></figcaption>
+    </figure>
+  </div>
+
   <div id="sliderContainer" class="w-full h-full overflow-hidden">
     <div id="track">
 
       <!-- ============ SLIDE 1 — AVANCE DE PROYECTOS ============ -->
       <section class="slide">
         <div class="w-full max-w-5xl">
-          <p class="eyebrow mb-3">Estado del proyecto</p>
-          <h1 class="f-title text-4xl md:text-5xl mb-10">Avance de Proyectos</h1>
+          <p class="eyebrow mb-2">Estado del proyecto</p>
+          <h1 class="f-title text-3xl md:text-4xl mb-6">Avance de Proyectos</h1>
           <div class="grid md:grid-cols-2 gap-6">
 
             <!-- BI Mano de Obra -->
@@ -305,50 +420,130 @@
       <!-- ============ SLIDE 2 — ARQUITECTURA Y MAPEO ============ -->
       <section class="slide">
         <div class="w-full max-w-5xl">
-          <h1 class="f-title text-3xl md:text-5xl text-center mb-6">Arquitectura DataWarehouse</h1>
+          <p class="eyebrow mb-2">Fundación de Datos</p>
+          <h1 class="f-title text-3xl md:text-4xl mb-4">Arquitectura DataWarehouse</h1>
 
-          <!-- Diagrama vivo (mismo que Arquitectura_IA.html, recoloreado a marca) -->
-          <div class="card p-5 md:p-7 mb-4 overflow-x-auto">
-            <div class="mermaid" id="archDiagram">
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Gotham, Helvetica Neue, Arial, sans-serif','fontSize':'13px','primaryColor':'#F3EFDA','primaryBorderColor':'#79BF00','lineColor':'#79BF00','primaryTextColor':'#307338'}}}%%
-graph LR
-  subgraph Orígenes
-    O1["Sistemas Operativos<br/>RIDDER, GHS, Digitalizaciones"]
-    O2["Sistemas Ambientales<br/>Sensores y Clima"]
-  end
-  O1 --> ETL["Capa ETL<br/>Estandarización"]
-  O2 --> ETL
-  ETL --> DWH["Base de Datos Corporativa<br/>DWH_GHVeggies (SQL)"]:::core
+          <!-- Contraste Hoy / En marcha — dos tarjetas independientes, cada una con su propio destello -->
+          <div class="grid md:grid-cols-2 gap-3 mb-3">
+            <div class="card p-4">
+              <div class="card-glow"></div>
+              <p class="f-subtitle text-xs mb-2.5" style="color:var(--muted)">Hoy</p>
+              <ul class="space-y-1.5 f-body text-xs md:text-sm" style="color:var(--muted)">
+                <li class="flex items-start gap-2">
+                  <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                  Bases críticas en SharePoint, sin escalar
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                  Reportes pensados solo para nivel gerencial
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                  Cada predio y sistema, con su propio estándar
+                </li>
+              </ul>
+            </div>
 
-  DWH --> PBI["Salida 1: Power BI<br/>(Dashboards Ejecutivos)"]:::ok
-  DWH --> AI["Salida 2: Agente Virtual OpEx<br/>Decisiones en tiempo real, sin tableros"]:::ai
-  AI --> W["2.1 WhatsApp / Teams<br/>Consulta casual y conversacional"]:::leaf
-  AI --> N["2.2 Reportes automáticos (n8n)<br/>Gráficas y resúmenes prediseñados"]:::leaf
-
-  classDef core fill:#307338,stroke:#307338,stroke-width:2px,color:#ffffff,rx:10px,ry:10px;
-  classDef ok fill:#F3EFDA,stroke:#79BF00,stroke-width:2px,color:#307338,rx:10px,ry:10px;
-  classDef ai fill:#79BF00,stroke:#307338,stroke-width:2px,color:#ffffff,rx:10px,ry:10px;
-  classDef leaf fill:#ffffff,stroke:#FBE122,stroke-width:2px,color:#307338,rx:10px,ry:10px;
+            <div class="card card--positive p-4">
+              <div class="card-glow"></div>
+              <p class="f-subtitle text-xs mb-2.5" style="color:var(--verde-claro)">En marcha</p>
+              <ul class="space-y-1.5 f-body text-xs md:text-sm" style="color:var(--muted)">
+                <li class="flex items-start gap-2">
+                  <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Gobernanza de datos ya en definición
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Mapeo completo de procesos y responsables
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Migración en curso a SQL (DWH_GHVeggies)
+                </li>
+              </ul>
             </div>
           </div>
 
-          <!-- Evidencia de soporte -->
-          <div class="grid grid-cols-4 gap-3">
-            <div class="img-slot rounded-lg aspect-[4/3]" data-label="Ejemplo CTS Finanzas">
-              <img src="bi1.jpg" alt="Ejemplo CTS Finanzas" onerror="phFallback(this)">
-              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>CTS Finanzas</span></div>
+          <!-- Diagrama vivo (mismo que Arquitectura_IA.html, recoloreado a marca) — clic para expandir -->
+          <div class="card diagram-expandable p-2.5 md:p-3 mb-3 overflow-x-auto" id="diagramCard">
+            <div class="diagram-expand-hint">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
             </div>
-            <div class="img-slot rounded-lg aspect-[4/3]" data-label="Mapeo de procesos">
-              <img src="bi2.jpg" alt="Mapeo de procesos" onerror="phFallback(this)">
-              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Mapeo de procesos</span></div>
+            <h2 class="f-subtitle text-xs mb-2" style="color:var(--ink)">Diagrama de Arquitectura — DataWarehouse GHVeggies</h2>
+            <div class="mermaid" id="archDiagram">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Gotham, Helvetica Neue, Arial, sans-serif','fontSize':'11px','primaryColor':'#ffffff','primaryBorderColor':'#79BF00','lineColor':'#9AC77A','primaryTextColor':'#307338'},'flowchart':{'htmlLabels':true,'padding':10,'nodeSpacing':20,'rankSpacing':34,'useMaxWidth':true}}}%%
+graph LR
+  subgraph SRC["Orígenes"]
+    O1["Sistemas Operativos<br/>RIDDER, GHS, Digitalizaciones"]
+    O2["Sistemas Ambientales<br/>Sensores y Clima"]
+    O3["SharePoint y API<br/>Fuentes existentes"]
+  end
+  O1 --> ETL["Capa ETL<br/>Estandarización"]:::etl
+  O2 --> ETL
+  O3 --> ETL
+  ETL --> DWH["Base de Datos Corporativa<br/>DWH_GHVeggies (SQL)"]:::core
+
+  DWH --> PBI["Salida 1: Power BI<br/>Dashboards Ejecutivos"]:::out1
+  DWH --> AI["Salida 2: Agente Virtual OpEx<br/>Decisiones en tiempo real"]:::out2
+  AI --> W["2.1 WhatsApp / Teams<br/>Consulta casual"]:::leaf
+  AI --> N["2.2 Reportes (n8n)<br/>Gráficas prediseñadas"]:::leaf
+
+  style SRC fill:#FFFFFF,stroke:#EAEFE9,stroke-width:1px,color:#307338
+
+  classDef default fill:#ffffff,stroke:#D7E6C8,stroke-width:1.5px,color:#307338,rx:8px,ry:8px;
+  classDef etl fill:#F3EFDA,stroke:#79BF00,stroke-width:1.5px,color:#307338,rx:8px,ry:8px;
+  classDef core fill:#1F4F26,stroke:#1F4F26,stroke-width:2px,color:#ffffff,font-weight:700,rx:8px,ry:8px;
+  classDef out1 fill:#ffffff,stroke:#307338,stroke-width:2px,color:#307338,rx:8px,ry:8px;
+  classDef out2 fill:#79BF00,stroke:#1F4F26,stroke-width:2px,color:#ffffff,font-weight:700,rx:8px,ry:8px;
+  classDef leaf fill:#F5F9EF,stroke:#B9D98F,stroke-width:1.5px,color:#4C6B3E,rx:6px,ry:6px;
             </div>
-            <div class="img-slot rounded-lg aspect-[4/3]" data-label="Infografía">
-              <img src="bi3.jpg" alt="Infografía" onerror="phFallback(this)">
-              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Infografía</span></div>
+            <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 mt-2 pt-1.5" style="border-top:1px solid #EAEFE9">
+              <span class="legend-item"><i style="background:#ffffff;border:1.5px solid #D7E6C8"></i>Orígenes</span>
+              <span class="legend-item"><i style="background:#F3EFDA;border:1.5px solid #79BF00"></i>Proceso (ETL)</span>
+              <span class="legend-item"><i style="background:#1F4F26"></i>Base gobernada</span>
+              <span class="legend-item"><i style="background:#ffffff;border:1.5px solid #307338"></i>Salida ejecutiva</span>
+              <span class="legend-item"><i style="background:#79BF00"></i>Salida IA</span>
+              <span class="legend-item"><i style="background:#F5F9EF;border:1.5px solid #B9D98F"></i>Canal / detalle</span>
             </div>
-            <div class="img-slot rounded-lg aspect-[4/3]" data-label="Inventario de archivos">
-              <img src="bi4.jpg" alt="Inventario de archivos" onerror="phFallback(this)">
-              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Inventario</span></div>
+          </div>
+
+          <!-- Nota informativa combinada — fuera del recuadro del diagrama, casi imperceptible -->
+          <div class="flex items-start gap-1.5 mb-3 px-1">
+            <svg class="w-3 h-3 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 2.5"/></svg>
+            <p class="f-body text-left leading-snug" style="color:var(--muted); opacity:.55; font-size:.62rem">
+              De cada predio, el dato pasa por una limpieza estándar (ETL) hacia una sola base gobernada, que alimenta por igual los tableros de Power BI y el Agente Virtual — los números nunca se contradicen entre predios.
+            </p>
+          </div>
+
+          <!-- Evidencia de soporte — clic para expandir -->
+          <div class="grid grid-cols-4 gap-2">
+            <div>
+              <div class="img-slot rounded-lg aspect-[16/11]" data-label="Ejemplo CTS Finanzas">
+                <img src="images/bi-cts-finanzas.png" alt="Ejemplo CTS Finanzas" onerror="phFallback(this)">
+                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>CTS Finanzas</span></div>
+              </div>
+              <p class="img-caption">CTS Finanzas</p>
+            </div>
+            <div>
+              <div class="img-slot rounded-lg aspect-[16/11]" data-label="Mapeo de procesos">
+                <img src="images/bi-mapeo-procesos.png" alt="Mapeo de procesos" onerror="phFallback(this)">
+                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Mapeo de procesos</span></div>
+              </div>
+              <p class="img-caption">Mapeo de Procesos</p>
+            </div>
+            <div>
+              <div class="img-slot rounded-lg aspect-[16/11]" data-label="Infografía">
+                <img src="images/bi-infografia.png" alt="Infografía" onerror="phFallback(this)">
+                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Infografía</span></div>
+              </div>
+              <p class="img-caption">Infografía</p>
+            </div>
+            <div>
+              <div class="img-slot rounded-lg aspect-[16/11]" data-label="Inventario de archivos">
+                <img src="images/bi-inventario.png" alt="Inventario de archivos" onerror="phFallback(this)">
+                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Inventario</span></div>
+              </div>
+              <p class="img-caption">Inventario</p>
             </div>
           </div>
         </div>
@@ -357,34 +552,35 @@ graph LR
       <!-- ============ SLIDE 3 — MÓDULOS DE MANO DE OBRA ============ -->
       <section class="slide">
         <div class="w-full max-w-5xl">
-          <h1 class="f-title text-3xl md:text-5xl text-center mb-8">Módulos de Mano de Obra</h1>
+          <p class="eyebrow mb-2">Mano de Obra</p>
+          <h1 class="f-title text-3xl md:text-4xl mb-6">Módulos de Mano de Obra</h1>
           <div class="grid grid-cols-4 gap-4">
             <figure class="img-slot rounded-lg aspect-square" data-label="Invernadero">
-              <img src="bi5.jpg" alt="Invernadero" onerror="phFallback(this)">
+              <img src="bi5.png" alt="Invernadero" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Invernadero</span></div>
             </figure>
             <figure class="img-slot rounded-lg aspect-square" data-label="Asistencia">
-              <img src="bi6.jpg" alt="Asistencia" onerror="phFallback(this)">
+              <img src="bi6.png" alt="Asistencia" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Asistencia</span></div>
             </figure>
             <figure class="img-slot rounded-lg aspect-square" data-label="Costo de MO">
-              <img src="bi7.jpg" alt="Costo de Mano de Obra" onerror="phFallback(this)">
+              <img src="bi7.png" alt="Costo de Mano de Obra" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Costo de MO</span></div>
             </figure>
             <figure class="img-slot rounded-lg aspect-square" data-label="Auditoría">
-              <img src="bi8.jpg" alt="Auditoría" onerror="phFallback(this)">
+              <img src="bi8.png" alt="Auditoría" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Auditoría</span></div>
             </figure>
             <figure class="img-slot rounded-lg aspect-square" data-label="Eficiencia MO">
-              <img src="bi9.jpg" alt="Eficiencia MO" onerror="phFallback(this)">
+              <img src="bi9.png" alt="Eficiencia MO" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Eficiencia MO</span></div>
             </figure>
             <figure class="img-slot rounded-lg aspect-square" data-label="Jornales">
-              <img src="bi10.jpg" alt="Jornales" onerror="phFallback(this)">
+              <img src="bi10.png" alt="Jornales" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Jornales</span></div>
             </figure>
             <figure class="img-slot rounded-lg aspect-square" data-label="Almacén">
-              <img src="bi11.jpg" alt="Almacén" onerror="phFallback(this)">
+              <img src="bi11.png" alt="Almacén" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Almacén</span></div>
             </figure>
           </div>
@@ -479,7 +675,7 @@ graph LR
   </div>
 
   <script>
-    mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+    mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', flowchart: { htmlLabels: true, padding: 10, useMaxWidth: true } });
 
     // ---------- placeholders de imagen ----------
     function phFallback(img){
@@ -627,6 +823,53 @@ graph LR
       }
     }
     runConvo();
+
+    // ---------- lightbox: clic para expandir imagen o diagrama, clic de nuevo para regresar ----------
+    const lightbox = document.getElementById('lightbox');
+    const lightboxBody = document.getElementById('lightboxBody');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    function showLightbox(captionText){
+      lightboxCaption.textContent = captionText;
+      lightbox.hidden = false;
+      requestAnimationFrame(() => lightbox.classList.add('open'));
+    }
+    function closeLightbox(){
+      lightbox.classList.remove('open');
+      setTimeout(() => { lightbox.hidden = true; lightboxBody.innerHTML = ''; }, 320);
+    }
+    function openLightboxImage(src, alt){
+      lightboxBody.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = src; img.alt = alt;
+      lightboxBody.appendChild(img);
+      showLightbox(alt);
+    }
+    function openLightboxDiagram(){
+      const svg = document.querySelector('#archDiagram svg');
+      if(!svg) return;
+      lightboxBody.innerHTML = '';
+      const clone = svg.cloneNode(true);
+      clone.removeAttribute('style');
+      lightboxBody.appendChild(clone);
+      showLightbox('Diagrama de Arquitectura — DataWarehouse GHVeggies');
+    }
+
+    lightbox.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox(); });
+
+    document.querySelectorAll('.img-slot').forEach((slot) => {
+      slot.addEventListener('click', (e) => {
+        e.stopPropagation(); // no dispara el avance de slide al hacer clic en la imagen
+        const img = slot.querySelector('img');
+        if(img) openLightboxImage(img.src, img.alt);
+      });
+    });
+
+    document.getElementById('diagramCard').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightboxDiagram();
+    });
   </script>
 </body>
 </html>
