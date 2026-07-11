@@ -392,7 +392,7 @@
   @keyframes asterisk-breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.16); } }
 
   /* estilo "voz" — pulso irregular mientras el asterisco responde, como una onda de audio */
-  .asterisk-wrap.speaking .asterisk-pulse{ animation:asterisk-speak .55s ease-in-out infinite; }
+  .asterisk-wrap.speaking .asterisk-pulse{ animation:asterisk-speak .55s ease-in-out infinite; opacity:1 !important; }
   @keyframes asterisk-speak{
     0%,100%{ transform:scale(1); }
     22%{ transform:scale(1.24); }
@@ -400,7 +400,15 @@
     68%{ transform:scale(1.16); }
     85%{ transform:scale(1.02); }
   }
-  @media (prefers-reduced-motion:reduce){ .asterisk-wrap.speaking .asterisk-pulse{ animation:none; } }
+  /* resplandor visible detrás del asterisco mientras responde — para que nunca se sienta que desaparece */
+  .asterisk-wrap.speaking{ position:relative; }
+  .asterisk-wrap.speaking::before{
+    content:''; position:absolute; inset:-7px; z-index:-1; border-radius:9999px;
+    background:radial-gradient(circle, rgba(121,191,0,.4) 0%, transparent 72%);
+    animation:asterisk-glow 1s ease-in-out infinite;
+  }
+  @keyframes asterisk-glow{ 0%,100%{ transform:scale(.8); opacity:.35; } 50%{ transform:scale(1.3); opacity:.9; } }
+  @media (prefers-reduced-motion:reduce){ .asterisk-wrap.speaking .asterisk-pulse{ animation:none; } .asterisk-wrap.speaking::before{ animation:none; } }
 
   /* destello sutil al arrancar la respuesta — como si la IA "iluminara" su primera palabra */
   .ai-flash{ border-radius:4px; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
@@ -546,6 +554,37 @@
         </div>
       </section>
 
+      <!-- ============ SLIDE 3 — REEL DE MÓDULOS DE MANO DE OBRA ============ -->
+      <section class="slide">
+        <div class="w-full max-w-5xl">
+          <p class="eyebrow mb-2">Mano de Obra</p>
+          <h1 class="f-title text-3xl md:text-4xl mb-3">Reporte BI Mano de Obra</h1>
+          <p class="f-body text-xs md:text-sm mb-3 max-w-2xl" style="color:var(--muted)">
+            Un mismo tablero reúne el pulso operativo del campo: eficiencia por invernadero y actividad,
+            asistencia y headcount contra presupuesto, costo de mano de obra por clasificación, cumplimiento
+            de auditoría en campo, productividad y ranking por empleado, jornales reales contra presupuesto,
+            y existencias de almacén contra su stock mínimo — todo por predio, semana y con el mismo dato de origen.
+          </p>
+
+          <div class="card reel-card" id="reelCard">
+            <div class="card-glow"></div>
+            <div class="reel-track" id="reelTrack">
+              <div class="reel-slide"><img src="images/bi-invernadero.png" alt="Invernadero — eficiencia por grupo y tendencia semanal" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-asistencia.png" alt="Asistencia — headcount vs. presupuesto e incidencias" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-costo-mo.png" alt="Costo de MO — por clasificación, con tendencia y jornales" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-auditoria.png" alt="Auditoría — cumplimiento de surcos y control de duplicados" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-eficiencia-mo.png" alt="Eficiencia MO — ranking de productividad por empleado" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-jornales.png" alt="Jornales — real vs. presupuesto por grupo" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-almacen.png" alt="Almacén — existencias vs. stock mínimo" onerror="phFallback(this)"></div>
+              <div class="reel-slide" aria-hidden="true"><img src="images/bi-invernadero.png" alt="" onerror="phFallback(this)"></div>
+            </div>
+          </div>
+
+          <p class="f-body text-left text-xs mt-2" id="reelCaption" style="color:var(--muted)"></p>
+          <div class="flex items-center gap-1.5 mt-1.5" id="reelDots"></div>
+        </div>
+      </section>
+
       <!-- ============ SLIDE 2 — ARQUITECTURA Y MAPEO ============ -->
       <section class="slide">
         <div class="w-full max-w-5xl">
@@ -651,61 +690,26 @@ graph LR
                 <img src="images/bi-cts-finanzas.png" alt="Ejemplo CTS Finanzas" onerror="phFallback(this)">
                 <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>CTS Finanzas</span></div>
               </div>
-              <p class="img-caption">CTS Finanzas</p>
             </div>
             <div>
               <div class="img-slot img-slot--tint rounded-lg aspect-[16/11]" data-label="Mapeo de procesos">
                 <img src="images/bi-mapeo-procesos.png" alt="Mapeo de procesos" onerror="phFallback(this)">
                 <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Mapeo de procesos</span></div>
               </div>
-              <p class="img-caption">Mapeo de Procesos</p>
             </div>
             <div>
               <div class="img-slot img-slot--tint rounded-lg aspect-[16/11]" data-label="Infografía">
                 <img src="images/bi-infografia.png" alt="Infografía" onerror="phFallback(this)">
                 <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Infografía</span></div>
               </div>
-              <p class="img-caption">Infografía</p>
             </div>
             <div>
               <div class="img-slot img-slot--tint rounded-lg aspect-[16/11]" data-label="Inventario de archivos">
                 <img src="images/bi-inventario.png" alt="Inventario de archivos" onerror="phFallback(this)">
                 <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Inventario</span></div>
               </div>
-              <p class="img-caption">Inventario</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- ============ SLIDE 3 — REEL DE MÓDULOS DE MANO DE OBRA ============ -->
-      <section class="slide">
-        <div class="w-full max-w-5xl">
-          <p class="eyebrow mb-2">Mano de Obra</p>
-          <h1 class="f-title text-3xl md:text-4xl mb-3">Reporte BI Mano de Obra</h1>
-          <p class="f-body text-xs md:text-sm mb-3 max-w-2xl" style="color:var(--muted)">
-            Un mismo tablero reúne el pulso operativo del campo: eficiencia por invernadero y actividad,
-            asistencia y headcount contra presupuesto, costo de mano de obra por clasificación, cumplimiento
-            de auditoría en campo, productividad y ranking por empleado, jornales reales contra presupuesto,
-            y existencias de almacén contra su stock mínimo — todo por predio, semana y con el mismo dato de origen.
-          </p>
-
-          <div class="card reel-card" id="reelCard">
-            <div class="card-glow"></div>
-            <div class="reel-track" id="reelTrack">
-              <div class="reel-slide"><img src="images/bi-invernadero.png" alt="Invernadero — eficiencia por grupo y tendencia semanal" onerror="phFallback(this)"></div>
-              <div class="reel-slide"><img src="images/bi-asistencia.png" alt="Asistencia — headcount vs. presupuesto e incidencias" onerror="phFallback(this)"></div>
-              <div class="reel-slide"><img src="images/bi-costo-mo.png" alt="Costo de MO — por clasificación, con tendencia y jornales" onerror="phFallback(this)"></div>
-              <div class="reel-slide"><img src="images/bi-auditoria.png" alt="Auditoría — cumplimiento de surcos y control de duplicados" onerror="phFallback(this)"></div>
-              <div class="reel-slide"><img src="images/bi-eficiencia-mo.png" alt="Eficiencia MO — ranking de productividad por empleado" onerror="phFallback(this)"></div>
-              <div class="reel-slide"><img src="images/bi-jornales.png" alt="Jornales — real vs. presupuesto por grupo" onerror="phFallback(this)"></div>
-              <div class="reel-slide"><img src="images/bi-almacen.png" alt="Almacén — existencias vs. stock mínimo" onerror="phFallback(this)"></div>
-              <div class="reel-slide" aria-hidden="true"><img src="images/bi-invernadero.png" alt="" onerror="phFallback(this)"></div>
-            </div>
-          </div>
-
-          <p class="f-body text-left text-xs mt-2" id="reelCaption" style="color:var(--muted)"></p>
-          <div class="flex items-center gap-1.5 mt-1.5" id="reelDots"></div>
         </div>
       </section>
 
