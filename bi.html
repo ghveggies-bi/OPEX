@@ -303,7 +303,7 @@
   }
   .reel-track{
     display:flex; height:100%;
-    transition:transform .9s cubic-bezier(.65,0,.35,1);
+    transition:transform .9s cubic-bezier(.65,0,.35,1), opacity .5s ease;
   }
   .reel-slide{
     min-width:100%; height:100%;
@@ -700,6 +700,7 @@ graph LR
               <div class="reel-slide"><img src="images/bi-eficiencia-mo.png" alt="Eficiencia MO — ranking de productividad por empleado" onerror="phFallback(this)"></div>
               <div class="reel-slide"><img src="images/bi-jornales.png" alt="Jornales — real vs. presupuesto por grupo" onerror="phFallback(this)"></div>
               <div class="reel-slide"><img src="images/bi-almacen.png" alt="Almacén — existencias vs. stock mínimo" onerror="phFallback(this)"></div>
+              <div class="reel-slide" aria-hidden="true"><img src="images/bi-invernadero.png" alt="" onerror="phFallback(this)"></div>
             </div>
           </div>
 
@@ -1017,41 +1018,61 @@ graph LR
     // ---------- reel automático del slide 3 ----------
     const reelCard = document.getElementById('reelCard');
     const reelTrack = document.getElementById('reelTrack');
-    const reelSlides = reelTrack.querySelectorAll('.reel-slide');
+    const reelSlides = reelTrack.querySelectorAll('.reel-slide'); // 7 reales + 1 clon del primero (loop)
+    const reelTotal = reelSlides.length - 1; // 7 reales
     const reelDotsWrap = document.getElementById('reelDots');
     const reelCaption = document.getElementById('reelCaption');
-    let reelIndex = 0;
+    let reelIndex = 0; // índice visual, puede llegar a reelTotal (el clon)
     let reelTimer = null;
 
-    reelSlides.forEach((_, i) => {
+    for(let i = 0; i < reelTotal; i++){
       const d = document.createElement('span');
       d.className = 'reel-dot' + (i === 0 ? ' active' : '');
       reelDotsWrap.appendChild(d);
-    });
+    }
     const reelDots = reelDotsWrap.querySelectorAll('.reel-dot');
 
-    function reelRender(){
-      reelTrack.style.transform = `translateX(-${reelIndex * 100}%)`;
-      reelDots.forEach((d, i) => d.classList.toggle('active', i === reelIndex));
-      const img = reelSlides[reelIndex].querySelector('img');
+    function reelUpdateCaptionDots(logicalIndex){
+      reelDots.forEach((d, i) => d.classList.toggle('active', i === logicalIndex));
+      const img = reelSlides[logicalIndex].querySelector('img');
       reelCaption.textContent = img.alt;
+    }
+    reelUpdateCaptionDots(0);
+
+    function reelAdvance(){
+      reelIndex++;
+      // fundido + recorrido: se atenúa un instante mientras se desplaza, para que no se sienta agresivo
+      reelTrack.style.opacity = '.4';
+      reelTrack.style.transform = `translateX(-${reelIndex * 100}%)`;
+      reelUpdateCaptionDots(reelIndex % reelTotal);
+      setTimeout(() => { reelTrack.style.opacity = '1'; }, 320);
+
+      if(reelIndex === reelTotal){
+        // llegamos al clon (visualmente idéntico al primero): al terminar la transición,
+        // saltamos sin animación al slide real 0 — así el ciclo se ve circular, nunca regresa
+        setTimeout(() => {
+          reelTrack.style.transition = 'none';
+          reelIndex = 0;
+          reelTrack.style.transform = 'translateX(0%)';
+          void reelTrack.offsetWidth; // fuerza reflow antes de restaurar la transición
+          reelTrack.style.transition = '';
+        }, 900);
+      }
     }
     function reelSchedule(delay){
       clearTimeout(reelTimer);
       reelTimer = setTimeout(() => {
-        reelIndex = (reelIndex + 1) % reelSlides.length;
-        reelRender();
-        reelSchedule(3000);
+        reelAdvance();
+        reelSchedule(5000);
       }, delay);
     }
-    reelRender();
-    reelSchedule(3000);
+    reelSchedule(5000);
 
     reelCard.addEventListener('mouseenter', () => reelSchedule(10000));
-    reelCard.addEventListener('mouseleave', () => reelSchedule(3000));
+    reelCard.addEventListener('mouseleave', () => reelSchedule(5000));
     reelCard.addEventListener('click', (e) => {
       e.stopPropagation();
-      const img = reelSlides[reelIndex].querySelector('img');
+      const img = reelSlides[reelIndex % reelTotal].querySelector('img');
       openLightboxImage(img.src, img.alt);
     });
 
