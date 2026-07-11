@@ -149,6 +149,10 @@
   .img-slot{ position:relative; overflow:hidden; background:#F5F9EF; border:1px solid #E2ECD8; cursor:pointer; transition:transform .25s ease; }
   /* slide 2: fondo verde transparente más marcado, para que no se vea "sucio" bajo las capturas */
   .img-slot--tint{ background:rgba(121,191,0,.16); border-color:rgba(121,191,0,.3); }
+  .img-slot--tint::after{
+    content:''; position:absolute; inset:0; z-index:2;
+    background:rgba(121,191,0,.4); pointer-events:none;
+  }
   .img-slot:hover{ transform:translateY(-2px); }
   .img-slot img{ width:100%; height:100%; object-fit:cover; display:block; }
   .img-caption{
@@ -291,6 +295,32 @@
   }
   .subtle-link:hover{ border-color:rgba(48,115,56,.85); color:var(--verde); }
 
+  /* reel automático de imágenes — tamaño proporcional al slide, transición sutil */
+  .reel-card{
+    position:relative; overflow:hidden;
+    height:56vh; max-height:520px;
+    background:#ffffff; cursor:pointer;
+  }
+  .reel-track{
+    display:flex; height:100%;
+    transition:transform .9s cubic-bezier(.65,0,.35,1);
+  }
+  .reel-slide{
+    min-width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    background:#ffffff;
+  }
+  .reel-slide img{
+    max-width:96%; max-height:94%; width:auto; height:auto;
+    object-fit:contain; border-radius:6px;
+  }
+  .reel-dot{
+    width:5px; height:5px; border-radius:9999px;
+    background:#D7E6C8; transition:background .25s ease, width .25s ease;
+  }
+  .reel-dot.active{ background:var(--verde-claro); width:15px; }
+  @media (prefers-reduced-motion:reduce){ .reel-track{ transition:none; } }
+
   /* tarjeta del diagrama — expandible, con señal sutil de que se puede seleccionar */
   .diagram-expandable{
     position:relative;
@@ -360,6 +390,26 @@
   .asterisk-pulse{ animation:asterisk-breathe 2.2s ease-in-out infinite; transform-origin:center; transition:opacity .3s ease; }
   @keyframes asterisk-spin{ to{ transform:rotate(360deg); } }
   @keyframes asterisk-breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.16); } }
+
+  /* estilo "voz" — pulso irregular mientras el asterisco responde, como una onda de audio */
+  .asterisk-wrap.speaking .asterisk-pulse{ animation:asterisk-speak .55s ease-in-out infinite; }
+  @keyframes asterisk-speak{
+    0%,100%{ transform:scale(1); }
+    22%{ transform:scale(1.24); }
+    45%{ transform:scale(.94); }
+    68%{ transform:scale(1.16); }
+    85%{ transform:scale(1.02); }
+  }
+  @media (prefers-reduced-motion:reduce){ .asterisk-wrap.speaking .asterisk-pulse{ animation:none; } }
+
+  /* destello sutil al arrancar la respuesta — como si la IA "iluminara" su primera palabra */
+  .ai-flash{ border-radius:4px; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+  .ai-flash.flash-on{ animation:ai-flash-in .8s ease; }
+  @keyframes ai-flash-in{
+    0%{ background:rgba(121,191,0,.4); box-shadow:0 0 0 5px rgba(121,191,0,.14); }
+    100%{ background:rgba(121,191,0,0); box-shadow:0 0 0 0 rgba(121,191,0,0); }
+  }
+  @media (prefers-reduced-motion:reduce){ .ai-flash.flash-on{ animation:none; } }
 
   .chat-label{
     font-family:'Inter',sans-serif;
@@ -472,19 +522,24 @@
                 natural sobre toda la operación.
               </p>
               <ul class="space-y-3 f-body text-sm" style="color:var(--muted)">
-                <li class="flex items-start gap-3">
-                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                  Mapeo de Procesos
+                <li class="flex items-center gap-3">
+                  <span class="w-4 h-4 rounded-full flex-shrink-0 flex items-center justify-center" style="background:var(--verde-claro)">
+                    <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  </span>
+                  Mapeo y gobernanza de datos
                 </li>
-                <li class="flex items-start gap-3">
-                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                  Inventario de archivos
+                <li class="flex items-center gap-3">
+                  <span class="w-4 h-4 rounded-full flex-shrink-0" style="border:2px solid var(--verde-claro); background:radial-gradient(circle, var(--verde-claro) 35%, transparent 36%)"></span>
+                  Migración a SQL — DWH_GHVeggies
                 </li>
-                <li class="flex items-start gap-3">
-                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                  Carga de empaque en modelo SQL (Prueba)
+                <li class="flex items-center gap-3">
+                  <span class="w-4 h-4 rounded-full flex-shrink-0" style="border:2px solid #D7E6C8"></span>
+                  Consumo — Power BI y Agente Virtual
                 </li>
               </ul>
+              <p class="f-body mt-4 pt-3" style="color:var(--muted); opacity:.55; font-size:.65rem; border-top:1px solid #EAEFE9">
+                3 frentes de trabajo del proyecto completo — 1 encaminado, 1 en curso, 1 por iniciar.
+              </p>
             </div>
 
           </div>
@@ -623,69 +678,33 @@ graph LR
         </div>
       </section>
 
-      <!-- ============ SLIDE 3 — MÓDULOS DE MANO DE OBRA ============ -->
+      <!-- ============ SLIDE 3 — REEL DE MÓDULOS DE MANO DE OBRA ============ -->
       <section class="slide">
         <div class="w-full max-w-5xl">
           <p class="eyebrow mb-2">Mano de Obra</p>
           <h1 class="f-title text-3xl md:text-4xl mb-3">Reporte BI Mano de Obra</h1>
-          <p class="f-body text-xs md:text-sm mb-6 max-w-2xl" style="color:var(--muted)">
+          <p class="f-body text-xs md:text-sm mb-3 max-w-2xl" style="color:var(--muted)">
             Un mismo tablero reúne el pulso operativo del campo: eficiencia por invernadero y actividad,
             asistencia y headcount contra presupuesto, costo de mano de obra por clasificación, cumplimiento
             de auditoría en campo, productividad y ranking por empleado, jornales reales contra presupuesto,
             y existencias de almacén contra su stock mínimo — todo por predio, semana y con el mismo dato de origen.
           </p>
-          <div class="grid grid-cols-4 gap-4">
-            <div>
-              <figure class="img-slot rounded-lg aspect-square" data-label="Invernadero">
-                <img src="images/bi-invernadero.png" alt="Eficiencia B+C por invernadero, actividad y tendencia semanal" onerror="phFallback(this)">
-                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Invernadero</span></div>
-              </figure>
-              <p class="img-caption">Invernadero — eficiencia por grupo y tendencia semanal</p>
-            </div>
-            <div>
-              <figure class="img-slot rounded-lg aspect-square" data-label="Asistencia">
-                <img src="images/bi-asistencia.png" alt="Headcount contra presupuesto e incidencias de asistencia por grupo" onerror="phFallback(this)">
-                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Asistencia</span></div>
-              </figure>
-              <p class="img-caption">Asistencia — headcount vs. presupuesto e incidencias</p>
-            </div>
-            <div>
-              <figure class="img-slot rounded-lg aspect-square" data-label="Costo de MO">
-                <img src="images/bi-costo-mo.png" alt="Costo de mano de obra por clasificación, tendencia semanal y jornales" onerror="phFallback(this)">
-                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Costo de MO</span></div>
-              </figure>
-              <p class="img-caption">Costo de MO — por clasificación, con tendencia y jornales</p>
-            </div>
-            <div>
-              <figure class="img-slot rounded-lg aspect-square" data-label="Auditoría">
-                <img src="images/bi-auditoria.png" alt="Cumplimiento de surcos y cajas por invernadero, con control de duplicados" onerror="phFallback(this)">
-                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Auditoría</span></div>
-              </figure>
-              <p class="img-caption">Auditoría — cumplimiento de surcos y control de duplicados</p>
-            </div>
-            <div>
-              <figure class="img-slot rounded-lg aspect-square" data-label="Eficiencia MO">
-                <img src="images/bi-eficiencia-mo.png" alt="Ranking de productividad por empleado y eficiencia por actividad cultural" onerror="phFallback(this)">
-                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Eficiencia MO</span></div>
-              </figure>
-              <p class="img-caption">Eficiencia MO — ranking de productividad por empleado</p>
-            </div>
-            <div>
-              <figure class="img-slot rounded-lg aspect-square" data-label="Jornales">
-                <img src="images/bi-jornales.png" alt="Jornales y costo neto, real contra presupuesto, por grupo" onerror="phFallback(this)">
-                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Jornales</span></div>
-              </figure>
-              <p class="img-caption">Jornales — real vs. presupuesto por grupo</p>
-            </div>
-            <div>
-              <figure class="img-slot rounded-lg aspect-square" data-label="Almacén">
-                <img src="images/bi-almacen.png" alt="Existencias contra stock mínimo y distribución de inventario en almacén" onerror="phFallback(this)">
-                <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Almacén</span></div>
-              </figure>
-              <p class="img-caption">Almacén — existencias vs. stock mínimo</p>
+
+          <div class="card reel-card" id="reelCard">
+            <div class="card-glow"></div>
+            <div class="reel-track" id="reelTrack">
+              <div class="reel-slide"><img src="images/bi-invernadero.png" alt="Invernadero — eficiencia por grupo y tendencia semanal" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-asistencia.png" alt="Asistencia — headcount vs. presupuesto e incidencias" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-costo-mo.png" alt="Costo de MO — por clasificación, con tendencia y jornales" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-auditoria.png" alt="Auditoría — cumplimiento de surcos y control de duplicados" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-eficiencia-mo.png" alt="Eficiencia MO — ranking de productividad por empleado" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-jornales.png" alt="Jornales — real vs. presupuesto por grupo" onerror="phFallback(this)"></div>
+              <div class="reel-slide"><img src="images/bi-almacen.png" alt="Almacén — existencias vs. stock mínimo" onerror="phFallback(this)"></div>
             </div>
           </div>
-          <p class="f-body text-center text-xs mt-4" style="color:var(--verde);opacity:.6">7 módulos operando sobre BI Mano de Obra</p>
+
+          <p class="f-body text-left text-xs mt-2" id="reelCaption" style="color:var(--muted)"></p>
+          <div class="flex items-center gap-1.5 mt-1.5" id="reelDots"></div>
         </div>
       </section>
 
@@ -708,7 +727,7 @@ graph LR
             <div class="card p-7">
               <div class="card-glow"></div>
               <h2 class="f-subtitle text-lg mb-4" style="color:var(--verde-claro)">Interacción Natural</h2>
-              <div class="rounded-xl px-5 py-6 mb-3" style="background:var(--cream)">
+              <div class="rounded-xl px-5 py-6 mb-3" style="background:#F5F9EF">
                 <div id="convoWrap" class="space-y-4">
 
                   <!-- turno del usuario — encapsulado en burbuja -->
@@ -734,7 +753,7 @@ graph LR
                     </span>
                     <p class="f-body text-sm md:text-base leading-snug flex-1" style="color:var(--muted)">
                       <span id="aTyping" class="typing-dots" style="display:none"><span></span><span></span><span></span></span>
-                      <span id="aText"></span><span class="caret" id="caretA" style="display:none">&nbsp;</span>
+                      <span id="aText" class="ai-flash"></span><span class="caret" id="caretA" style="display:none">&nbsp;</span>
                     </p>
                   </div>
 
@@ -845,20 +864,20 @@ graph LR
     // ---------- conversación simulada (pregunta → escribiendo → respuesta) ----------
     const CONVO = [
       {
-        q: "Extrae un resumen de las alarmas de clima de anoche.",
-        a: "3 alarmas en Invernadero 4: humedad baja a las 02:14, temperatura alta a las 03:40 y viento fuerte a las 05:02. Ninguna superó el umbral crítico."
+        q: "¿Cuál invernadero tiene la eficiencia B+C más baja esta semana?",
+        a: "Invernadero 1, con 39.95% contra el objetivo de 70% — la actividad de Anillo Pepino es la que más pesa a la baja."
       },
       {
-        q: "¿Qué eficiencia tuvo la cuadrilla de bajada hoy?",
-        a: "87% de eficiencia, 4 puntos arriba del promedio semanal."
+        q: "¿Cómo va el costo de mano de obra de JVA esta semana?",
+        a: "$2,508,748 de costo neto. Jornada concentra la mayor parte: $2,364,183 del total."
       },
       {
-        q: "¿Qué invernadero requiere refuerzo de mano de obra esta semana?",
-        a: "Invernadero 7: la carga proyectada supera en 18% la capacidad actual de cuadrillas."
+        q: "¿Qué grupo tiene más incidencias de asistencia?",
+        a: "Invernaderos, con 49.4% de las incidencias — Vacaciones y Suspensión son las causas más frecuentes."
       },
       {
-        q: "¿Cómo evolucionó el costo de MO frente al año pasado?",
-        a: "Bajó 6% interanual, principalmente por la adopción de Ridder en 4 invernaderos nuevos."
+        q: "¿Qué tan cerca estamos del stock mínimo en almacén?",
+        a: "Fertilizantes Sólidos está en 212.8% de su stock mínimo; varios artículos de empaque ya están por debajo, marcados en rojo."
       }
     ];
 
@@ -909,9 +928,14 @@ graph LR
         aTyping.style.display = 'none';
         asteriskWrap.classList.remove('thinking'); // vuelve al pulso continuo de reposo
 
-        // el agente responde, texto plano sin burbuja
+        // el agente responde, texto plano sin burbuja — con destello de arranque y pulso de voz
         caretA.style.display = 'inline-block';
-        await typeInto(aText, turn.a, 16);
+        aText.classList.remove('flash-on');
+        void aText.offsetWidth; // fuerza reflow para poder re-disparar la animación cada ciclo
+        aText.classList.add('flash-on');
+        asteriskWrap.classList.add('speaking');
+        await typeInto(aText, turn.a, 26);
+        asteriskWrap.classList.remove('speaking');
         await sleep(2600);
         caretA.style.display = 'none';
 
@@ -988,6 +1012,47 @@ graph LR
     document.getElementById('diagramCard').addEventListener('click', (e) => {
       e.stopPropagation();
       openLightboxDiagram();
+    });
+
+    // ---------- reel automático del slide 3 ----------
+    const reelCard = document.getElementById('reelCard');
+    const reelTrack = document.getElementById('reelTrack');
+    const reelSlides = reelTrack.querySelectorAll('.reel-slide');
+    const reelDotsWrap = document.getElementById('reelDots');
+    const reelCaption = document.getElementById('reelCaption');
+    let reelIndex = 0;
+    let reelTimer = null;
+
+    reelSlides.forEach((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'reel-dot' + (i === 0 ? ' active' : '');
+      reelDotsWrap.appendChild(d);
+    });
+    const reelDots = reelDotsWrap.querySelectorAll('.reel-dot');
+
+    function reelRender(){
+      reelTrack.style.transform = `translateX(-${reelIndex * 100}%)`;
+      reelDots.forEach((d, i) => d.classList.toggle('active', i === reelIndex));
+      const img = reelSlides[reelIndex].querySelector('img');
+      reelCaption.textContent = img.alt;
+    }
+    function reelSchedule(delay){
+      clearTimeout(reelTimer);
+      reelTimer = setTimeout(() => {
+        reelIndex = (reelIndex + 1) % reelSlides.length;
+        reelRender();
+        reelSchedule(3000);
+      }, delay);
+    }
+    reelRender();
+    reelSchedule(3000);
+
+    reelCard.addEventListener('mouseenter', () => reelSchedule(10000));
+    reelCard.addEventListener('mouseleave', () => reelSchedule(3000));
+    reelCard.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const img = reelSlides[reelIndex].querySelector('img');
+      openLightboxImage(img.src, img.alt);
     });
 
     // ---------- contenido: mecanismo de gobernanza de datos ----------
