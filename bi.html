@@ -5,12 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BI · Avance de Proyectos</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ===== Fuentes de marca — configuradas LOCALMENTE =====
      Estas tres familias son comerciales y no existen en ningún CDN público.
      Ajusta las rutas 'src' a donde subas los archivos reales de fuente en el repo
      (por ejemplo /fonts/AntiqueOliveCompact.woff2). Mientras no existan los
-     archivos, el navegador cae automáticamente al fallback sans-serif. */
+     archivos, el navegador cae en Playfair Display / Inter — el estándar
+     tipográfico que usamos en todo el portal OPEX — en vez de Arial genérico. */
   @font-face{
     font-family:'Antique Olive Compact';
     src:url('fonts/AntiqueOliveCompact.woff2') format('woff2'),
@@ -35,29 +40,43 @@
     --verde:#307338;
     --verde-claro:#79BF00;
     --amarillo:#FBE122;
+    --ink:#16241a;      /* texto principal, casi negro, con un dejo de verde */
+    --muted:#5b6b5f;    /* texto secundario, gris-verde serio */
   }
 
   html,body{height:100%}
   body{
-    background:var(--cream);
-    color:var(--verde);
-    font-family:'Gotham','Helvetica Neue',Arial,sans-serif;
+    background:#ffffff;
+    color:var(--ink);
+    font-family:'Gotham','Inter','Helvetica Neue',Arial,sans-serif;
     overflow:hidden;
   }
 
+  /* kicker pequeño — mismo patrón que el index del portal */
+  .eyebrow{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.18em;
+    font-size:.72rem;
+    color:var(--verde);
+  }
+
+  /* titulares grandes — serif editorial, sin mayúsculas forzadas, tono serio */
   .f-title{
-    font-family:'Antique Olive Compact','Arial Narrow',Arial,sans-serif;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.01em;
+    font-family:'Antique Olive Compact','Playfair Display','Arial Narrow',Arial,sans-serif;
+    font-weight:800;
+    color:var(--ink);
+    line-height:1.05;
+    letter-spacing:-.01em;
   }
+  /* etiqueta de categoría dentro de tarjeta (p.ej. "DataWarehouse") — sans, sin mayúsculas forzadas */
   .f-subtitle{
-    font-family:'Antique Olive','Helvetica Neue',Arial,sans-serif;
+    font-family:'Gotham','Inter','Helvetica Neue',Arial,sans-serif;
     font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.04em;
+    letter-spacing:-.005em;
   }
-  .f-body{ font-family:'Gotham','Helvetica Neue',Arial,sans-serif; }
+  .f-body{ font-family:'Gotham','Inter','Helvetica Neue',Arial,sans-serif; color:var(--muted); }
 
   /* ===== estructura del slider ===== */
   #track{
@@ -72,38 +91,55 @@
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    padding:2.5rem 6vw;
+    padding:2.5rem 6vw 6rem; /* espacio extra abajo para no empalmar con la cápsula fija */
   }
 
-  /* flechas — minimalistas, sin sombreados fuertes */
-  .nav-arrow{
-    width:44px;height:44px;border-radius:9999px;
-    display:flex;align-items:center;justify-content:center;
-    background:var(--cream);
-    border:1.5px solid var(--verde);
-    color:var(--verde);
-    transition:background .2s ease,color .2s ease,border-color .2s ease;
-  }
-  .nav-arrow:hover{ background:var(--verde-claro); border-color:var(--verde-claro); color:#fff; }
-  .nav-arrow:focus-visible{ outline:2px solid var(--amarillo); outline-offset:2px; }
-
-  /* dots — único lugar donde el amarillo puede dominar (acento de control) */
-  .dot{
-    width:8px;height:8px;border-radius:9999px;
-    background:transparent;
-    border:1.5px solid var(--verde-claro);
-    transition:background .2s ease,border-color .2s ease,transform .2s ease;
-  }
-  .dot.active{ background:var(--amarillo); border-color:var(--amarillo); transform:scale(1.25); }
-
-  /* tarjetas — planas, sin blur ni degradados */
+  /* tarjetas — blancas con sombra suave, mismo estándar que el index */
   .card{
-    background:#fff;
-    border:1px solid #E7E2C8;
-    border-radius:14px;
+    position:relative;
+    background:#ffffff;
+    border:1px solid #EAEFE9;
+    border-radius:1.25rem;
+    box-shadow:0 1px 2px rgba(22,36,26,.04);
+    overflow:hidden;
+    z-index:0; /* contexto de apilamiento propio, contiene el brillo de cursor */
+  }
+  /* variante para la tarjeta que marca un hito/estado completo */
+  .card--milestone{ border-left:4px solid var(--verde-claro); }
+
+  /* badge de estado, esquina superior — mismo lenguaje que la referencia */
+  .badge{
+    display:inline-flex; align-items:center;
+    background:var(--cream);
+    color:var(--verde);
+    font-family:'Inter',sans-serif;
+    font-size:.68rem;
+    font-weight:600;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    padding:.25rem .6rem;
+    border-radius:9999px;
   }
 
-  .bar-track{ background:#EFEAD0; border-radius:9999px; overflow:hidden; height:8px; }
+  /* contorno iluminado por cursor — mismo estándar del portal OPEX */
+  .card-glow{
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    border-radius:inherit;
+    padding:2px;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .3s ease;
+    background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%), var(--verde-claro) 0%, transparent 72%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+  }
+  .card:hover .card-glow{ opacity:1; }
+  @media (prefers-reduced-motion:reduce){ .card-glow{ display:none; } }
+
+  .bar-track{ background:#EEF1EC; border-radius:9999px; overflow:hidden; height:8px; }
   .bar-fill{ background:var(--verde-claro); height:100%; border-radius:9999px; }
 
   /* placeholders de imagen mientras no existan los archivos reales */
@@ -124,23 +160,74 @@
   }
   @keyframes blink{ 50%{ opacity:0 } }
 
-  @media (max-width:768px){
-    .nav-arrow{ width:38px;height:38px; }
+  /* ===== conversación simulada, estilo chat con Claude ===== */
+  #convoWrap{ transition:opacity .5s ease; opacity:1; }
+  #convoWrap.fade-out{ opacity:0; }
+
+  /* burbuja que encapsula la pregunta del usuario */
+  .q-bubble{
+    display:inline-block;
+    max-width:100%;
+    background:#ffffff;
+    border:1px solid #E7E2C8;
+    border-radius:14px;
+    padding:.55rem 1rem;
+  }
+
+  .asterisk-wrap{ display:inline-flex; flex-shrink:0; }
+  .asterisk-wrap.thinking{ animation:asterisk-spin 1.1s linear infinite; }
+  .asterisk-pulse{ animation:asterisk-breathe 2.2s ease-in-out infinite; transform-origin:center; transition:opacity .3s ease; }
+  @keyframes asterisk-spin{ to{ transform:rotate(360deg); } }
+  @keyframes asterisk-breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.16); } }
+
+  .chat-label{
+    font-family:'Inter',sans-serif;
+    font-size:.68rem;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .chat-turn{ min-height:1.6em; }
+  .typing-dots{ display:inline-flex; gap:3px; align-items:center; }
+  .typing-dots span{
+    width:5px;height:5px;border-radius:9999px;
+    background:var(--verde-claro);
+    animation:typing-bounce 1s ease-in-out infinite;
+  }
+  .typing-dots span:nth-child(2){ animation-delay:.15s; }
+  .typing-dots span:nth-child(3){ animation-delay:.3s; }
+  @keyframes typing-bounce{ 0%,60%,100%{ transform:translateY(0); opacity:.5; } 30%{ transform:translateY(-3px); opacity:1; } }
+  @media (prefers-reduced-motion:reduce){
+    .asterisk-wrap.thinking{ animation:none; }
+    .asterisk-pulse{ animation:none; }
+    .typing-dots span{ animation:none; }
+    #convoWrap{ transition:none; }
   }
 </style>
 </head>
 <body class="relative">
 
-  <!-- flechas laterales -->
-  <button id="prevBtn" aria-label="Diapositiva anterior" class="nav-arrow absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M15 18l-6-6 6-6"/></svg>
-  </button>
-  <button id="nextBtn" aria-label="Siguiente diapositiva" class="nav-arrow absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M9 18l6-6-6-6"/></svg>
-  </button>
+  <!-- ============ CÁPSULA DE NAVEGACIÓN — verde oscuro sólido ============ -->
+  <footer id="navCapsule" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-[#1D3323] shadow-md rounded-full px-4 py-1.5 flex items-center justify-between gap-3 z-50 select-none transition-all">
 
-  <!-- indicadores -->
-  <div id="dots" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex gap-3"></div>
+    <button id="prevBtn" aria-label="Diapositiva anterior" class="text-white/50 hover:text-white transition-colors p-1 cursor-pointer outline-none">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+
+    <div class="flex items-center gap-4">
+      <div id="dots" class="flex items-center gap-2 h-2"></div>
+      <span id="counter" class="text-[10px] font-bold text-white/55 tracking-widest font-mono min-w-[24px] text-center">1/4</span>
+    </div>
+
+    <button id="nextBtn" aria-label="Siguiente diapositiva" class="text-white/50 hover:text-white transition-colors p-1 cursor-pointer outline-none">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+  </footer>
 
   <div id="sliderContainer" class="w-full h-full overflow-hidden">
     <div id="track">
@@ -148,17 +235,54 @@
       <!-- ============ SLIDE 1 — AVANCE DE PROYECTOS ============ -->
       <section class="slide">
         <div class="w-full max-w-5xl">
-          <h1 class="f-title text-3xl md:text-5xl text-center mb-10">Avance de Proyectos</h1>
+          <p class="eyebrow mb-3">Estado del proyecto</p>
+          <h1 class="f-title text-4xl md:text-5xl mb-10">Avance de Proyectos</h1>
           <div class="grid md:grid-cols-2 gap-6">
+
+            <!-- BI Mano de Obra -->
+            <div class="card card--milestone p-7">
+              <div class="card-glow"></div>
+              <div class="flex items-start justify-between mb-5">
+                <h2 class="f-subtitle text-lg" style="color:var(--ink)">BI Mano de Obra</h2>
+                <span class="badge">Completo</span>
+              </div>
+              <div class="flex items-end gap-3 mb-3">
+                <span class="f-title text-4xl" style="color:var(--verde)">100%</span>
+              </div>
+              <div class="bar-track mb-5"><div class="bar-fill" style="width:100%;background:var(--verde)"></div></div>
+              <p class="f-body text-sm mb-5" style="color:var(--muted)">
+                Los 7 módulos ya operando dan visibilidad diaria de costo y productividad
+                en campo — de la asistencia al jornal — con datos consistentes para decidir,
+                no solo para reportar.
+              </p>
+              <ul class="grid grid-cols-2 gap-x-4 gap-y-3 f-body text-sm" style="color:var(--muted)">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Invernadero</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Asistencia</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Costo de MO</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Auditoría</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Eficiencia MO</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Jornales</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Almacén</li>
+              </ul>
+            </div>
 
             <!-- DataWarehouse -->
             <div class="card p-7">
-              <h2 class="f-subtitle text-lg mb-1">DataWarehouse</h2>
-              <div class="flex items-end gap-3 mb-4">
+              <div class="card-glow"></div>
+              <div class="flex items-start justify-between mb-5">
+                <h2 class="f-subtitle text-lg" style="color:var(--ink)">DataWarehouse</h2>
+                <span class="badge">En curso</span>
+              </div>
+              <div class="flex items-end gap-3 mb-3">
                 <span class="f-title text-4xl" style="color:var(--verde-claro)">30%</span>
               </div>
-              <div class="bar-track mb-6"><div class="bar-fill" style="width:30%"></div></div>
-              <ul class="space-y-3 f-body text-sm">
+              <div class="bar-track mb-5"><div class="bar-fill" style="width:30%"></div></div>
+              <p class="f-body text-sm mb-5" style="color:var(--muted)">
+                Con el modelo SQL de STEM, el dato deja de vivir disperso en Excel: una sola
+                fuente de verdad, refresco en minutos —antes 19— y consulta en lenguaje
+                natural sobre toda la operación.
+              </p>
+              <ul class="space-y-3 f-body text-sm" style="color:var(--muted)">
                 <li class="flex items-start gap-3">
                   <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
                   Mapeo de Procesos
@@ -174,24 +298,6 @@
               </ul>
             </div>
 
-            <!-- BI Mano de Obra -->
-            <div class="card p-7">
-              <h2 class="f-subtitle text-lg mb-1">BI Mano de Obra</h2>
-              <div class="flex items-end gap-3 mb-4">
-                <span class="f-title text-4xl" style="color:var(--verde)">Funcional 100%</span>
-              </div>
-              <div class="bar-track mb-6"><div class="bar-fill" style="width:100%;background:var(--verde)"></div></div>
-              <ul class="grid grid-cols-2 gap-x-4 gap-y-3 f-body text-sm">
-                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Invernadero</li>
-                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Asistencia</li>
-                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Costo de MO</li>
-                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Auditoría</li>
-                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Eficiencia MO</li>
-                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Jornales</li>
-                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde)"></span>Almacén</li>
-              </ul>
-            </div>
-
           </div>
         </div>
       </section>
@@ -199,25 +305,48 @@
       <!-- ============ SLIDE 2 — ARQUITECTURA Y MAPEO ============ -->
       <section class="slide">
         <div class="w-full max-w-5xl">
-          <h1 class="f-title text-3xl md:text-5xl text-center mb-8">Arquitectura DataWarehouse</h1>
-          <div class="grid grid-cols-3 grid-rows-2 gap-4 h-[60vh] max-h-[520px]">
-            <div class="img-slot col-span-2 row-span-2 rounded-xl" data-label="Arquitectura IA">
-              <img src="arquitectura-ia.jpg" alt="Arquitectura IA" onerror="phFallback(this)">
-              <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Arquitectura IA</span></div>
+          <h1 class="f-title text-3xl md:text-5xl text-center mb-6">Arquitectura DataWarehouse</h1>
+
+          <!-- Diagrama vivo (mismo que Arquitectura_IA.html, recoloreado a marca) -->
+          <div class="card p-5 md:p-7 mb-4 overflow-x-auto">
+            <div class="mermaid" id="archDiagram">
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Gotham, Helvetica Neue, Arial, sans-serif','fontSize':'13px','primaryColor':'#F3EFDA','primaryBorderColor':'#79BF00','lineColor':'#79BF00','primaryTextColor':'#307338'}}}%%
+graph LR
+  subgraph Orígenes
+    O1["Sistemas Operativos<br/>RIDDER, GHS, Digitalizaciones"]
+    O2["Sistemas Ambientales<br/>Sensores y Clima"]
+  end
+  O1 --> ETL["Capa ETL<br/>Estandarización"]
+  O2 --> ETL
+  ETL --> DWH["Base de Datos Corporativa<br/>DWH_GHVeggies (SQL)"]:::core
+
+  DWH --> PBI["Salida 1: Power BI<br/>(Dashboards Ejecutivos)"]:::ok
+  DWH --> AI["Salida 2: Agente Virtual OpEx<br/>Decisiones en tiempo real, sin tableros"]:::ai
+  AI --> W["2.1 WhatsApp / Teams<br/>Consulta casual y conversacional"]:::leaf
+  AI --> N["2.2 Reportes automáticos (n8n)<br/>Gráficas y resúmenes prediseñados"]:::leaf
+
+  classDef core fill:#307338,stroke:#307338,stroke-width:2px,color:#ffffff,rx:10px,ry:10px;
+  classDef ok fill:#F3EFDA,stroke:#79BF00,stroke-width:2px,color:#307338,rx:10px,ry:10px;
+  classDef ai fill:#79BF00,stroke:#307338,stroke-width:2px,color:#ffffff,rx:10px,ry:10px;
+  classDef leaf fill:#ffffff,stroke:#FBE122,stroke-width:2px,color:#307338,rx:10px,ry:10px;
             </div>
-            <div class="img-slot rounded-xl" data-label="Ejemplo CTS Finanzas">
+          </div>
+
+          <!-- Evidencia de soporte -->
+          <div class="grid grid-cols-4 gap-3">
+            <div class="img-slot rounded-lg aspect-[4/3]" data-label="Ejemplo CTS Finanzas">
               <img src="bi1.jpg" alt="Ejemplo CTS Finanzas" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>CTS Finanzas</span></div>
             </div>
-            <div class="img-slot rounded-xl" data-label="Mapeo de procesos">
+            <div class="img-slot rounded-lg aspect-[4/3]" data-label="Mapeo de procesos">
               <img src="bi2.jpg" alt="Mapeo de procesos" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Mapeo de procesos</span></div>
             </div>
-            <div class="img-slot rounded-xl" data-label="Infografía">
+            <div class="img-slot rounded-lg aspect-[4/3]" data-label="Infografía">
               <img src="bi3.jpg" alt="Infografía" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Infografía</span></div>
             </div>
-            <div class="img-slot rounded-xl" data-label="Inventario de archivos">
+            <div class="img-slot rounded-lg aspect-[4/3]" data-label="Inventario de archivos">
               <img src="bi4.jpg" alt="Inventario de archivos" onerror="phFallback(this)">
               <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Inventario</span></div>
             </div>
@@ -263,16 +392,85 @@
         </div>
       </section>
 
-      <!-- ============ SLIDE 4 — VISIÓN Y SIGUIENTES PASOS ============ -->
+      <!-- ============ SLIDE 4 — AGENTE VIRTUAL OPEX ============ -->
       <section class="slide">
-        <div class="w-full max-w-2xl text-center">
-          <h1 class="f-title text-3xl md:text-5xl mb-3">Siguientes Pasos con IA</h1>
-          <p class="f-subtitle text-sm mb-10" style="color:var(--verde-claro)">Del tablero a la conversación</p>
-          <div class="card px-8 py-10 md:px-12 md:py-14">
-            <p class="f-body text-xs uppercase tracking-widest mb-4" style="color:var(--verde);opacity:.55">Pregúntale a tus datos</p>
-            <p class="f-title text-xl md:text-2xl normal-case leading-snug min-h-[4.5rem] flex items-center justify-center">
-              <span id="dynamicText"></span><span class="caret" id="caret">&nbsp;</span>
-            </p>
+        <div class="w-full max-w-5xl">
+          <p class="eyebrow mb-3">Visión 2.0</p>
+          <h1 class="f-title text-3xl md:text-4xl mb-4 max-w-3xl">Una conversación natural con tus datos</h1>
+          <p class="f-body text-xs md:text-sm mb-9 max-w-2xl" style="color:var(--muted)">
+            Buscamos evolucionar de la navegación compleja en tableros hacia un
+            <strong style="color:var(--ink)">Agente Virtual OpEx</strong>. Una interfaz donde
+            supervisores, coordinadores y gerentes puedan consultar el pulso del invernadero
+            en lenguaje natural, obteniendo respuestas inmediatas sobre eficiencias, RIDDER,
+            reportes de clima, entre otros reportes.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-6">
+
+            <!-- Interacción Natural -->
+            <div class="card p-7">
+              <div class="card-glow"></div>
+              <h2 class="f-subtitle text-lg mb-4" style="color:var(--verde-claro)">Interacción Natural</h2>
+              <div class="rounded-xl px-5 py-6 mb-3" style="background:var(--cream)">
+                <div id="convoWrap" class="space-y-4">
+
+                  <!-- turno del usuario — encapsulado en burbuja -->
+                  <div class="chat-turn">
+                    <p class="chat-label mb-1.5">Tú</p>
+                    <div class="q-bubble">
+                      <p class="f-body text-sm md:text-base leading-snug" style="color:var(--ink)">
+                        <span id="qText"></span><span class="caret" id="caretQ">&nbsp;</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- turno del agente — texto plano, sin burbuja, como Claude -->
+                  <div class="chat-turn flex items-start gap-2.5">
+                    <span id="asteriskWrap" class="asterisk-wrap mt-0.5">
+                      <svg id="asteriskIcon" class="asterisk-pulse" width="17" height="17" viewBox="0 0 24 24" style="opacity:0">
+                        <g fill="var(--verde-claro)">
+                          <path d="M12 1.5 C14 7.2 14 7.2 12 12 C10 16.8 10 16.8 12 22.5 C10 16.8 10 16.8 12 12 C14 7.2 14 7.2 12 1.5 Z" transform="rotate(0 12 12)"/>
+                          <path d="M12 1.5 C14 7.2 14 7.2 12 12 C10 16.8 10 16.8 12 22.5 C10 16.8 10 16.8 12 12 C14 7.2 14 7.2 12 1.5 Z" transform="rotate(60 12 12)"/>
+                          <path d="M12 1.5 C14 7.2 14 7.2 12 12 C10 16.8 10 16.8 12 22.5 C10 16.8 10 16.8 12 12 C14 7.2 14 7.2 12 1.5 Z" transform="rotate(120 12 12)"/>
+                        </g>
+                      </svg>
+                    </span>
+                    <p class="f-body text-sm md:text-base leading-snug flex-1" style="color:var(--muted)">
+                      <span id="aTyping" class="typing-dots" style="display:none"><span></span><span></span><span></span></span>
+                      <span id="aText"></span><span class="caret" id="caretA" style="display:none">&nbsp;</span>
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+              <p class="f-body text-xs" style="color:var(--muted)">Ejemplo en vivo — preguntas que el agente ya puede responder</p>
+            </div>
+
+            <!-- El valor del Agente Virtual -->
+            <div class="card p-7">
+              <div class="card-glow"></div>
+              <h2 class="f-subtitle text-lg mb-4" style="color:var(--ink)">El valor del Agente Virtual</h2>
+              <p class="f-body text-sm mb-5" style="color:var(--muted)">
+                No se trata de reemplazar Power BI, sino de complementarlo. Mientras PBI
+                atiende la visión estratégica, el Agente Virtual atiende el día a día
+                operativo en los pasillos y estaciones de empaque.
+              </p>
+              <ul class="space-y-3 f-body text-sm" style="color:var(--muted)">
+                <li class="flex items-start gap-3">
+                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Respuestas inmediatas sin navegar filtros complejos.
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Integración potencial omnicanal (Web y Microsoft Teams).
+                </li>
+                <li class="flex items-start gap-3">
+                  <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Cruce de datos invisibles (RIDDER vs. Calidad vs. GHS).
+                </li>
+              </ul>
+            </div>
+
           </div>
         </div>
       </section>
@@ -281,6 +479,8 @@
   </div>
 
   <script>
+    mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+
     // ---------- placeholders de imagen ----------
     function phFallback(img){
       img.style.display = 'none';
@@ -291,23 +491,44 @@
     // ---------- slider ----------
     const track = document.getElementById('track');
     const slides = document.querySelectorAll('.slide');
-    const dotsWrap = document.getElementById('dots');
+    const totalSlides = slides.length;
+    const dotsContainer = document.getElementById('dots');
+    const counter = document.getElementById('counter');
     let current = 0;
 
-    slides.forEach((_, i) => {
-      const d = document.createElement('button');
-      d.className = 'dot' + (i === 0 ? ' active' : '');
-      d.setAttribute('aria-label', 'Ir a la diapositiva ' + (i + 1));
-      d.addEventListener('click', () => goTo(i));
-      dotsWrap.appendChild(d);
-    });
-    const dots = dotsWrap.querySelectorAll('.dot');
+    // Generación de los puntos de progreso
+    function createProgressDots(){
+      dotsContainer.innerHTML = '';
+      for(let i = 0; i < totalSlides; i++){
+        const dot = document.createElement('div');
+        dot.className = 'h-2 w-2 rounded-full bg-white/25 transition-all duration-500 ease-out cursor-pointer';
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+      }
+    }
 
     function goTo(i){
-      current = (i + slides.length) % slides.length;
+      // navegación cíclica: del último al primero y viceversa
+      current = (i + totalSlides) % totalSlides;
+
       track.style.transform = `translateX(-${current * 100}%)`;
-      dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+      counter.textContent = `${current + 1}/${totalSlides}`;
+
+      const dots = dotsContainer.querySelectorAll('div');
+      dots.forEach((dot, index) => {
+        if(index === current){
+          dot.className = 'h-2 w-6 rounded-full bg-[#79BF00] transition-all duration-500 ease-out cursor-pointer shadow-sm';
+        } else if(index < current){
+          dot.className = 'h-2 w-2 rounded-full bg-white/45 transition-all duration-500 ease-out cursor-pointer';
+        } else {
+          dot.className = 'h-2 w-2 rounded-full bg-white/25 transition-all duration-500 ease-out cursor-pointer';
+        }
+      });
     }
+
+    createProgressDots();
+    goTo(0);
+
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
     window.addEventListener('keydown', (e) => {
@@ -315,30 +536,97 @@
       if(e.key === 'ArrowLeft') goTo(current - 1);
     });
 
-    // ---------- typewriter fluido (sin parpadeo, sin errores) ----------
-    const QUESTIONS = [
-      "¿Qué eficiencia tuvo la cuadrilla de bajada hoy?",
-      "¿Qué invernadero requiere refuerzo de mano de obra esta semana?",
-      "¿Cómo evolucionó el costo de MO frente al año pasado?",
-      "¿Cuál es el jornal con mayor variación hoy?"
-    ];
-    const dynamicText = document.getElementById('dynamicText');
-    let qi = 0, ci = 0, deleting = false;
+    // ---------- brillo de tarjeta que sigue al cursor ----------
+    document.querySelectorAll('.card').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
+    });
 
-    function typeTick(){
-      const full = QUESTIONS[qi % QUESTIONS.length];
-      if(!deleting){
-        ci++;
-        dynamicText.textContent = full.slice(0, ci);
-        if(ci >= full.length){ deleting = true; setTimeout(typeTick, 2200); return; }
-      } else {
-        ci--;
-        dynamicText.textContent = full.slice(0, ci);
-        if(ci <= 0){ deleting = false; qi++; setTimeout(typeTick, 400); return; }
+    // ---------- conversación simulada (pregunta → escribiendo → respuesta) ----------
+    const CONVO = [
+      {
+        q: "Extrae un resumen de las alarmas de clima de anoche.",
+        a: "3 alarmas en Invernadero 4: humedad baja a las 02:14, temperatura alta a las 03:40 y viento fuerte a las 05:02. Ninguna superó el umbral crítico."
+      },
+      {
+        q: "¿Qué eficiencia tuvo la cuadrilla de bajada hoy?",
+        a: "87% de eficiencia, 4 puntos arriba del promedio semanal."
+      },
+      {
+        q: "¿Qué invernadero requiere refuerzo de mano de obra esta semana?",
+        a: "Invernadero 7: la carga proyectada supera en 18% la capacidad actual de cuadrillas."
+      },
+      {
+        q: "¿Cómo evolucionó el costo de MO frente al año pasado?",
+        a: "Bajó 6% interanual, principalmente por la adopción de Ridder en 4 invernaderos nuevos."
       }
-      setTimeout(typeTick, deleting ? 22 : 48);
+    ];
+
+    const qText = document.getElementById('qText');
+    const aText = document.getElementById('aText');
+    const caretQ = document.getElementById('caretQ');
+    const caretA = document.getElementById('caretA');
+    const aTyping = document.getElementById('aTyping');
+    const asteriskIcon = document.getElementById('asteriskIcon');
+    const asteriskWrap = document.getElementById('asteriskWrap');
+    const convoWrap = document.getElementById('convoWrap');
+
+    let convoIndex = 0;
+
+    function sleep(ms){ return new Promise((resolve) => setTimeout(resolve, ms)); }
+
+    async function typeInto(el, full, speed){
+      for(let i = 1; i <= full.length; i++){
+        el.textContent = full.slice(0, i);
+        await sleep(speed);
+      }
     }
-    typeTick();
+
+    async function runConvo(){
+      while(true){
+        const turn = CONVO[convoIndex % CONVO.length];
+
+        // reset (contenedor ya está en opacidad 0 por el fundido de salida anterior)
+        qText.textContent = ''; aText.textContent = '';
+        caretQ.style.display = 'inline-block'; caretA.style.display = 'none';
+        aTyping.style.display = 'none';
+        asteriskIcon.style.opacity = 0;
+        asteriskWrap.classList.remove('thinking');
+
+        convoWrap.classList.remove('fade-out'); // fundido de entrada
+        await sleep(50);
+
+        // el usuario escribe la pregunta, encapsulada en su burbuja
+        await typeInto(qText, turn.q, 26);
+        await sleep(500);
+        caretQ.style.display = 'none';
+
+        // el agente "piensa" — asterisco gira mientras aparecen los puntos
+        asteriskIcon.style.opacity = 1;
+        asteriskWrap.classList.add('thinking');
+        aTyping.style.display = 'inline-flex';
+        await sleep(900);
+        aTyping.style.display = 'none';
+        asteriskWrap.classList.remove('thinking'); // vuelve al pulso continuo de reposo
+
+        // el agente responde, texto plano sin burbuja
+        caretA.style.display = 'inline-block';
+        await typeInto(aText, turn.a, 16);
+        await sleep(2600);
+        caretA.style.display = 'none';
+
+        // se desvanece todo el intercambio — nunca se borra con backspace
+        await sleep(400);
+        convoWrap.classList.add('fade-out');
+        await sleep(550);
+
+        convoIndex++;
+      }
+    }
+    runConvo();
   </script>
 </body>
 </html>
