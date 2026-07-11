@@ -147,6 +147,8 @@
 
   /* placeholders de imagen mientras no existan los archivos reales */
   .img-slot{ position:relative; overflow:hidden; background:#F5F9EF; border:1px solid #E2ECD8; cursor:pointer; transition:transform .25s ease; }
+  /* slide 2: fondo verde transparente más marcado, para que no se vea "sucio" bajo las capturas */
+  .img-slot--tint{ background:rgba(121,191,0,.16); border-color:rgba(121,191,0,.3); }
   .img-slot:hover{ transform:translateY(-2px); }
   .img-slot img{ width:100%; height:100%; object-fit:cover; display:block; }
   .img-caption{
@@ -209,6 +211,7 @@
     text-transform:uppercase;
     opacity:.6;
   }
+  .lightbox-figure:not(.is-diagram) figcaption{ text-align:left; }
   @media (prefers-reduced-motion:reduce){
     .lightbox-overlay, .lightbox-figure{ transition:none; }
   }
@@ -589,28 +592,28 @@ graph LR
           <!-- Evidencia de soporte — clic para expandir -->
           <div class="grid grid-cols-4 gap-2">
             <div>
-              <div class="img-slot rounded-lg aspect-[16/11]" data-label="Ejemplo CTS Finanzas">
+              <div class="img-slot img-slot--tint rounded-lg aspect-[16/11]" data-label="Ejemplo CTS Finanzas">
                 <img src="images/bi-cts-finanzas.png" alt="Ejemplo CTS Finanzas" onerror="phFallback(this)">
                 <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>CTS Finanzas</span></div>
               </div>
               <p class="img-caption">CTS Finanzas</p>
             </div>
             <div>
-              <div class="img-slot rounded-lg aspect-[16/11]" data-label="Mapeo de procesos">
+              <div class="img-slot img-slot--tint rounded-lg aspect-[16/11]" data-label="Mapeo de procesos">
                 <img src="images/bi-mapeo-procesos.png" alt="Mapeo de procesos" onerror="phFallback(this)">
                 <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Mapeo de procesos</span></div>
               </div>
               <p class="img-caption">Mapeo de Procesos</p>
             </div>
             <div>
-              <div class="img-slot rounded-lg aspect-[16/11]" data-label="Infografía">
+              <div class="img-slot img-slot--tint rounded-lg aspect-[16/11]" data-label="Infografía">
                 <img src="images/bi-infografia.png" alt="Infografía" onerror="phFallback(this)">
                 <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Infografía</span></div>
               </div>
               <p class="img-caption">Infografía</p>
             </div>
             <div>
-              <div class="img-slot rounded-lg aspect-[16/11]" data-label="Inventario de archivos">
+              <div class="img-slot img-slot--tint rounded-lg aspect-[16/11]" data-label="Inventario de archivos">
                 <img src="images/bi-inventario.png" alt="Inventario de archivos" onerror="phFallback(this)">
                 <div class="ph" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Inventario</span></div>
               </div>
@@ -689,9 +692,9 @@ graph LR
       <!-- ============ SLIDE 4 — AGENTE VIRTUAL OPEX ============ -->
       <section class="slide">
         <div class="w-full max-w-5xl">
-          <p class="eyebrow mb-3">Visión 2.0</p>
-          <h1 class="f-title text-3xl md:text-4xl mb-4 max-w-3xl">Una conversación natural con tus datos</h1>
-          <p class="f-body text-xs md:text-sm mb-9 max-w-2xl" style="color:var(--muted)">
+          <p class="eyebrow mb-2">Visión 2.0</p>
+          <h1 class="f-title text-3xl md:text-4xl mb-3 max-w-3xl">Una conversación natural con tus datos</h1>
+          <p class="f-body text-xs md:text-sm mb-6 max-w-2xl" style="color:var(--muted)">
             Buscamos evolucionar de la navegación compleja en tableros hacia un
             <strong style="color:var(--ink)">Agente Virtual OpEx</strong>. Una interfaz donde
             supervisores, coordinadores y gerentes puedan consultar el pulso del invernadero
