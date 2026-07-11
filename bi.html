@@ -164,7 +164,7 @@
     position:fixed; inset:0; z-index:70;
     background:transparent;
     display:flex; align-items:center; justify-content:center;
-    padding:6vw;
+    padding:3vw;
     cursor:pointer;
     opacity:0; pointer-events:none;
     transition:opacity .25s ease;
@@ -184,7 +184,19 @@
     max-width:100%; max-height:68vh; width:auto; height:auto;
     border-radius:12px; display:block; margin:0 auto;
   }
-  .lightbox-figure svg{
+  /* el diagrama es vectorial: debe CRECER para llenar el popup, no quedarse en su tamaño miniatura */
+  .lightbox-figure.is-diagram{
+    width:min(1400px,97vw);
+    max-width:min(1400px,97vw);
+    max-height:94vh;
+    padding:26px 30px 20px;
+  }
+  .lightbox-figure.is-diagram svg{
+    width:100% !important; height:auto !important;
+    max-width:100%; max-height:none;
+    display:block; margin:0 auto;
+  }
+  .lightbox-figure:not(.is-diagram) svg{
     max-width:100%; max-height:68vh; width:auto; height:auto;
     display:block; margin:0 auto;
   }
@@ -201,21 +213,80 @@
     .lightbox-overlay, .lightbox-figure{ transition:none; }
   }
 
-  /* Tailwind aplica box-sizing:border-box global; eso descuadra el cálculo interno de
-     Mermaid para sus etiquetas HTML y termina recortando el texto de los nodos.
-     Se revierte específicamente dentro del SVG del diagrama (original y su copia ampliada). */
-  #archDiagram svg foreignObject, #archDiagram svg foreignObject *,
-  #lightboxBody svg foreignObject, #lightboxBody svg foreignObject *{
-    box-sizing:content-box !important;
-  }
-  #archDiagram .nodeLabel, #archDiagram .label, #archDiagram foreignObject div,
-  #lightboxBody .nodeLabel, #lightboxBody .label, #lightboxBody foreignObject div{
-    white-space:normal !important;
-    line-height:1.4 !important;
-    padding:1px 3px !important;
-    overflow:visible !important;
-  }
+  /* Modo de texto nativo de Mermaid (sin foreignObject): la propia librería mide y
+     ajusta el tamaño del recuadro a su contenido de forma exacta, sin necesitar hacks de CSS. */
   #archDiagram svg, #lightboxBody svg{ overflow:visible; }
+  #archDiagram{ height:180px; overflow:hidden; display:flex; align-items:center; }
+  #archDiagram svg{ width:100% !important; height:100% !important; max-width:100% !important; }
+
+  /* popup en modo texto — angosto, alineado a la izquierda, con scroll interno de seguridad */
+  .lightbox-figure.is-text{
+    width:min(560px,90vw);
+    max-width:min(560px,90vw);
+    max-height:82vh;
+    text-align:left;
+    overflow-y:auto;
+  }
+  .lightbox-figure.is-text::-webkit-scrollbar{ display:none; }
+  .lightbox-figure.is-text figcaption{ display:none; }
+
+  .lb-doc{ font-family:'Inter',sans-serif; }
+  .lb-doc .lb-eyebrow{
+    text-transform:uppercase; letter-spacing:.16em; font-size:.66rem; font-weight:600;
+    color:var(--verde-claro); margin-bottom:.35rem;
+  }
+  .lb-doc h3{
+    font-family:'Playfair Display',serif; font-weight:700; font-size:1.05rem;
+    color:var(--ink); margin-bottom:1.1rem; line-height:1.3;
+  }
+
+  /* cada bloque (CTS / Fuera de alcance) vive en su propia caja, para que se distingan a simple vista */
+  .lb-section{ border-radius:12px; padding:.9rem 1rem; margin-bottom:.65rem; }
+  .lb-section--cts{ background:#F5F9EF; border:1px solid #DCEBC8; }
+  .lb-section--out{ background:#ffffff; border:1px solid #EAEFE9; }
+
+  .lb-section-head{ display:flex; align-items:center; gap:.5rem; margin-bottom:.7rem; }
+  .lb-section-icon{
+    width:18px; height:18px; border-radius:9999px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lb-section--cts .lb-section-icon{ background:var(--verde-claro); color:#ffffff; }
+  .lb-section--out .lb-section-icon{ background:#EAEFE9; color:var(--muted); }
+  .lb-doc h4{
+    font-size:.72rem; font-weight:700; letter-spacing:.01em;
+    color:var(--ink); margin:0;
+  }
+
+  /* viñetas como columnas flex reales — así las líneas que se envuelven se alinean
+     bajo el texto, no bajo el punto (esto es lo que se sentía "desalineado") */
+  .lb-doc ul{ display:flex; flex-direction:column; gap:.55rem; }
+  .lb-doc li{
+    display:flex; align-items:flex-start; gap:.55rem;
+    font-size:.76rem; line-height:1.55; color:var(--muted);
+  }
+  .lb-doc li .lb-dot{
+    width:5px; height:5px; margin-top:.55em; border-radius:9999px;
+    background:var(--verde-claro); flex:0 0 auto;
+  }
+  .lb-doc li .lb-text{ flex:1 1 auto; min-width:0; }
+  .lb-doc li strong{ color:var(--ink); font-weight:600; }
+  .lb-doc li code{
+    background:#ffffff; color:var(--verde); font-size:.7rem;
+    padding:.05rem .32rem; border-radius:4px; border:1px solid #E2ECD8;
+    font-family:'SFMono-Regular',Consolas,monospace; white-space:nowrap;
+  }
+  .lb-doc .lb-note{
+    font-style:italic; font-size:.72rem; color:var(--muted); opacity:.8;
+    line-height:1.5; margin-top:1rem; padding-top:.85rem; border-top:1px solid #EAEFE9;
+  }
+
+  /* enlace sutil, casi imperceptible — solo un guion punteado tenue */
+  .subtle-link{
+    cursor:pointer;
+    border-bottom:1px dotted rgba(48,115,56,.38);
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .subtle-link:hover{ border-color:rgba(48,115,56,.85); color:var(--verde); }
 
   /* tarjeta del diagrama — expandible, con señal sutil de que se puede seleccionar */
   .diagram-expandable{
@@ -338,7 +409,7 @@
 
   <!-- lightbox reutilizable — clic en una imagen o en el diagrama lo abre, clic aquí lo cierra -->
   <div id="lightbox" class="lightbox-overlay" hidden>
-    <figure class="lightbox-figure">
+    <figure class="lightbox-figure" id="lightboxFigure">
       <div id="lightboxBody"></div>
       <figcaption id="lightboxCaption"></figcaption>
     </figure>
@@ -450,7 +521,7 @@
               <ul class="space-y-1.5 f-body text-xs md:text-sm" style="color:var(--muted)">
                 <li class="flex items-start gap-2">
                   <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                  Gobernanza de datos ya en definición
+                  <span><span class="subtle-link" id="govLink">Gobernanza de datos</span> ya en definición</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
@@ -471,7 +542,7 @@
             </div>
             <h2 class="f-subtitle text-xs mb-2" style="color:var(--ink)">Diagrama de Arquitectura — DataWarehouse GHVeggies</h2>
             <div class="mermaid" id="archDiagram">
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Gotham, Helvetica Neue, Arial, sans-serif','fontSize':'11px','primaryColor':'#ffffff','primaryBorderColor':'#79BF00','lineColor':'#9AC77A','primaryTextColor':'#307338'},'flowchart':{'htmlLabels':true,'padding':10,'nodeSpacing':20,'rankSpacing':34,'useMaxWidth':true}}}%%
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Gotham, Helvetica Neue, Arial, sans-serif','fontSize':'8px','primaryColor':'#ffffff','primaryBorderColor':'#79BF00','lineColor':'#9AC77A','primaryTextColor':'#307338'},'flowchart':{'htmlLabels':false,'padding':12,'nodeSpacing':10,'rankSpacing':70,'useMaxWidth':true}}}%%
 graph LR
   subgraph SRC["Orígenes"]
     O1["Sistemas Operativos<br/>RIDDER, GHS, Digitalizaciones"]
@@ -675,7 +746,7 @@ graph LR
   </div>
 
   <script>
-    mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', flowchart: { htmlLabels: true, padding: 10, useMaxWidth: true } });
+    mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', flowchart: { htmlLabels: false, padding: 12, useMaxWidth: true } });
 
     // ---------- placeholders de imagen ----------
     function phFallback(img){
@@ -836,9 +907,14 @@ graph LR
     }
     function closeLightbox(){
       lightbox.classList.remove('open');
-      setTimeout(() => { lightbox.hidden = true; lightboxBody.innerHTML = ''; }, 320);
+      setTimeout(() => {
+        lightbox.hidden = true;
+        lightboxBody.innerHTML = '';
+        document.getElementById('lightboxFigure').classList.remove('is-diagram', 'is-text');
+      }, 320);
     }
     function openLightboxImage(src, alt){
+      document.getElementById('lightboxFigure').classList.remove('is-diagram', 'is-text');
       lightboxBody.innerHTML = '';
       const img = document.createElement('img');
       img.src = src; img.alt = alt;
@@ -848,11 +924,24 @@ graph LR
     function openLightboxDiagram(){
       const svg = document.querySelector('#archDiagram svg');
       if(!svg) return;
+      document.getElementById('lightboxFigure').classList.remove('is-text');
+      document.getElementById('lightboxFigure').classList.add('is-diagram');
       lightboxBody.innerHTML = '';
       const clone = svg.cloneNode(true);
+      // quita cualquier tamaño fijo heredado (style, width, height) para que el clon
+      // crezca al tamaño grande del popup en vez de conservar su miniatura original
       clone.removeAttribute('style');
+      clone.removeAttribute('width');
+      clone.removeAttribute('height');
+      clone.setAttribute('preserveAspectRatio', 'xMidYMid meet'); // en el popup sí debe verse proporcionado, sin distorsión
       lightboxBody.appendChild(clone);
       showLightbox('Diagrama de Arquitectura — DataWarehouse GHVeggies');
+    }
+    function openLightboxText(html){
+      document.getElementById('lightboxFigure').classList.remove('is-diagram');
+      document.getElementById('lightboxFigure').classList.add('is-text');
+      lightboxBody.innerHTML = html;
+      showLightbox('');
     }
 
     lightbox.addEventListener('click', closeLightbox);
@@ -869,6 +958,55 @@ graph LR
     document.getElementById('diagramCard').addEventListener('click', (e) => {
       e.stopPropagation();
       openLightboxDiagram();
+    });
+
+    // ---------- contenido: mecanismo de gobernanza de datos ----------
+    const GOVERNANCE_HTML = `
+      <div class="lb-doc">
+        <p class="lb-eyebrow">Cómo se gobierna el dato</p>
+        <h3>Mecanismo de gobernanza de datos</h3>
+
+        <div class="lb-section lb-section--cts">
+          <div class="lb-section-head">
+            <span class="lb-section-icon">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </span>
+            <h4>CTS — aplica a captura manual</h4>
+          </div>
+          <ul>
+            <li><span class="lb-dot"></span><span class="lb-text"><strong>Nombre fijo:</strong> <code>[ÁREA]_[PROCESO]_[SITIO].xlsx</code> — mismo formato para todos los archivos, sin versión en el nombre.</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text"><strong>4 pestañas obligatorias:</strong> Manual (instrucciones), Léame (contexto), Catálogos (valores válidos), Datos (la captura real).</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text"><strong>Color = regla:</strong> amarillo se llena a mano; verde, azul y naranja no se tocan — son fórmula, referencia o llave.</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text"><strong>Un solo hogar:</strong> todos los archivos viven en SharePoint de OPEX, no en carpetas personales.</span></li>
+          </ul>
+        </div>
+
+        <div class="lb-section lb-section--out">
+          <div class="lb-section-head">
+            <span class="lb-section-icon">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M9 7h8v8"/></svg>
+            </span>
+            <h4>Fuera del alcance del CTS — con contrato propio de gobernanza</h4>
+          </div>
+          <ul>
+            <li><span class="lb-dot"></span><span class="lb-text"><strong>SQL de GHS_BI</strong> → contrato de extracción incremental (watermark), sin tocar la fuente original.</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text"><strong>CSV de Ridder</strong> → contrato de esquema explícito: columnas y tipos fijos antes de ingestar.</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text"><strong>Exportación de Planner</strong> → extracción vía Microsoft Graph API, estructura definida por Planner.</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text"><strong>APIs externas</strong> (ej. Adaviv) → gobernadas por su propio contrato de datos.</span></li>
+          </ul>
+        </div>
+
+        <p class="lb-note">El CTS no aplica a estas fuentes por diseño, no por ausencia de estándar — cada una ya tiene su propio contrato técnico de gobernanza.</p>
+      </div>
+    `;
+
+    document.getElementById('govLink').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightboxText(GOVERNANCE_HTML);
+    });
+    document.getElementById('lightboxBody').addEventListener('click', (e) => {
+      // permite leer/seleccionar el texto del popup sin cerrarlo por accidente
+      if(document.getElementById('lightboxFigure').classList.contains('is-text')) e.stopPropagation();
     });
   </script>
 </body>
