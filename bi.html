@@ -317,8 +317,22 @@
   .reel-dot{
     width:5px; height:5px; border-radius:9999px;
     background:#D7E6C8; transition:background .25s ease, width .25s ease;
+    cursor:pointer;
   }
   .reel-dot.active{ background:var(--verde-claro); width:15px; }
+  .reel-arrow{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:5;
+    width:30px; height:30px; border-radius:9999px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,.88); color:var(--verde);
+    border:1px solid #E2ECD8; box-shadow:0 4px 12px -4px rgba(31,79,38,.25);
+    opacity:0; transition:opacity .2s ease, background .2s ease;
+    cursor:pointer;
+  }
+  .reel-card:hover .reel-arrow{ opacity:1; }
+  .reel-arrow:hover{ background:#ffffff; }
+  .reel-arrow--prev{ left:12px; }
+  .reel-arrow--next{ right:12px; }
   @media (prefers-reduced-motion:reduce){ .reel-track{ transition:none; } }
 
   /* tarjeta del diagrama — expandible, con señal sutil de que se puede seleccionar */
@@ -587,6 +601,12 @@
               <div class="reel-slide"><img src="images/bi-almacen.png" alt="Almacén — existencias vs. stock mínimo" onerror="phFallback(this)"></div>
               <div class="reel-slide" aria-hidden="true"><img src="images/bi-invernadero.png" alt="" onerror="phFallback(this)"></div>
             </div>
+            <button type="button" id="reelPrev" aria-label="Imagen anterior" class="reel-arrow reel-arrow--prev">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <button type="button" id="reelNext" aria-label="Siguiente imagen" class="reel-arrow reel-arrow--next">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
           </div>
 
           <p class="f-body text-left text-xs mt-2" id="reelCaption" style="color:var(--muted)"></p>
@@ -1089,6 +1109,14 @@ graph LR
         }, 900);
       }
     }
+    // salto manual directo a una imagen específica (flechas o puntos) — nunca usa el clon
+    function reelGoTo(target){
+      reelIndex = (target + reelTotal) % reelTotal;
+      reelTrack.style.opacity = '.4';
+      reelTrack.style.transform = `translateX(-${reelIndex * 100}%)`;
+      reelUpdateCaptionDots(reelIndex);
+      setTimeout(() => { reelTrack.style.opacity = '1'; }, 320);
+    }
     function reelSchedule(delay){
       clearTimeout(reelTimer);
       reelTimer = setTimeout(() => {
@@ -1100,8 +1128,28 @@ graph LR
 
     reelCard.addEventListener('mouseenter', () => reelSchedule(10000));
     reelCard.addEventListener('mouseleave', () => reelSchedule(5000));
-    reelCard.addEventListener('click', (e) => {
+
+    // navegación manual: flechas
+    document.getElementById('reelPrev').addEventListener('click', (e) => {
       e.stopPropagation();
+      reelGoTo(reelIndex - 1);
+      reelSchedule(5000);
+    });
+    document.getElementById('reelNext').addEventListener('click', (e) => {
+      e.stopPropagation();
+      reelGoTo(reelIndex + 1);
+      reelSchedule(5000);
+    });
+    // navegación manual: puntos — salta directo a la imagen elegida
+    reelDots.forEach((dot, i) => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        reelGoTo(i);
+        reelSchedule(5000);
+      });
+    });
+    // clic sobre la imagen misma: abre el popup en grande
+    reelCard.addEventListener('click', (e) => {
       const img = reelSlides[reelIndex % reelTotal].querySelector('img');
       openLightboxImage(img.src, img.alt);
     });
