@@ -536,8 +536,8 @@
             <div class="card p-7">
               <div class="card-glow"></div>
               <div class="flex items-start justify-between mb-5">
-                <h2 class="f-subtitle text-lg" style="color:var(--ink)">DataWarehouse</h2>
-                <span class="badge">En curso</span>
+                <h2 class="f-subtitle text-lg" style="color:var(--ink)">STEM</h2>
+                <span class="badge">EN CURSO</span>
               </div>
               <div class="flex items-center gap-3 mb-3">
                 <svg viewBox="0 0 56 56" class="w-12 h-12 flex-shrink-0" style="transform:rotate(-90deg); transform-origin:50% 50%">
@@ -546,33 +546,59 @@
                 </svg>
                 <span class="f-title text-4xl" style="color:var(--verde-claro)">30%</span>
               </div>
-              <div class="bar-track mb-5"><div class="bar-fill" style="width:30%"></div></div>
+              <div class="bar-track mb-3"><div class="bar-fill" style="width:30%"></div></div>
+              <p class="f-body mb-4" style="color:var(--muted); opacity:.7; font-size:.68rem">
+                Hoy el consolidado de cada área se arma abriendo y actualizando los Excel uno
+                por uno; el modelo semántico completo tarda 35 minutos en cargar.
+              </p>
               <p class="f-body text-sm mb-5" style="color:var(--muted)">
                 Con el modelo SQL de STEM, el dato deja de vivir disperso en Excel: una sola
                 fuente de verdad, refresco en minutos —antes 19— y consulta en lenguaje
                 natural sobre toda la operación.
               </p>
-              <ul class="space-y-3 f-body text-sm" style="color:var(--muted)">
-                <li class="flex items-center gap-3">
-                  <span class="w-4 h-4 rounded-full flex-shrink-0 flex items-center justify-center" style="background:var(--verde-claro)">
-                    <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                  </span>
-                  Mapeo y gobernanza de datos
-                </li>
-                <li class="flex items-center gap-3">
-                  <span class="w-4 h-4 rounded-full flex-shrink-0" style="border:2px solid var(--verde-claro); background:radial-gradient(circle, var(--verde-claro) 35%, transparent 36%)"></span>
-                  Migración a SQL — DWH_GHVeggies
-                </li>
-                <li class="flex items-center gap-3">
-                  <span class="w-4 h-4 rounded-full flex-shrink-0" style="border:2px solid #D7E6C8"></span>
-                  Consumo — Power BI y Agente Virtual
-                </li>
-              </ul>
-              <p class="f-body mt-4 pt-3" style="color:var(--muted); opacity:.55; font-size:.65rem; border-top:1px solid #EAEFE9">
-                3 frentes de trabajo del proyecto completo — 1 encaminado, 1 en curso, 1 por iniciar.
+              <p class="f-body text-xs mb-3" style="color:var(--muted)">
+                Así vamos en el avance del proyecto STEM, considerando el corte más reciente:
+              </p>
+              <p class="f-subtitle mb-2" style="color:var(--ink); font-size:.68rem">
+                Avance global de cada workstream a través de todas las áreas
+              </p>
+              <div class="space-y-3 mb-3">
+                <div>
+                  <div class="flex items-center justify-between mb-1 f-body" style="color:var(--muted); font-size:.72rem">
+                    <span>WS1 · Descubrimiento y Diseño</span>
+                    <span style="color:var(--ink)">53% <span style="opacity:.6">· 47/88 hitos</span></span>
+                  </div>
+                  <div class="bar-track" style="height:5px"><div class="bar-fill" style="width:53%"></div></div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between mb-1 f-body" style="color:var(--muted); font-size:.72rem">
+                    <span>WS2 · Ingeniería de Datos y ETL-DWH</span>
+                    <span style="color:var(--ink)">9% <span style="opacity:.6">· 7/80 hitos</span></span>
+                  </div>
+                  <div class="bar-track" style="height:5px"><div class="bar-fill" style="width:9%"></div></div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between mb-1 f-body" style="color:var(--muted); font-size:.72rem">
+                    <span>WS3 · Capa Semántica y Consumo</span>
+                    <span style="color:var(--ink)">0% <span style="opacity:.6">· 0/34 hitos</span></span>
+                  </div>
+                  <div class="bar-track" style="height:5px"><div class="bar-fill" style="width:0%"></div></div>
+                </div>
+              </div>
+              <span class="subtle-link" id="workstreamLink" style="display:inline-block; margin-top:.2rem; font-size:.68rem; color:var(--verde-claro); border-bottom-color:rgba(121,191,0,.4)">Ver desglose de tareas →</span>
+              <p class="f-body mt-3 pt-3" style="color:var(--muted); opacity:.55; font-size:.65rem; border-top:1px solid #EAEFE9">
+                Fecha compromiso: 21 de agosto de 2026 — el proyecto continúa el resto del
+                año; esta etapa acelera la base.
               </p>
             </div>
 
+          </div>
+
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-1.5 mt-4 pt-3" style="border-top:1px solid #EAEFE9">
+            <span class="f-body" style="color:var(--muted); opacity:.6; font-size:.62rem; text-transform:uppercase; letter-spacing:.06em">Equipo</span>
+            <span class="f-body text-xs" style="color:var(--ink)">Fernando De Santiago <span style="color:var(--muted)">— Ingeniería de Datos</span></span>
+            <span class="f-body text-xs" style="color:var(--ink)">Avelina Paz <span style="color:var(--muted)">— Análisis de Datos</span></span>
+            <span class="f-body text-xs" style="color:var(--ink)">Armando Gaytán <span style="color:var(--muted)">— Ciencia de Datos</span></span>
           </div>
         </div>
       </section>
@@ -637,6 +663,10 @@
                 <li class="flex items-start gap-2">
                   <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
                   Cada predio y sistema, con su propio estándar
+                </li>
+                <li class="flex items-start gap-2">
+                  <svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                  35 min en cargar el modelo semántico, más consolidar cada área a mano en Excel
                 </li>
               </ul>
             </div>
@@ -798,6 +828,9 @@ graph LR
                 </div>
               </div>
               <p class="f-body text-xs" style="color:var(--muted)">Ejemplo en vivo — preguntas que el agente ya puede responder</p>
+              <p class="f-body text-xs mt-1.5" style="color:var(--muted); opacity:.65">
+                Primera prueba con datos reales — 31 de julio de 2026 (2-3 áreas piloto)
+              </p>
             </div>
 
             <!-- El valor del Agente Virtual -->
@@ -825,6 +858,15 @@ graph LR
               </ul>
             </div>
 
+          </div>
+
+          <div class="flex flex-wrap items-start gap-x-8 gap-y-2 mt-4 pt-3" style="border-top:1px solid #EAEFE9">
+            <div class="f-body text-xs max-w-md" style="color:var(--muted)">
+              <strong style="color:var(--ink)">Recurso solicitado:</strong> licencia Claude Pro como apoyo de arquitectura y diseño del proyecto — no es la herramienta de consulta final para el usuario de negocio, que será resuelta con otra plataforma.
+            </div>
+            <div class="f-body text-xs max-w-md" style="color:var(--muted)">
+              <strong style="color:var(--ink)">Capacitación en curso:</strong> el equipo ya está capacitándose en la práctica — esta misma presentación se construyó con apoyo de IA (Claude) y se publica directamente en GitHub.
+            </div>
           </div>
         </div>
       </section>
@@ -1194,9 +1236,68 @@ graph LR
       </div>
     `;
 
+    // ---------- contenido: desglose de tareas del DataWarehouse (lenguaje no técnico) ----------
+    const WORKSTREAMS_HTML = `
+      <div class="lb-doc">
+        <p class="lb-eyebrow">DataWarehouse — 30% de avance</p>
+        <h3>Desglose de tareas por frente de trabajo</h3>
+
+        <div class="lb-section lb-section--cts">
+          <div class="lb-section-head">
+            <span class="lb-section-icon">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </span>
+            <h4>1 · Diseño y Entendimiento del Negocio</h4>
+          </div>
+          <ul>
+            <li><span class="lb-dot"></span><span class="lb-text">Entender qué preguntas necesita responder cada área</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text">Mapear cómo fluye la información hoy, quién la toca y dónde nace</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text">Confirmar de dónde viene cada dato</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text">Definir el estándar de captura de cada archivo</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text">Diseñar la estructura final de cada área en el Datawarehouse</span></li>
+          </ul>
+        </div>
+
+        <div class="lb-section lb-section--out">
+          <div class="lb-section-head">
+            <span class="lb-section-icon">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M9 7h8v8"/></svg>
+            </span>
+            <h4>2 · Construcción del Datawarehouse</h4>
+          </div>
+          <ul>
+            <li><span class="lb-dot"></span><span class="lb-text">Habilitar accesos y permisos técnicos</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text">Automatizar la extracción del dato</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text">Cargar el dato al nuevo sistema</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text">Limpiar y validar la información</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text">Construir las tablas finales listas para reportes</span></li>
+          </ul>
+        </div>
+
+        <div class="lb-section lb-section--out">
+          <div class="lb-section-head">
+            <span class="lb-section-icon">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+            </span>
+            <h4>3 · Conexión y Consumo</h4>
+          </div>
+          <ul>
+            <li><span class="lb-dot"></span><span class="lb-text">Conectar el Datawarehouse a Power BI</span></li>
+            <li><span class="lb-dot"></span><span class="lb-text">Definir de forma centralizada las fórmulas y cálculos de negocio</span></li>
+          </ul>
+        </div>
+
+        <p class="lb-note">Sin porcentaje individual por frente todavía — el 30% de avance es del proyecto en conjunto.</p>
+      </div>
+    `;
+
     document.getElementById('govLink').addEventListener('click', (e) => {
       e.stopPropagation();
       openLightboxText(GOVERNANCE_HTML);
+    });
+    document.getElementById('workstreamLink').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightboxText(WORKSTREAMS_HTML);
     });
     document.getElementById('lightboxBody').addEventListener('click', (e) => {
       // permite leer/seleccionar el texto del popup sin cerrarlo por accidente

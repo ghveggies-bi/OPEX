@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OPEX · GHVeggies</title>
-<meta name="description" content="OPEX — portal de excelencia operativa de GHVeggies: Costos de Mano de Obra, Business Intelligence y Procesos.">
+<title>OPEX · Portal de Excelencia Operativa</title>
+<meta name="description" content="OPEX — portal de excelencia operativa: Eficiencia Operativa, Business Intelligence y Procesos.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23307338'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-weight='700' font-size='34' fill='%23FBE122' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,11 +105,21 @@
     position: relative;
     z-index: 0; /* contexto de apilamiento propio, contiene el brillo de cursor */
     overflow: hidden;
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 10px 26px -18px rgba(31, 79, 38, 0.22); /* más presencia en reposo */
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease;
   }
   .card-hover:hover {
     transform: translateY(-8px);
-    box-shadow: 0 24px 48px -18px rgba(31, 79, 38, 0.35);
+    box-shadow: 0 28px 54px -16px rgba(31, 79, 38, 0.42);
+    border-color: rgba(48, 115, 56, 0.28);
+  }
+
+  /* ícono: juego muy sutil al pasar el cursor — solo movimiento, sin cambiar de color */
+  .icon-box {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .card-hover:hover .icon-box {
+    transform: scale(1.08) rotate(-4deg);
   }
 
   /* ---------- Scroll reveal ---------- */
@@ -172,12 +182,39 @@
   .card-hover:hover .card-glow {
     opacity: 1;
   }
+
+  /* halo de luz discreto que sigue al cursor — relleno suave, además del contorno */
+  .card-spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgba(121, 191, 0, 0.12), transparent 72%);
+  }
+  .card-hover:hover .card-spotlight {
+    opacity: 1;
+  }
   @media (prefers-reduced-motion: reduce) {
     .card-glow { display: none; }
+    .card-spotlight { display: none; }
+  }
+
+  /* halo tenue que sigue al cursor en toda la página, detrás de las tarjetas */
+  #pageGlow {
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(560px circle at var(--gx, 50%) var(--gy, 30%), rgba(121, 191, 0, 0.05), transparent 70%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #pageGlow { display: none; }
   }
 </style>
 </head>
 <body class="relative">
+  <div id="pageGlow" aria-hidden="true"></div>
 
 <div class="blob-field" aria-hidden="true">
   <div class="blob blob-1"></div>
@@ -190,11 +227,11 @@
   <div class="max-w-6xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
     <a href="index.html" class="flex items-baseline gap-3">
       <span class="font-display text-2xl font-extrabold text-ns-green tracking-tight">OPEX</span>
-      <span class="hidden sm:inline text-xs text-ink font-medium">GHVeggies · Excelencia Operativa</span>
+      <span class="hidden sm:inline text-xs text-ink font-medium">Excelencia Operativa</span>
     </a>
     <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-ns-green-deep">
       <a href="procesos.html" class="nav-link">Procesos</a>
-      <a href="ridder.html" class="nav-link">Costos de Mano de Obra</a>
+      <a href="ridder.html" class="nav-link">Eficiencia Operativa</a>
       <a href="bi.html" class="nav-link">BI</a>
     </nav>
   </div>
@@ -208,21 +245,23 @@
       OPEX
     </h1>
     <p class="text-lg text-ink mt-5 max-w-2xl leading-relaxed reveal" style="transition-delay:.14s;">
-      OPEX es el departamento de excelencia operativa de GHVeggies. Coordinamos la mejora
-      continua de procesos, el control de costos de mano de obra en campo y la inteligencia
-      de datos que sostiene las decisiones del negocio. Este portal concentra el trabajo
-      de las tres líneas.
+      OPEX es el departamento de excelencia operativa. Coordinamos la mejora
+      continua de procesos, la eficiencia productiva de la mano de obra en campo, la
+      inteligencia de datos que sostiene las decisiones del negocio, y las inversiones en
+      infraestructura y tecnología que hacen posible operar. Este portal concentra el
+      trabajo de las cuatro líneas.
     </p>
   </section>
 
   <!-- Tarjetas principales -->
   <section class="max-w-6xl mx-auto px-6 md:px-10 pb-24 md:pb-32">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
 
       <!-- Card: Procesos -->
-      <a href="procesos.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5">
+      <a href="procesos.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/12">
         <div class="card-glow"></div>
-        <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
+        <div class="card-spotlight"></div>
+        <div class="icon-box w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
             <path d="M4 12a8 8 0 0 1 13.66-5.66L20 8"></path>
             <path d="M20 4v4h-4"></path>
@@ -231,12 +270,12 @@
           </svg>
         </div>
         <div>
-          <p class="eyebrow text-fresh-green mb-2">Excelencia operativa</p>
+          <p class="eyebrow text-fresh-green mb-2">Estandarización</p>
           <h2 class="font-display text-2xl font-bold text-ns-green-deep">Procesos</h2>
         </div>
         <p class="text-ink leading-relaxed flex-1">
-          La línea que mejora, implementa y ejecuta la excelencia operativa en todas
-          las áreas de GHVeggies.
+          El área que mapea las buenas prácticas, define los procesos y estandariza
+          su ejecución en toda la organización.
         </p>
         <span class="inline-flex items-center gap-2 text-ns-green font-semibold text-sm">
           Entrar
@@ -247,10 +286,11 @@
         </span>
       </a>
 
-      <!-- Card: Ridder / Costos de Mano de Obra -->
-      <a href="ridder.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5" style="transition-delay: 80ms">
+      <!-- Card: Ridder / Eficiencia Operativa -->
+      <a href="ridder.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/12" style="transition-delay: 80ms">
         <div class="card-glow"></div>
-        <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
+        <div class="card-spotlight"></div>
+        <div class="icon-box w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
             <circle cx="9" cy="8" r="3"></circle>
             <path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"></path>
@@ -259,12 +299,12 @@
           </svg>
         </div>
         <div>
-          <p class="eyebrow text-fresh-green mb-2">Ridder</p>
-          <h2 class="font-display text-2xl font-bold text-ns-green-deep">Costos de Mano de Obra</h2>
+          <p class="eyebrow text-fresh-green mb-2">Eficiencia Operativa</p>
+          <h2 class="font-display text-2xl font-bold text-ns-green-deep">Ridder</h2>
         </div>
         <p class="text-ink leading-relaxed flex-1">
-          Control de costos de personal, supervisión de la calidad de cosecha y pago justo
-          a los trabajadores según su desempeño real en campo.
+          El área que mide el desempeño de la operación en campo — de la cosecha a la
+          mano de obra — para elevar la eficiencia predio por predio.
         </p>
         <span class="inline-flex items-center gap-2 text-ns-green font-semibold text-sm">
           Entrar
@@ -276,9 +316,10 @@
       </a>
 
       <!-- Card: BI -->
-      <a href="bi.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/5" style="transition-delay: 160ms">
+      <a href="bi.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/12" style="transition-delay: 160ms">
         <div class="card-glow"></div>
-        <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
+        <div class="card-spotlight"></div>
+        <div class="icon-box w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
             <ellipse cx="12" cy="5.5" rx="7.5" ry="2.5"></ellipse>
             <path d="M4.5 5.5v6c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5v-6"></path>
@@ -290,9 +331,36 @@
           <h2 class="font-display text-2xl font-bold text-ns-green-deep">BI</h2>
         </div>
         <p class="text-ink leading-relaxed flex-1">
-          BI Mano de Obra ya opera al 100% con 7 módulos en campo. En paralelo avanza el
-          DataWarehouse corporativo gobernado (SQL) y el Agente Virtual OpEx, para consultar
-          la operación en lenguaje natural.
+          Gobierno del Data Warehouse de la operación — la fuente única que sostiene
+          reportes y decisiones.
+        </p>
+        <span class="inline-flex items-center gap-2 text-ns-green font-semibold text-sm">
+          Entrar
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform group-hover:translate-x-1">
+            <path d="M5 12h14"></path>
+            <path d="M13 6l6 6-6 6"></path>
+          </svg>
+        </span>
+      </a>
+
+      <!-- Card: CAPEX -->
+      <a href="capex.html" class="reveal card-hover group bg-white rounded-2xl shadow-md p-8 flex flex-col gap-5 border border-ns-green/12" style="transition-delay: 240ms">
+        <div class="card-glow"></div>
+        <div class="card-spotlight"></div>
+        <div class="icon-box w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-ns-green">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
+            <path d="M3 21V9l9-6 9 6v12"></path>
+            <path d="M9 21v-7h6v7"></path>
+            <path d="M9 9h.01M15 9h.01M12 9h.01"></path>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow text-fresh-green mb-2">Materiales y Productividad</p>
+          <h2 class="font-display text-2xl font-bold text-ns-green-deep">CAPEX</h2>
+        </div>
+        <p class="text-ink leading-relaxed flex-1">
+          Las adquisiciones de infraestructura que la organización necesita para operar,
+          y las eficiencias que se ganan con tecnología y equipo.
         </p>
         <span class="inline-flex items-center gap-2 text-ns-green font-semibold text-sm">
           Entrar
@@ -310,7 +378,7 @@
 <!-- Footer -->
 <footer class="relative z-10 border-t border-ns-green/10">
   <div class="max-w-6xl mx-auto px-6 md:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-ink">
-    <p><span class="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle" style="background:var(--ns-yellow);"></span>GHVeggies · OPEX · Querétaro, México</p>
+    <p><span class="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle" style="background:var(--ns-yellow);"></span>OPEX · Querétaro, México</p>
     <p>Excelencia operativa, con datos.</p>
   </div>
 </footer>
@@ -328,6 +396,13 @@
   document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
   // Brillo de tarjeta que sigue al cursor (solo mientras el mouse está encima)
+  // halo tenue que sigue al cursor en toda la página
+  const pageGlow = document.getElementById('pageGlow');
+  document.addEventListener('mousemove', (e) => {
+    pageGlow.style.setProperty('--gx', `${e.clientX}px`);
+    pageGlow.style.setProperty('--gy', `${e.clientY}px`);
+  });
+
   document.querySelectorAll('.card-hover').forEach((card) => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
