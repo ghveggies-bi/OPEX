@@ -1,387 +1,437 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OPEX - CAPEX GANFER Julio 2026</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #FFFFFF; /* Fondo blanco forzado */
-            font-family: 'Inter', sans-serif;
-            color: #1f2937;
-            margin: 0;
-            overflow: hidden; /* Ocultar scroll general para el slider */
-        }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Playfair Display', serif;
-        }
-        
-        /* Paleta autorizada OPEX */
-        .bg-brand-dark { background-color: #064e3b; }
-        .text-brand-dark { color: #064e3b; }
-        .bg-brand-yellow { background-color: #eab308; }
-        .text-brand-yellow { color: #eab308; }
-        .bg-brand-light { background-color: #4ade80; }
-        .text-brand-light { color: #4ade80; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPEX · Materiales N 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @font-face{ font-family:'Antique Olive Compact'; src:url('fonts/AntiqueOliveCompact.woff2') format('woff2'); font-weight:700; font-display:swap; }
+  @font-face{ font-family:'Antique Olive'; src:url('fonts/AntiqueOlive.woff2') format('woff2'); font-weight:400 700; font-display:swap; }
+  @font-face{ font-family:'Gotham'; src:url('fonts/GothamBook.woff2') format('woff2'); font-weight:400; font-display:swap; }
 
-        /* Estilo Corporativo / Formal */
-        .glass-card {
-            background: #ffffff;
-            border: 1px solid #f3f4f6;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border-top: 3px solid transparent;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .glass-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            border-top-color: #064e3b;
-        }
+  :root{
+    --cream:#FFFCEB; --verde:#307338; --verde-claro:#79BF00; --amarillo:#FBE122;
+    --ink:#16241a; --muted:#5b6b5f;
+  }
+  html,body{ height:100%; margin:0; }
+  body{ background:#ffffff; color:var(--ink); font-family:'Gotham','Inter','Helvetica Neue',Arial,sans-serif; overflow:hidden; }
 
-        /* Slider funcional */
-        .slider-container {
-            display: flex;
-            width: 100vw;
-            height: 100vh;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .slide {
-            width: 100vw;
-            height: 100vh;
-            flex-shrink: 0;
-            overflow-y: auto;
-            padding: 3rem 4rem;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        /* Navegación */
-        .nav-btn {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.9);
-            border: 1px solid #e5e7eb;
-            color: #064e3b;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
-            z-index: 50;
-        }
-        .nav-btn:hover {
-            background: #064e3b;
-            color: white;
-            border-color: #064e3b;
-        }
-        .nav-btn.left { left: 1.5rem; }
-        .nav-btn.right { right: 1.5rem; }
-        .nav-btn.disabled { opacity: 0; pointer-events: none; }
-        
-        .progress-indicator {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 0.5rem;
-            z-index: 50;
-        }
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #d1d5db;
-            transition: background 0.3s ease;
-        }
-        .dot.active {
-            background: #064e3b;
-        }
-    </style>
+  .eyebrow{ font-family:'Inter',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.18em; font-size:.72rem; color:var(--verde); }
+  .f-title{ font-family:'Antique Olive Compact','Playfair Display','Arial Narrow',Arial,sans-serif; font-weight:800; color:var(--ink); line-height:1.05; letter-spacing:-.01em; }
+  .f-subtitle{ font-family:'Gotham','Inter','Helvetica Neue',Arial,sans-serif; font-weight:700; letter-spacing:-.005em; }
+  .f-body{ font-family:'Gotham','Inter','Helvetica Neue',Arial,sans-serif; color:var(--muted); }
+
+  .blob-field{ position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+  .blob{ position:absolute; filter:blur(60px); opacity:.2; border-radius:50%; will-change:transform; }
+  .blob-1{ width:520px; height:520px; background:var(--verde-claro); top:-160px; left:-140px; animation:driftA 34s ease-in-out infinite alternate; }
+  .blob-2{ width:460px; height:460px; background:var(--verde); top:30%; right:-180px; opacity:.14; animation:driftB 40s ease-in-out infinite alternate; }
+  .blob-3{ width:380px; height:380px; background:var(--verde); bottom:-160px; left:22%; opacity:.16; animation:driftC 46s ease-in-out infinite alternate; }
+  @keyframes driftA{ 0%{transform:translate(0,0) scale(1);} 50%{transform:translate(60px,90px) scale(1.08);} 100%{transform:translate(-40px,40px) scale(.96);} }
+  @keyframes driftB{ 0%{transform:translate(0,0) scale(1);} 50%{transform:translate(-70px,60px) scale(1.1);} 100%{transform:translate(-20px,-60px) scale(.94);} }
+  @keyframes driftC{ 0%{transform:translate(0,0) scale(1);} 50%{transform:translate(50px,-40px) scale(1.06);} 100%{transform:translate(-60px,20px) scale(.98);} }
+  @media (prefers-reduced-motion:reduce){ .blob{ animation:none; } }
+
+  .slides-track{ display:flex; height:100vh; transition:transform .6s cubic-bezier(.22,1,.36,1); will-change:transform; }
+  .slide{ min-width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:4.2rem 6vw 6.5rem; overflow-y:auto; scrollbar-width:none; }
+  .slide::-webkit-scrollbar{ display:none; }
+  @media (prefers-reduced-motion:reduce){ .slides-track{ transition:none; } }
+
+  .card{ position:relative; background:#ffffff; border:1px solid #EAEFE9; border-radius:1.25rem; box-shadow:0 1px 2px rgba(22,36,26,.04); overflow:hidden; z-index:0; }
+  .card--positive{ background:#F5F9EF; }
+  .card-glow{
+    position:absolute; inset:0; z-index:-1; border-radius:inherit; padding:2px; pointer-events:none;
+    opacity:0; transition:opacity .3s ease;
+    background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%), var(--verde-claro) 0%, transparent 72%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude;
+  }
+  .card:hover .card-glow{ opacity:1; }
+  @media (prefers-reduced-motion:reduce){ .card-glow{ display:none; } }
+
+  .badge{ display:inline-flex; align-items:center; background:var(--cream); color:var(--verde); font-family:'Inter',sans-serif; font-size:.62rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:.2rem .55rem; border-radius:9999px; white-space:nowrap; }
+
+  table.pt{ width:100%; border-collapse:collapse; }
+  table.pt th{ font-family:'Inter',sans-serif; font-size:.62rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); text-align:left; padding:0 0 .6rem; }
+  table.pt th.right, table.pt td.right{ text-align:right; }
+  table.pt td{ padding:.55rem 0; border-top:1px solid #EAEFE9; font-size:.78rem; color:var(--muted); }
+  table.pt td.proc{ color:var(--ink); font-weight:600; }
+  table.pt tr.total td{ border-top:2px solid #D7E6C8; font-weight:700; color:var(--ink); }
+  .neg{ color:#B4562A; }
+  .pos{ color:var(--verde); }
+
+  /* acordeón de desglose por planta */
+  .acc{ border-top:1px solid #EAEFE9; }
+  .acc:first-of-type{ border-top:none; }
+  .acc summary{ list-style:none; cursor:pointer; padding:.7rem 0; display:flex; align-items:center; gap:.6rem; }
+  .acc summary::-webkit-details-marker{ display:none; }
+  .acc-chevron{ transition:transform .25s ease; flex-shrink:0; color:var(--verde-claro); }
+  .acc[open] .acc-chevron{ transform:rotate(90deg); }
+  .acc-icon{ width:26px; height:26px; border-radius:8px; background:var(--cream); display:flex; align-items:center; justify-content:center; color:var(--verde); flex-shrink:0; }
+  .acc-detail{ padding:.3rem 0 1rem 2.6rem; }
+  .acc-detail table{ width:100%; border-collapse:collapse; }
+  .acc-detail th{ font-family:'Inter',sans-serif; font-size:.58rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); text-align:left; padding:0 .4rem .4rem 0; }
+  .acc-detail td{ padding:.4rem .4rem .4rem 0; border-top:1px solid #F1F3EC; font-size:.68rem; color:var(--muted); vertical-align:top; }
+  .acc-detail td.right{ text-align:right; white-space:nowrap; }
+  .acc-detail td.desc{ color:var(--ink); }
+  .type-chip{ display:inline-block; font-size:.6rem; font-family:'Inter',sans-serif; font-weight:600; color:var(--verde); background:#F5F9EF; border-radius:6px; padding:.1rem .4rem; white-space:nowrap; }
+
+  #navCapsule{ position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:50; display:flex; align-items:center; justify-content:center; gap:10px; background:#1D3323; border-radius:9999px; padding:4px 16px 4px 10px; min-width:190px; box-shadow:0 6px 16px -10px rgba(22,36,26,.4); }
+  #navCapsule button{ width:20px; height:20px; border-radius:9999px; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.85); background:transparent; flex-shrink:0; transition:background .2s ease; }
+  #navCapsule button svg{ width:11px; height:11px; }
+  #navCapsule button:hover{ background:rgba(255,255,255,.12); }
+  #dots{ display:flex; align-items:center; gap:6px; }
+  .dot{ width:4px; height:4px; border-radius:9999px; background:rgba(255,255,255,.32); transition:background .2s ease, width .2s ease; flex-shrink:0; }
+  .dot.active{ background:var(--verde-claro); width:16px; }
+  .slide-counter{ color:rgba(255,255,255,.55); font-family:'Inter',sans-serif; font-size:.65rem; font-weight:600; padding-left:2px; }
+</style>
 </head>
 <body>
 
-    <button class="nav-btn left disabled" id="prevBtn" onclick="moveSlide(-1)" aria-label="Anterior">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+  <div class="blob-field" aria-hidden="true"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
+
+  <div class="slides-track" id="track">
+
+    <!-- ============ SLIDE 1 — RESUMEN DE INVERSIÓN ============ -->
+    <section class="slide">
+      <div class="w-full max-w-5xl">
+        <p class="eyebrow mb-2">Materiales N · CAPEX 2026</p>
+        <h1 class="f-title text-3xl md:text-4xl mb-3">CAPEX Mantenimiento 2026</h1>
+        <p class="f-body text-xs md:text-sm mb-6 max-w-2xl" style="color:var(--muted)">
+          Solicitud de CAPEX "N" de mantenimiento para los invernaderos High Tech.
+          El monto total presupuestado asciende a <strong style="color:var(--ink)">$1,676,473.65 USD</strong>,
+          distribuido entre los cinco predios así:
+        </p>
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div class="card p-5 text-center">
+            <div class="card-glow"></div>
+            <svg class="w-5 h-5 mx-auto mb-2" viewBox="0 0 24 24" fill="none" stroke="var(--verde)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg>
+            <p class="f-title text-3xl" style="color:var(--verde)">40%</p>
+            <p class="f-body text-xs mt-1" style="color:var(--muted)">JVA</p>
+            <p class="f-body mt-1" style="font-size:.62rem; color:var(--muted); opacity:.7">$877,942</p>
+          </div>
+          <div class="card p-5 text-center">
+            <div class="card-glow"></div>
+            <svg class="w-5 h-5 mx-auto mb-2" viewBox="0 0 24 24" fill="none" stroke="var(--verde)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg>
+            <p class="f-title text-3xl" style="color:var(--verde)">38%</p>
+            <p class="f-body text-xs mt-1" style="color:var(--muted)">GAF</p>
+            <p class="f-body mt-1" style="font-size:.62rem; color:var(--muted); opacity:.7">$629,957</p>
+          </div>
+          <div class="card p-5 text-center">
+            <div class="card-glow"></div>
+            <svg class="w-5 h-5 mx-auto mb-2" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg>
+            <p class="f-title text-3xl" style="color:var(--verde-claro)">5%</p>
+            <p class="f-body text-xs mt-1" style="color:var(--muted)">Ímuris</p>
+            <p class="f-body mt-1" style="font-size:.62rem; color:var(--muted); opacity:.7">$76,945</p>
+          </div>
+          <div class="card p-5 text-center">
+            <div class="card-glow"></div>
+            <svg class="w-5 h-5 mx-auto mb-2" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg>
+            <p class="f-title text-3xl" style="color:var(--verde-claro)">4%</p>
+            <p class="f-body text-xs mt-1" style="color:var(--muted)">Bonita</p>
+            <p class="f-body mt-1" style="font-size:.62rem; color:var(--muted); opacity:.7">$72,842</p>
+          </div>
+          <div class="card p-5 text-center">
+            <div class="card-glow"></div>
+            <svg class="w-5 h-5 mx-auto mb-2" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg>
+            <p class="f-title text-3xl" style="color:var(--verde-claro)">1%</p>
+            <p class="f-body text-xs mt-1" style="color:var(--muted)">PGA</p>
+            <p class="f-body mt-1" style="font-size:.62rem; color:var(--muted); opacity:.7">$18,787</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-3 mt-4">
+          <div class="card p-4 flex items-center gap-2.5">
+            <div class="card-glow"></div>
+            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M3 11h18"/></svg>
+            <span class="f-body text-xs" style="color:var(--ink)">Plastics33</span>
+          </div>
+          <div class="card p-4 flex items-center gap-2.5">
+            <div class="card-glow"></div>
+            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5c3 4 6 7.2 6 11a6 6 0 1 1-12 0c0-3.8 3-7 6-11Z"/></svg>
+            <span class="f-body text-xs" style="color:var(--ink)">Irrigation</span>
+          </div>
+          <div class="card p-4 flex items-center gap-2.5">
+            <div class="card-glow"></div>
+            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            <span class="f-body text-xs" style="color:var(--ink)">Insect Netting</span>
+          </div>
+          <div class="card p-4 flex items-center gap-2.5">
+            <div class="card-glow"></div>
+            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M12 4v16"/></svg>
+            <span class="f-body text-xs" style="color:var(--ink)">GH Glass / Ground Cover</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 2 — CONTROL DE PRESUPUESTO ============ -->
+    <section class="slide">
+      <div class="w-full max-w-5xl">
+        <p class="eyebrow mb-2">Materiales N · CAPEX 2026</p>
+        <h1 class="f-title text-3xl md:text-4xl mb-3">Control de Presupuesto</h1>
+        <p class="f-body text-xs md:text-sm mb-5 max-w-2xl" style="color:var(--muted)">
+          Presupuesto (budget) aprobado para CAPEX N 2026, consumo realizado y compromisos
+          de gasto en proceso o en cotización — la base para decidir si hay espacio
+          presupuestal para sumar materiales N adicionales al listado.
+        </p>
+
+        <div class="card p-5 mb-4">
+          <div class="card-glow"></div>
+          <div class="flex items-center justify-between mb-1 f-body" style="font-size:.6rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em">
+            <span style="padding-left:2.6rem">Planta</span>
+            <span class="hidden md:flex gap-6"><span>Presupuesto</span><span>Consumido</span><span>Disponible</span></span>
+          </div>
+
+          <details class="acc">
+            <summary>
+              <svg class="acc-chevron w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+              <span class="acc-icon"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg></span>
+              <span class="f-body flex-1" style="color:var(--ink); font-weight:600; font-size:.8rem">JVA</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$877,942.18</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$578,780.65</span>
+              <span class="f-body text-xs pos" style="min-width:5.5rem; text-align:right; font-weight:600">$299,161.53</span>
+            </summary>
+            <div class="acc-detail">
+              <table>
+                <tr><th>Supplier</th><th>Type</th><th>Descripción</th><th class="right">Budget</th><th class="right">Consumido</th></tr>
+                <tr><td>Metaliser</td><td><span class="type-chip">Plastics33</span></td><td class="desc">Plástico y zigzag para invernadero 1 y 2, e instalación</td><td class="right">$282,484.13</td><td class="right">$156,841.12</td></tr>
+                <tr><td colspan="2"></td><td class="desc">↳ Mano de obra</td><td class="right"></td><td class="right">$56,465.00</td></tr>
+                <tr><td colspan="2"></td><td class="desc">↳ Zigzag</td><td class="right"></td><td class="right">$15,000.00</td></tr>
+                <tr><td colspan="2"></td><td class="desc">↳ Ligas</td><td class="right"></td><td class="right">$11,400.00</td></tr>
+                <tr><td>Netafim</td><td><span class="type-chip">Irrigation</span></td><td class="desc">Riego invernaderos 1, 2, 3, 4 y 6</td><td class="right">$102,990.55</td><td class="right">$100,744.93</td></tr>
+                <tr><td>Quantify</td><td><span class="type-chip">Ground Cover</span></td><td class="desc">Ground Cover 100 White Lined 5.15×75m — Fase 1 y 2</td><td class="right">$137,211.99</td><td class="right">$68,132.13</td></tr>
+                <tr><td>Svensson</td><td><span class="type-chip">Insect Netting</span></td><td class="desc">Mallas antiáfidos e instalación inv. 1 y 2 + Fase 1 (A, B, C, D)</td><td class="right">$312,804.17</td><td class="right">$83,299.64</td></tr>
+                <tr><td colspan="2"></td><td class="desc">↳ Instalación adicional</td><td class="right"></td><td class="right">$31,203.00</td></tr>
+                <tr><td>Servicios Valle</td><td><span class="type-chip">Irrigation</span></td><td class="desc">Actualización de riego invernadero 5</td><td class="right">$29,263.97</td><td class="right">$47,466.26</td></tr>
+                <tr><td>—</td><td><span class="type-chip">GH Glass</span></td><td class="desc">Vidrio para Fase 1, Fase 2 e invernadero 6</td><td class="right">$13,187.37</td><td class="right">$8,228.57</td></tr>
+              </table>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary>
+              <svg class="acc-chevron w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+              <span class="acc-icon"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg></span>
+              <span class="f-body flex-1" style="color:var(--ink); font-weight:600; font-size:.8rem">GAF</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$629,957.28</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$698,524.22</span>
+              <span class="f-body text-xs neg" style="min-width:5.5rem; text-align:right; font-weight:600">-$68,566.93</span>
+            </summary>
+            <div class="acc-detail">
+              <table>
+                <tr><th>Supplier</th><th>Type</th><th>Descripción</th><th class="right">Budget</th><th class="right">Consumido</th></tr>
+                <tr><td>S/P</td><td><span class="type-chip">Plastics33</span></td><td class="desc">Plásticos, zigzag e instalación de laterales — 6 bloques (inv. 10 y 1 VPB, inv. 2–6 Ginegar)</td><td class="right">$518,538.20</td><td class="right">$445,635.14</td></tr>
+                <tr><td colspan="2"></td><td class="desc">↳ Mano de obra</td><td class="right"></td><td class="right">$177,465.60</td></tr>
+                <tr><td>jrm negocios fluidos</td><td><span class="type-chip">Irrigation</span></td><td class="desc">Cambio de goteros — 3 invernaderos (1, 2 y 4)</td><td class="right">$37,893.19</td><td class="right">$37,968.40</td></tr>
+                <tr><td>jrm negocios fluidos</td><td><span class="type-chip">Irrigation</span></td><td class="desc">Cambio de microtubín en invernaderos orgánicos (1, 2 y 4)</td><td class="right">$34,286.30</td><td class="right">—</td></tr>
+                <tr><td>S/P</td><td><span class="type-chip">Insect Netting</span></td><td class="desc">Malla antiáfidos perímetro y pasillos e instalación (1, 3, 5, 7, 8, 10 y pasillo central)</td><td class="right">$39,239.59</td><td class="right">$26,729.25</td></tr>
+                <tr><td colspan="2"></td><td class="desc">↳ Mano de obra</td><td class="right"></td><td class="right">$10,725.83</td></tr>
+              </table>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary>
+              <svg class="acc-chevron w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+              <span class="acc-icon"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg></span>
+              <span class="f-body flex-1" style="color:var(--ink); font-weight:600; font-size:.8rem">Bonita</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$72,841.95</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$78,441.95</span>
+              <span class="f-body text-xs neg" style="min-width:5.5rem; text-align:right; font-weight:600">-$5,600.00</span>
+            </summary>
+            <div class="acc-detail">
+              <table>
+                <tr><th>Supplier</th><th>Type</th><th>Descripción</th><th class="right">Budget</th><th class="right">Consumido</th></tr>
+                <tr><td>CPV</td><td><span class="type-chip">GH Glass</span></td><td class="desc">Vidrio de reposición — 11 formatos distintos</td><td class="right">$51,241.95</td><td class="right">—</td></tr>
+                <tr><td>INA Plastics</td><td><span class="type-chip">Irrigation</span></td><td class="desc">Spacers para canaletas de drenaje dañadas</td><td class="right">$21,600.00</td><td class="right">$27,200.00</td></tr>
+              </table>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary>
+              <svg class="acc-chevron w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+              <span class="acc-icon"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg></span>
+              <span class="f-body flex-1" style="color:var(--ink); font-weight:600; font-size:.8rem">PGA</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$18,787.22</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$22,147.20</span>
+              <span class="f-body text-xs neg" style="min-width:5.5rem; text-align:right; font-weight:600">-$3,359.98</span>
+            </summary>
+            <div class="acc-detail">
+              <table>
+                <tr><th>Supplier</th><th>Type</th><th>Descripción</th><th class="right">Budget</th><th class="right">Consumido</th></tr>
+                <tr><td>Metaliser</td><td><span class="type-chip">Plastics33</span></td><td class="desc">Mano de obra para instalación de plásticos (Carry Over 2025)</td><td class="right">$18,787.22</td><td class="right">$11,073.60</td></tr>
+                <tr><td colspan="2"></td><td class="desc">↳ Carry Over 2025</td><td class="right"></td><td class="right">$11,073.60</td></tr>
+              </table>
+            </div>
+          </details>
+
+          <details class="acc">
+            <summary>
+              <svg class="acc-chevron w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+              <span class="acc-icon"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg></span>
+              <span class="f-body flex-1" style="color:var(--ink); font-weight:600; font-size:.8rem">Sonora — Ímuris</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$76,945.01</span>
+              <span class="f-body text-xs" style="color:var(--muted); min-width:5.5rem; text-align:right">$73,397.48</span>
+              <span class="f-body text-xs pos" style="min-width:5.5rem; text-align:right; font-weight:600">$3,547.53</span>
+            </summary>
+            <div class="acc-detail">
+              <table>
+                <tr><th>Supplier</th><th>Type</th><th>Descripción</th><th class="right">Budget</th><th class="right">Consumido</th></tr>
+                <tr><td>SIA</td><td><span class="type-chip">Insect Netting</span></td><td class="desc">Malla antiáfido 40×25 cristal, 3.70×100m</td><td class="right">$12,172.36</td><td class="right">$11,592.00</td></tr>
+                <tr><td>ValyVal</td><td><span class="type-chip">GH Glass</span></td><td class="desc">Vidrio tipo 4mm claro, diferentes medidas</td><td class="right">$10,800.00</td><td class="right">$34,159.48</td></tr>
+                <tr><td>SIA</td><td><span class="type-chip">Ground Cover</span></td><td class="desc">Ground Cover 130 grs blanco, 6.40×100m</td><td class="right">$26,904.31</td><td class="right">—</td></tr>
+                <tr><td>SIA</td><td><span class="type-chip">Ground Cover</span></td><td class="desc">Ground Cover 130 grs blanco, 8.00×110m</td><td class="right">$27,068.34</td><td class="right">$27,646.00</td></tr>
+              </table>
+            </div>
+          </details>
+
+          <div class="flex items-center justify-between pt-3 mt-1" style="border-top:2px solid #D7E6C8">
+            <span class="f-body" style="color:var(--ink); font-weight:700; font-size:.8rem; padding-left:2.6rem">Total</span>
+            <div class="flex gap-6">
+              <span class="f-body text-xs" style="color:var(--ink); font-weight:700; min-width:5.5rem; text-align:right">$1,676,473.65</span>
+              <span class="f-body text-xs" style="color:var(--ink); font-weight:700; min-width:5.5rem; text-align:right">$1,451,291.49</span>
+              <span class="f-body text-xs pos" style="font-weight:700; min-width:5.5rem; text-align:right">$225,182.15</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card--positive p-4 inline-flex items-center gap-3" style="max-width:100%">
+          <div class="card-glow"></div>
+          <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 2.5"/></svg>
+          <p class="f-body text-sm" style="color:var(--ink)">
+            Sobrante si se utiliza lo pendiente en aprobación: <strong>$103,198.32</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 3 — DECISIONES Y PLAN DE ACCIÓN ============ -->
+    <section class="slide">
+      <div class="w-full max-w-5xl">
+        <p class="eyebrow mb-2">Materiales N · CAPEX 2026</p>
+        <h1 class="f-title text-3xl md:text-4xl mb-5">Decisiones y plan de acción</h1>
+
+        <div class="grid md:grid-cols-3 gap-4 items-stretch">
+
+          <div class="card p-6 flex flex-col">
+            <div class="card-glow"></div>
+            <div class="w-9 h-9 rounded-lg mb-3 flex items-center justify-center" style="background:var(--cream)">
+              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="var(--verde)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <h2 class="f-subtitle text-sm mb-3" style="color:var(--ink)">Decisiones Semana 28</h2>
+            <p class="f-body text-xs mb-3" style="color:var(--muted)">Solicitudes pendientes de evaluación para cruzar contra el saldo disponible:</p>
+            <div class="rounded-lg text-center py-3 mb-3" style="background:var(--cream)">
+              <p class="f-body" style="font-size:.62rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em">Monto en aprobación</p>
+              <p class="f-title text-2xl" style="color:var(--verde)">$121,983.83</p>
+            </div>
+            <ul class="space-y-2 f-body text-xs flex-1" style="color:var(--muted)">
+              <li class="flex justify-between gap-2"><span>Suministro Ground Cover JVA</span><span style="color:var(--ink)">$48,793.00</span></li>
+              <li class="flex justify-between gap-2"><span>Labor Plásticos JVA</span><span style="color:var(--ink)">$28,678.40</span></li>
+              <li class="flex justify-between gap-2"><span>Spacers JVA</span><span style="color:var(--ink)">$23,341.00</span></li>
+              <li class="flex justify-between gap-2"><span>Suministro Plásticos JVA</span><span style="color:var(--ink)">$15,000.00</span></li>
+              <li class="flex justify-between gap-2"><span>Labor Mallas JVA</span><span style="color:var(--ink)">$6,171.43</span></li>
+            </ul>
+          </div>
+
+          <div class="card p-6 flex flex-col">
+            <div class="card-glow"></div>
+            <div class="w-9 h-9 rounded-lg mb-3 flex items-center justify-center" style="background:var(--cream)">
+              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="var(--verde)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+            </div>
+            <h2 class="f-subtitle text-sm mb-3" style="color:var(--ink)">Áreas de Oportunidad</h2>
+            <ul class="space-y-3 f-body text-sm flex-1" style="color:var(--muted)">
+              <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                Presupuestar con fundamentos —cotizaciones físicas— para no desviarnos por arriba ni por abajo.
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                Formatos estándar y unificados para levantar cada necesidad.
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                Mejorar tiempos de respuesta de las áreas de soporte (Compras, Ingeniería).
+              </li>
+            </ul>
+          </div>
+
+          <div class="card card--positive p-6 flex flex-col">
+            <div class="card-glow"></div>
+            <div class="w-9 h-9 rounded-lg mb-3 flex items-center justify-center" style="background:#E4EFD5">
+              <svg class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="var(--verde)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <h2 class="f-subtitle text-sm mb-3" style="color:var(--ink)">Compromisos Adquiridos</h2>
+            <ul class="space-y-3 f-body text-sm flex-1" style="color:var(--muted)">
+              <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                Claridad en el proceso de solicitud y aprobación.
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="var(--verde-claro)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                Escalamiento definido en caso de que se requiera.
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============ CÁPSULA DE NAVEGACIÓN ============ -->
+  <div id="navCapsule">
+    <button id="prevBtn" aria-label="Diapositiva anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg>
     </button>
-    <button class="nav-btn right" id="nextBtn" onclick="moveSlide(1)" aria-label="Siguiente">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+    <div id="dots"></div>
+    <button id="nextBtn" aria-label="Siguiente diapositiva">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
     </button>
+    <span class="slide-counter" id="counter">1/3</span>
+  </div>
 
-    <div class="progress-indicator" id="dots">
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-    </div>
+  <script>
+    const track = document.getElementById('track');
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    const dotsWrap = document.getElementById('dots');
+    const counter = document.getElementById('counter');
+    let current = 0;
 
-    <div class="slider-container" id="slider">
+    for(let i = 0; i < total; i++){
+      const d = document.createElement('span');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(d);
+    }
+    const dots = dotsWrap.querySelectorAll('.dot');
 
-        <div class="slide">
-            <div class="max-w-6xl mx-auto w-full">
-                <div class="text-center mb-10">
-                    <p class="text-sm font-bold tracking-widest text-brand-light uppercase mb-3">Portal de Excelencia Operativa OPEX</p>
-                    <h1 class="text-5xl font-bold text-brand-dark mb-4">CAPEX Mantenimiento 2026</h1>
-                    <p class="text-lg text-gray-500 max-w-2xl mx-auto">Revisión financiera, control de presupuesto interno y decisiones estratégicas.</p>
-                </div>
+    function goTo(i){
+      current = (i + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      counter.textContent = `${current + 1}/${total}`;
+      dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+    }
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    window.addEventListener('keydown', (e) => {
+      if(e.key === 'ArrowRight') goTo(current + 1);
+      if(e.key === 'ArrowLeft') goTo(current - 1);
+    });
 
-                <div class="glass-card p-10 rounded-xl mt-8">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-2 h-8 bg-brand-yellow"></div>
-                        <h2 class="text-3xl font-bold text-brand-dark">Resumen de Inversión</h2>
-                    </div>
-                    <p class="text-gray-700 text-lg leading-relaxed mb-8">
-                        Solicitud de CAPEX "N" de mantenimiento para los invernaderos High Tech. El monto total de inversión presupuestada asciende a <strong class="text-brand-dark text-2xl">$1,676,473.65 USD</strong>. Su porcentaje de aprovechamiento se distribuye de la siguiente manera:
-                    </p>
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        <div class="bg-gray-50 p-6 rounded-lg text-center border border-gray-100">
-                            <div class="text-4xl font-bold text-brand-dark">40%</div>
-                            <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-2">JVA</div>
-                        </div>
-                        <div class="bg-gray-50 p-6 rounded-lg text-center border border-gray-100">
-                            <div class="text-4xl font-bold text-brand-dark">38%</div>
-                            <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-2">GAF</div>
-                        </div>
-                        <div class="bg-gray-50 p-6 rounded-lg text-center border border-gray-100">
-                            <div class="text-4xl font-bold text-brand-dark">5%</div>
-                            <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-2">Ímuris</div>
-                        </div>
-                        <div class="bg-gray-50 p-6 rounded-lg text-center border border-gray-100">
-                            <div class="text-4xl font-bold text-brand-dark">4%</div>
-                            <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-2">Bonita</div>
-                        </div>
-                        <div class="bg-gray-50 p-6 rounded-lg text-center border border-gray-100">
-                            <div class="text-4xl font-bold text-brand-dark">1%</div>
-                            <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider mt-2">PGA</div>
-                        </div>
-                    </div>
-                    <div class="mt-8 text-center text-sm text-gray-400">
-                        <p>Utilice las flechas direccionales del teclado (&larr; &rarr;) para avanzar</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="max-w-6xl mx-auto w-full">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-2 h-10 bg-brand-yellow"></div>
-                    <h2 class="text-4xl font-bold text-brand-dark">Control de Presupuesto</h2>
-                </div>
-                
-                <div class="glass-card rounded-xl overflow-hidden shadow-md">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50 text-brand-dark text-sm border-b border-gray-200">
-                                <th class="py-5 px-6 font-bold uppercase tracking-wide">Planta</th>
-                                <th class="py-5 px-6 font-bold uppercase tracking-wide text-right">Presupuesto Asignado</th>
-                                <th class="py-5 px-6 font-bold uppercase tracking-wide text-right">Saldo Consumido</th>
-                                <th class="py-5 px-6 font-bold uppercase tracking-wide text-right">Monto Disponible</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-base">
-                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                <td class="py-5 px-6 font-bold text-gray-800">JVA</td>
-                                <td class="py-5 px-6 text-right text-gray-800 font-medium">$877,942.18</td>
-                                <td class="py-5 px-6 text-right text-gray-600">$578,780.65</td>
-                                <td class="py-5 px-6 text-right text-brand-dark font-bold">$299,161.53</td>
-                            </tr>
-                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                <td class="py-5 px-6 font-bold text-gray-800">GAF</td>
-                                <td class="py-5 px-6 text-right text-gray-800 font-medium">$629,957.28</td>
-                                <td class="py-5 px-6 text-right text-gray-600">$698,524.22</td>
-                                <td class="py-5 px-6 text-right text-red-600 font-bold">-$68,566.93</td>
-                            </tr>
-                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                <td class="py-5 px-6 font-bold text-gray-800">Bonita</td>
-                                <td class="py-5 px-6 text-right text-gray-800 font-medium">$72,841.95</td>
-                                <td class="py-5 px-6 text-right text-gray-600">$78,441.95</td>
-                                <td class="py-5 px-6 text-right text-red-600 font-bold">-$5,600.00</td>
-                            </tr>
-                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                <td class="py-5 px-6 font-bold text-gray-800">PGA</td>
-                                <td class="py-5 px-6 text-right text-gray-800 font-medium">$18,787.22</td>
-                                <td class="py-5 px-6 text-right text-gray-600">$22,147.20</td>
-                                <td class="py-5 px-6 text-right text-red-600 font-bold">-$3,359.98</td>
-                            </tr>
-                            <tr class="border-b-2 border-gray-200 hover:bg-gray-50 transition-colors">
-                                <td class="py-5 px-6 font-bold text-gray-800">Sonora - Ímuris</td>
-                                <td class="py-5 px-6 text-right text-gray-800 font-medium">$76,945.01</td>
-                                <td class="py-5 px-6 text-right text-gray-600">$73,397.48</td>
-                                <td class="py-5 px-6 text-right text-brand-dark font-bold">$3,547.53</td>
-                            </tr>
-                        </tbody>
-                        <tfoot class="bg-gray-50">
-                            <tr>
-                                <td class="py-5 px-6 font-bold text-brand-dark text-lg uppercase tracking-wide">TOTAL</td>
-                                <td class="py-5 px-6 text-right font-bold text-gray-800 text-lg">$1,676,473.65</td>
-                                <td class="py-5 px-6 text-right font-bold text-gray-800 text-lg">$1,451,291.49</td>
-                                <td class="py-5 px-6 text-right font-bold text-brand-dark text-lg">$225,182.15</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-                <div class="mt-6 glass-card border-l-4 border-l-brand-yellow p-5 rounded-lg inline-block">
-                    <p class="text-gray-800 font-medium flex items-center gap-3 text-lg">
-                        <svg class="w-6 h-6 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Sobrante si utilizamos lo pendiente en aprobación: <strong class="text-brand-dark ml-2 text-xl">$103,198.32</strong>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="max-w-6xl mx-auto w-full">
-                
-                <div class="grid md:grid-cols-2 gap-10">
-                    
-                    <div>
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="w-2 h-8 bg-brand-light"></div>
-                            <h2 class="text-3xl font-bold text-brand-dark">Decisiones Semana 28</h2>
-                        </div>
-                        <div class="glass-card p-6 rounded-xl h-full flex flex-col justify-center">
-                            <p class="text-gray-600 mb-6">Monto total de solicitudes pendientes de evaluación para cruce con el saldo disponible:</p>
-                            
-                            <div class="text-center bg-gray-50 rounded-lg p-6 mb-6 border border-gray-200">
-                                <span class="block text-sm text-gray-500 uppercase font-bold tracking-widest mb-1">Monto en Aprobación</span>
-                                <span class="block text-5xl font-bold text-brand-dark">$121,983.83</span>
-                            </div>
-
-                            <ul class="space-y-4 text-sm text-gray-700">
-                                <li class="flex justify-between border-b border-gray-100 pb-2">
-                                    <span class="font-semibold text-gray-800">1. Suministro Ground Cover JVA</span>
-                                    <span class="text-brand-dark font-bold">$48,793.00</span>
-                                </li>
-                                <li class="flex justify-between border-b border-gray-100 pb-2">
-                                    <span class="font-semibold text-gray-800">2. Labor Plásticos JVA</span>
-                                    <span class="text-brand-dark font-bold">$28,678.40</span>
-                                </li>
-                                <li class="flex justify-between border-b border-gray-100 pb-2">
-                                    <span class="font-semibold text-gray-800">3. Spacers JVA</span>
-                                    <span class="text-brand-dark font-bold">$23,341.00</span>
-                                </li>
-                                <li class="flex justify-between border-b border-gray-100 pb-2">
-                                    <span class="font-semibold text-gray-800">4. Suministro Plásticos JVA</span>
-                                    <span class="text-brand-dark font-bold">$15,000.00</span>
-                                </li>
-                                <li class="flex justify-between pb-2">
-                                    <span class="font-semibold text-gray-800">5. Labor Mallas JVA</span>
-                                    <span class="text-brand-dark font-bold">$6,171.43</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        
-                        <div class="flex items-center gap-3 mb-2">
-                            <div class="w-2 h-8 bg-brand-yellow"></div>
-                            <h2 class="text-3xl font-bold text-brand-dark">Plan de Acción</h2>
-                        </div>
-
-                        <div class="glass-card p-6 rounded-xl border-l-4 border-l-brand-yellow">
-                            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Áreas de Oportunidad
-                            </h3>
-                            <ul class="space-y-3 text-gray-700 text-sm">
-                                <li class="flex items-start gap-3">
-                                    <div class="flex-shrink-0 w-6 h-6 bg-gray-100 text-brand-dark font-bold rounded-full flex items-center justify-center text-xs">1</div>
-                                    <p>Realizar presupuesto con fundamentos (tener cotizaciones físicas) para evitar presupuestar por arriba o por abajo.</p>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <div class="flex-shrink-0 w-6 h-6 bg-gray-100 text-brand-dark font-bold rounded-full flex items-center justify-center text-xs">2</div>
-                                    <p>Contar con formatos estándar y unificados para llenar las necesidades.</p>
-                                </li>
-                                <li class="flex items-start gap-3">
-                                    <div class="flex-shrink-0 w-6 h-6 bg-gray-100 text-brand-dark font-bold rounded-full flex items-center justify-center text-xs">3</div>
-                                    <p>Mejorar tiempos de respuesta de las áreas de soporte (Compras, Ingeniería).</p>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="glass-card p-6 rounded-xl border-l-4 border-l-brand-light">
-                            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <svg class="w-5 h-5 text-brand-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                Compromisos Adquiridos
-                            </h3>
-                            <ul class="space-y-3 text-gray-700 font-medium">
-                                <li class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-brand-dark flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    1. Claridad en el proceso.
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-brand-dark flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                    2. Escalamiento en caso de que se requiera.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const totalSlides = slides.length;
-        const sliderContainer = document.getElementById('slider');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const dots = document.querySelectorAll('.dot');
-
-        function updateUI() {
-            sliderContainer.style.transform = `translateX(-${currentSlide * 100}vw)`;
-
-            if (currentSlide === 0) {
-                prevBtn.classList.add('disabled');
-            } else {
-                prevBtn.classList.remove('disabled');
-            }
-
-            if (currentSlide === totalSlides - 1) {
-                nextBtn.classList.add('disabled');
-            } else {
-                nextBtn.classList.remove('disabled');
-            }
-
-            dots.forEach((dot, index) => {
-                if (index === currentSlide) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        }
-
-        function moveSlide(direction) {
-            currentSlide += direction;
-            if (currentSlide < 0) currentSlide = 0;
-            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
-            updateUI();
-        }
-
-        // Navegación con teclado
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') {
-                moveSlide(1);
-            } else if (e.key === 'ArrowLeft') {
-                moveSlide(-1);
-            }
-        });
-    </script>
+    document.querySelectorAll('.card').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
+    });
+  </script>
 </body>
 </html>
