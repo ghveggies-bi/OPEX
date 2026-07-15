@@ -69,6 +69,71 @@
   .dot{ width:4px; height:4px; border-radius:9999px; background:rgba(255,255,255,.32); transition:background .2s ease, width .2s ease; flex-shrink:0; }
   .dot.active{ background:var(--verde-claro); width:16px; }
   .slide-counter{ color:rgba(255,255,255,.55); font-family:'Inter',sans-serif; font-size:.65rem; font-weight:600; padding-left:2px; }
+
+  /* ===== Slide 4 · SEED — resumen ejecutivo integrado ===== */
+  .seed-kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:.7rem; }
+  .seed-kpi{ padding:.85rem 1rem; display:flex; align-items:center; gap:.75rem; min-width:0; }
+  .seed-kpi-icon{
+    width:34px; height:34px; border-radius:9999px; flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--verde); color:#fff;
+  }
+  .seed-kpi-icon svg{ width:17px; height:17px; }
+  .seed-kpi-value{
+    font-family:'Antique Olive Compact','Playfair Display',serif;
+    font-size:1.8rem; line-height:.9; font-weight:800; color:var(--verde);
+  }
+  .seed-kpi-label{ font-size:.63rem; color:var(--muted); margin-top:.2rem; line-height:1.15; }
+
+  .seed-main{ display:grid; grid-template-columns:1.05fr .95fr; gap:1rem; margin-top:1rem; }
+  .seed-panel{ padding:1rem 1.1rem; }
+  .seed-bars{ height:190px; display:grid; grid-template-columns:repeat(6,1fr); gap:.65rem; align-items:end; margin-top:.8rem; }
+  .seed-plant{ height:100%; display:grid; grid-template-rows:1fr auto; gap:.35rem; }
+  .seed-bar-track{
+    height:100%; border-radius:.8rem; overflow:hidden; display:flex; align-items:flex-end;
+    background:#F0F4ED; border:1px solid #E2ECD8;
+  }
+  .seed-stack{ width:100%; display:flex; flex-direction:column-reverse; border-radius:.8rem; overflow:hidden; }
+  .seed-closed{ background:var(--verde); }
+  .seed-open{ background:var(--verde-claro); }
+  .seed-plant-name{ text-align:center; font-size:.65rem; font-weight:700; color:var(--ink); }
+  .seed-plant-total{ text-align:center; font-size:.55rem; color:var(--muted); opacity:.8; }
+  .seed-legend{ display:flex; gap:1rem; font-size:.58rem; color:var(--muted); }
+  .seed-legend span{ display:flex; align-items:center; gap:.35rem; }
+  .seed-legend i{ width:8px; height:8px; border-radius:3px; display:inline-block; }
+
+  .seed-story{ display:grid; grid-template-columns:1fr 1fr; gap:.65rem; margin-top:.75rem; }
+  .seed-story-card{ padding:.75rem .8rem; border-radius:.85rem; background:#F8FAF6; border:1px solid #EAEFE9; }
+  .seed-story-num{
+    font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:800;
+    color:var(--verde-claro); line-height:1;
+  }
+  .seed-story-card h3{ font-size:.7rem; color:var(--ink); margin:.25rem 0; }
+  .seed-story-card p{ font-size:.61rem; line-height:1.35; color:var(--muted); }
+
+  .seed-bottom{ display:grid; grid-template-columns:.9fr 1.1fr; gap:1rem; margin-top:1rem; }
+  .seed-list{ display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin-top:.65rem; }
+  .seed-mini{
+    display:flex; align-items:flex-start; gap:.5rem; padding:.6rem .65rem;
+    border-radius:.75rem; background:var(--cream); border:1px solid #EEE9CB;
+  }
+  .seed-mini-index{
+    width:20px; height:20px; border-radius:9999px; flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--verde); color:#fff; font-size:.56rem; font-weight:700;
+  }
+  .seed-mini p{ font-size:.61rem; line-height:1.3; color:var(--muted); }
+  .seed-message{
+    margin-top:.85rem; padding:.7rem 1rem; border-radius:.9rem; text-align:center;
+    background:#F5F9EF; border:1px solid #DCEBC8;
+    font-size:.68rem; line-height:1.35; font-weight:600; color:var(--verde);
+  }
+  @media(max-width:900px){
+    .seed-kpis{ grid-template-columns:repeat(2,1fr); }
+    .seed-main,.seed-bottom{ grid-template-columns:1fr; }
+    .seed-bars{ height:160px; }
+  }
+
 </style>
 </head>
 <body>
@@ -80,12 +145,12 @@
     <!-- ============ SLIDE 1 — RESULTADOS DEL PRIMER SEMESTRE ============ -->
     <section class="slide">
       <div class="w-full max-w-5xl">
-        <p class="eyebrow mb-2">Área de Procesos · Mid-Year Review 2026</p>
-        <h1 class="f-title text-3xl md:text-4xl mb-3">Resultados del primer semestre</h1>
+        <p class="eyebrow mb-2">Resultado · Área de Procesos</p>
+        <h1 class="f-title text-3xl md:text-4xl mb-3">Lo que construimos en el primer semestre</h1>
         <p class="f-body text-xs md:text-sm mb-5 max-w-2xl" style="color:var(--muted)">
-          El área de Procesos existe para desarrollar y estandarizar los procesos de High Tech:
-          documentarlos, identificar oportunidades de mejora y buenas prácticas, y definir
-          indicadores que reduzcan la variabilidad operativa.
+          El área de Procesos comenzó construyendo la base: documentar y estandarizar la operación de High Tech,
+          identificar oportunidades de mejora y buenas prácticas, y definir indicadores que reduzcan
+          la variabilidad operativa. Este primer avance permitió hacer visible qué existe, qué falta y dónde actuar.
         </p>
 
         <div class="grid md:grid-cols-3 gap-4">
@@ -132,11 +197,11 @@
     <!-- ============ SLIDE 2 — DESVIACIONES Y CAUSA RAÍZ ============ -->
     <section class="slide">
       <div class="w-full max-w-5xl">
-        <p class="eyebrow mb-2">Área de Procesos · Mid-Year Review 2026</p>
-        <h1 class="f-title text-3xl md:text-4xl mb-3">Lo que encontramos, y por qué</h1>
+        <p class="eyebrow mb-2">Desviación y causa raíz · Área de Procesos</p>
+        <h1 class="f-title text-3xl md:text-4xl mb-3">Lo que encontramos, y por qué ocurrió</h1>
         <p class="f-body text-xs md:text-sm mb-5 max-w-2xl" style="color:var(--muted)">
-          Más que una desviación en la ejecución, identificamos una oportunidad para
-          fortalecer la planeación del área.
+          La documentación avanzó, pero no bajo un portafolio estratégico previamente priorizado.
+          La desviación no fue dejar de trabajar, sino responder primero a la urgencia y después a la planeación.
         </p>
 
         <div class="grid md:grid-cols-2 gap-4">
@@ -186,8 +251,8 @@
     <!-- ============ SLIDE 3 — OPORTUNIDADES Y COMPROMISOS ============ -->
     <section class="slide">
       <div class="w-full max-w-5xl">
-        <p class="eyebrow mb-2">Área de Procesos · Mid-Year Review 2026</p>
-        <h1 class="f-title text-3xl md:text-4xl mb-5">Lo que viene en el segundo semestre</h1>
+        <p class="eyebrow mb-2">Compromisos · Área de Procesos</p>
+        <h1 class="f-title text-3xl md:text-4xl mb-5">Cómo convertimos el hallazgo en una ruta de trabajo</h1>
 
         <div class="grid md:grid-cols-3 gap-4 mb-4">
           <div class="card p-5">
@@ -234,6 +299,150 @@
       </div>
     </section>
 
+
+    <!-- ============ SLIDE 4 — SEED ============ -->
+    <section class="slide">
+      <div class="w-full max-w-5xl">
+        <p class="eyebrow mb-2">SEED · Seguimiento de mejora continua</p>
+        <h1 class="f-title text-3xl md:text-4xl mb-2">De documentar procesos a resolver desviaciones</h1>
+        <p class="f-body text-xs md:text-sm mb-4 max-w-3xl" style="color:var(--muted)">
+          Procesos establece la forma estándar de trabajar. SEED toma las desviaciones que aparecen en esa operación,
+          estructura el análisis de causa raíz y convierte los hallazgos en compromisos verificables.
+        </p>
+
+        <div class="seed-kpis">
+          <div class="card seed-kpi">
+            <div class="card-glow"></div>
+            <span class="seed-kpi-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </span>
+            <div><div class="seed-kpi-value">46</div><div class="seed-kpi-label">SEEDs generados</div></div>
+          </div>
+          <div class="card seed-kpi">
+            <div class="card-glow"></div>
+            <span class="seed-kpi-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </span>
+            <div><div class="seed-kpi-value">31</div><div class="seed-kpi-label">Cerrados</div></div>
+          </div>
+          <div class="card seed-kpi">
+            <div class="card-glow"></div>
+            <span class="seed-kpi-icon" style="background:var(--verde-claro)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </span>
+            <div><div class="seed-kpi-value">15</div><div class="seed-kpi-label">Abiertos</div></div>
+          </div>
+          <div class="card seed-kpi">
+            <div class="card-glow"></div>
+            <span class="seed-kpi-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19h16M7 16l4-5 3 3 4-7"/></svg>
+            </span>
+            <div><div class="seed-kpi-value">67%</div><div class="seed-kpi-label">Avance de cierre</div></div>
+          </div>
+        </div>
+
+        <div class="seed-main">
+          <div class="card seed-panel">
+            <div class="card-glow"></div>
+            <div class="flex items-end justify-between gap-3">
+              <div>
+                <p class="eyebrow" style="font-size:.58rem">Estatus por planta</p>
+                <h2 class="f-subtitle text-sm mt-1" style="color:var(--ink)">SEEDs cerrados y abiertos</h2>
+              </div>
+              <div class="seed-legend">
+                <span><i style="background:var(--verde)"></i>Cerrados</span>
+                <span><i style="background:var(--verde-claro)"></i>Abiertos</span>
+              </div>
+            </div>
+            <div class="seed-bars">
+              <div class="seed-plant">
+                <div class="seed-bar-track"><div class="seed-stack" style="height:100%"><div class="seed-closed" style="height:80%"></div><div class="seed-open" style="height:20%"></div></div></div>
+                <div><div class="seed-plant-name">JVA</div><div class="seed-plant-total">15 · 12/3</div></div>
+              </div>
+              <div class="seed-plant">
+                <div class="seed-bar-track"><div class="seed-stack" style="height:100%"><div class="seed-closed" style="height:53.33%"></div><div class="seed-open" style="height:46.67%"></div></div></div>
+                <div><div class="seed-plant-name">GAF</div><div class="seed-plant-total">15 · 8/7</div></div>
+              </div>
+              <div class="seed-plant">
+                <div class="seed-bar-track"><div class="seed-stack" style="height:40%"><div class="seed-closed" style="height:83.33%"></div><div class="seed-open" style="height:16.67%"></div></div></div>
+                <div><div class="seed-plant-name">SON</div><div class="seed-plant-total">6 · 5/1</div></div>
+              </div>
+              <div class="seed-plant">
+                <div class="seed-bar-track"><div class="seed-stack" style="height:26.67%"><div class="seed-closed" style="height:50%"></div><div class="seed-open" style="height:50%"></div></div></div>
+                <div><div class="seed-plant-name">BON</div><div class="seed-plant-total">4 · 2/2</div></div>
+              </div>
+              <div class="seed-plant">
+                <div class="seed-bar-track"><div class="seed-stack" style="height:13.33%"><div class="seed-closed" style="height:50%"></div><div class="seed-open" style="height:50%"></div></div></div>
+                <div><div class="seed-plant-name">PGA</div><div class="seed-plant-total">2 · 1/1</div></div>
+              </div>
+              <div class="seed-plant">
+                <div class="seed-bar-track"><div class="seed-stack" style="height:26.67%"><div class="seed-closed" style="height:75%"></div><div class="seed-open" style="height:25%"></div></div></div>
+                <div><div class="seed-plant-name">GSO</div><div class="seed-plant-total">4 · 3/1</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card seed-panel">
+            <div class="card-glow"></div>
+            <p class="eyebrow" style="font-size:.58rem">Hallazgos</p>
+            <h2 class="f-subtitle text-sm mt-1" style="color:var(--ink)">Lo que muestran los casos cerrados</h2>
+            <div class="seed-story">
+              <div class="seed-story-card">
+                <div class="seed-story-num">01</div>
+                <h3 class="f-subtitle">Mayor presencia</h3>
+                <p>Forecast, MIP y Calidad concentran la mayor cantidad de registros cerrados.</p>
+              </div>
+              <div class="seed-story-card">
+                <div class="seed-story-num">02</div>
+                <h3 class="f-subtitle">Reincidencia</h3>
+                <p>Se observan casos recurrentes en MIP, Forecast, Calidad y Capital Humano.</p>
+              </div>
+              <div class="seed-story-card">
+                <div class="seed-story-num">03</div>
+                <h3 class="f-subtitle">Patrones frecuentes</h3>
+                <p>Seguimiento tardío, acciones generales, fechas extendidas y reincidencia de indicadores.</p>
+              </div>
+              <div class="seed-story-card">
+                <div class="seed-story-num">04</div>
+                <h3 class="f-subtitle">Oportunidad</h3>
+                <p>Elevar la calidad del análisis, la definición de acciones y la evidencia de cierre.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="seed-bottom">
+          <div class="card seed-panel">
+            <div class="card-glow"></div>
+            <p class="eyebrow" style="font-size:.58rem">Causa raíz</p>
+            <h2 class="f-subtitle text-sm mt-1" style="color:var(--ink)">Qué debemos atacar</h2>
+            <div class="seed-list">
+              <div class="seed-mini"><span class="seed-mini-index">1</span><p>Disciplina de ejecución y seguimiento oportuno.</p></div>
+              <div class="seed-mini"><span class="seed-mini-index">2</span><p>Preparación previa con datos y contexto.</p></div>
+              <div class="seed-mini"><span class="seed-mini-index">3</span><p>Tiempo suficiente para desarrollar el ejercicio.</p></div>
+              <div class="seed-mini"><span class="seed-mini-index">4</span><p>Participación de las personas clave.</p></div>
+            </div>
+          </div>
+
+          <div class="card seed-panel card--positive">
+            <div class="card-glow"></div>
+            <p class="eyebrow" style="font-size:.58rem">Compromisos</p>
+            <h2 class="f-subtitle text-sm mt-1" style="color:var(--ink)">Segundo semestre</h2>
+            <div class="seed-list">
+              <div class="seed-mini"><span class="seed-mini-index">1</span><p>Preparar información antes de cada ejercicio.</p></div>
+              <div class="seed-mini"><span class="seed-mini-index">2</span><p>Llegar con datos concretos por KPI.</p></div>
+              <div class="seed-mini"><span class="seed-mini-index">3</span><p>Fortalecer el seguimiento semanal.</p></div>
+              <div class="seed-mini"><span class="seed-mini-index">4</span><p>Cerrar con evidencia y sostenibilidad.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="seed-message">
+          Procesos define el estándar; SEED asegura que las desviaciones se analicen, se atiendan y no vuelvan a repetirse.
+        </div>
+      </div>
+    </section>
+
   </div>
 
   <!-- ============ CÁPSULA DE NAVEGACIÓN ============ -->
@@ -245,7 +454,7 @@
     <button id="nextBtn" aria-label="Siguiente diapositiva">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
     </button>
-    <span class="slide-counter" id="counter">1/3</span>
+    <span class="slide-counter" id="counter">1/4</span>
   </div>
 
   <script>
