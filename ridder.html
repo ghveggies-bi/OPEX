@@ -179,6 +179,22 @@
   .details-btn.inline-small{margin-left:auto;padding:.38rem .72rem;background:rgba(255,252,235,.92);color:var(--ns-green);border:1px solid rgba(31,79,38,.16);box-shadow:none;font-size:.72rem;border-radius:.65rem;white-space:nowrap;}
   .details-btn.inline-small:hover{background:#FFFCEB;color:var(--ns-green-deep);}
 
+
+  /* Ajuste slider 7: bullets alineados y cuadros mas amplios */
+  .opportunity-slide.opportunity-slide-wide{padding:2.2vw 3.2vw;}
+  .opportunity-slide-wide .opportunity-wrap{width:min(1320px,100%);}
+  .opportunity-slide-wide .opportunity-grid{gap:1.15rem;margin-top:1.25rem;min-height:520px;}
+  .opportunity-slide-wide .opportunity-card{padding:1.35rem 1.45rem;align-items:stretch;justify-content:flex-start;text-align:left;}
+  .opportunity-slide-wide .opportunity-card h3{text-align:center;font-size:2rem;}
+  .opportunity-slide-wide .op-content{margin-top:.85rem;text-align:left;font-size:.76rem;line-height:1.24;color:#1F4F26;width:100%;}
+  .opportunity-slide-wide .op-section-title{font-weight:900;margin:.62rem 0 .22rem;color:#1F4F26;}
+  .opportunity-slide-wide .op-list{list-style:none;margin:0;padding:0;display:grid;gap:.34rem;}
+  .opportunity-slide-wide .op-list li{display:grid;grid-template-columns:12px 1fr;column-gap:.48rem;align-items:start;}
+  .opportunity-slide-wide .op-list .yellow-dot{margin-top:.32rem;}
+  .opportunity-slide-wide .op-list span:last-child{display:block;}
+  .opportunity-slide-wide .op-subline{display:block;margin-left:1.1rem;margin-top:.12rem;}
+  @media (max-width:1050px){.opportunity-slide-wide{overflow-y:auto;justify-content:flex-start;}.opportunity-slide-wide .opportunity-grid{grid-template-columns:1fr;}.opportunity-slide-wide .op-content{font-size:.85rem;}}
+
 </style>
 </head>
 <body>
@@ -387,7 +403,7 @@
     </section>
 
     <!-- SLIDE 7 — Áreas de oportunidad y compromisos -->
-    <section class="slide opportunity-slide" data-slide>
+    <section class="slide opportunity-slide opportunity-slide-wide" data-slide>
       <div class="slide-in opportunity-wrap">
         <div class="opportunity-title">
           <p class="eyebrow text-fresh-green">Seguimiento ejecutivo</p>
@@ -397,15 +413,49 @@
           <div class="opportunity-card">
             <h3>Áreas de oportunidad</h3>
             <div class="mini-line"></div>
+            <div class="op-content">
+              <p class="op-section-title">JVA Labor Cost Pepino</p>
+              <ul class="op-list">
+                <li><span class="yellow-dot"></span><span>Tiempo extra en actividades para ponerse al día debido a atrasos iniciales.</span></li>
+                <li><span class="yellow-dot"></span><span>Generar 2 targets para deshoje (sano / MIP).</span></li>
+                <li><span class="yellow-dot"></span><span>Target de bajada: actualmente no se está cumpliendo.</span></li>
+                <li><span class="yellow-dot"></span><span>Target de cosecha.</span></li>
+                <li><span class="yellow-dot"></span><span>Evaluar Pepino Baby.</span></li>
+              </ul>
+              <p class="op-section-title">JVA Labor Cost Tomate</p>
+              <ul class="op-list">
+                <li><span class="yellow-dot"></span><span>Target de cosecha.</span></li>
+              </ul>
+              <p class="op-section-title">Labor Cost Sonora</p>
+              <ul class="op-list">
+                <li><span class="yellow-dot"></span><span>Poder asignar actividades adicionales al personal en el nuevo modelo Labor Cost. Se ha observado una buena aceptación por parte de los empleados, impulsando una mayor productividad en otras actividades.</span></li>
+                <li><span class="yellow-dot"></span><span>Añadir la actividad <strong>“Desbrote abajo”</strong>. La aceptación de las actividades implementadas indica una oportunidad para incorporar esta actividad, generando beneficios para el trabajador y para la planta:<span class="op-subline">1º Mayor vigor.</span><span class="op-subline">2º Disminución de paglas.</span></span></li>
+              </ul>
+            </div>
           </div>
           <div class="opportunity-card">
             <h3>Compromisos</h3>
             <div class="mini-line"></div>
+            <div class="op-content">
+              <p class="op-section-title">JVA Labor Cost Pepino</p>
+              <ul class="op-list">
+                <li><span class="yellow-dot"></span><span>Definir las eventualidades y acciones para cada eventualidad (atraso) (SISSO).</span></li>
+                <li><span class="yellow-dot"></span><span>Reevaluar target / generar nuevo target para Deshoje MIP (Corynespora).</span></li>
+                <li><span class="yellow-dot"></span><span>Reevaluar target y presentar propuesta (2 vueltas &amp; 1.5 vueltas).</span></li>
+                <li><span class="yellow-dot"></span><span>Evaluar y analizar target de cosecha.</span></li>
+                <li><span class="yellow-dot"></span><span>Evaluar y analizar targets de diferente variedad.</span></li>
+              </ul>
+              <p class="op-section-title">JVA Labor Cost Tomate</p>
+              <ul class="op-list">
+                <li><span class="yellow-dot"></span><span>Evaluar y analizar target de cosecha.</span></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </section>
-    <!-- SLIDE 8 — Próximos pasos -->
+    
+<!-- SLIDE 8 — Próximos pasos -->
     <section class="slide" data-slide>
       <div class="slide-in max-w-4xl">
         <p class="eyebrow text-fresh-green">Próximos pasos</p>
@@ -443,7 +493,7 @@
         </div>
         <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
           <div class="table-panel overflow-x-auto"><p class="panel-title">Estado por frente de trabajo</p><table class="opex-table"><tr><th>Frente</th><th>Avance / Estado</th><th>Detalle</th></tr><tr><td>Configuración del sistema</td><td class="positive">100%</td><td>Completada</td></tr><tr><td>Pruebas funcionales</td><td class="positive">100%</td><td>Completada</td></tr><tr><td>Análisis y reportes</td><td>En proceso</td><td>Nómina / Power BI</td></tr><tr><td>Capacitación operativa</td><td>En proceso</td><td>Usuarios finales</td></tr><tr><td>Puesta en marcha</td><td>Próxima</td><td>Corrida paralela</td></tr></table></div>
-          <div class="table-panel"><p class="panel-title">Pendientes</p><ul class="space-y-3 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Ajuste de tabuladores de pago.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Generar reportes de eficiencias y pago de nómina.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Asegurar adopción con supervisores y operación.</span></li><li class="flex gap-2 items-center"><span class="yellow-dot mt-1"></span><span>Servidor exclusivo para Ridder.</span><button type="button" class="details-btn inline-small details-nav" data-go="serverDetail">Más detalles</button></li></ul></div>
+          <div class="table-panel"><p class="panel-title">Pendientes</p><ul class="space-y-3 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Ajuste de tabuladores de pago.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Generar reportes de eficiencias y pago de nómina.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Asegurar adopción con supervisores y operación.</span></li><li class="flex gap-2 items-center"><span class="yellow-dot mt-1"></span><span><strong><u>Servidor exclusivo para Ridder.</u></strong></span><button type="button" class="details-btn inline-small details-nav" data-go="serverDetail">Más detalles</button></li></ul></div>
         </div>
         <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
           <div class="table-panel"><p class="panel-title">Logros principales</p><ul class="space-y-2 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Servidor SQL, conectividad y estructura base habilitados.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Layout productivo, invernaderos, surcos y centros de costo configurados.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Alta de empleados y estructura organizacional completadas.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Actividades, rendimientos, cultivos y bonos de productividad definidos.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Pruebas funcionales iniciales del sistema ejecutadas satisfactoriamente.</span></li></ul></div>
