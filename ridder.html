@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Costos de Mano de Obra · OPEX · GHVeggies</title>
+<title>Labor Cost · Ridder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -66,192 +66,282 @@
   table.opex-table th{ text-align:left; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ns-green); border-bottom:2px solid rgba(48,115,56,.25); padding:.55rem .6rem; }
   table.opex-table td{ padding:.55rem .6rem; border-bottom:1px solid rgba(31,79,38,.08); font-size:.92rem; }
   .yellow-dot{ width:8px; height:8px; border-radius:50%; background:var(--ns-yellow); display:inline-block; }
+
+  /* Layout final Labor Cost */
+  .slide-results{ align-items:center; justify-content:center; padding:3.2vw 4.5vw; }
+  .slide-results .results-wrap{ width:min(1240px,100%); margin:0 auto; }
+  .slide-results .results-head{ text-align:center; margin:0 auto; }
+  .slide-results .results-head p{ margin-left:auto; margin-right:auto; }
+  .slide-results .kpi-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin-top:1.15rem; }
+  .slide-results .kpi-grid .stat-card{ padding:.9rem 1.05rem; }
+  .table-panel{ background:#fff; border:1px solid rgba(31,79,38,.12); border-radius:1.1rem; padding:.8rem; box-shadow:0 12px 32px -24px rgba(31,79,38,.35); }
+  .panel-title{ font-size:.82rem; font-weight:800; color:var(--ns-green-deep); margin:0 0 .5rem 0; letter-spacing:.02em; }
+  .slide-results table.opex-table th, .slide-expansion table.opex-table th{ font-size:.54rem; padding:.34rem .38rem; line-height:1.12; text-align:center; background:rgba(251,225,34,.70); color:#1F4F26; border-bottom:1px solid rgba(31,79,38,.16); }
+  .slide-results table.opex-table td, .slide-expansion table.opex-table td{ font-size:.66rem; padding:.34rem .38rem; text-align:center; white-space:nowrap; }
+  .slide-results table.opex-table td:first-child, .slide-results table.opex-table th:first-child, .slide-expansion table.opex-table td:first-child, .slide-expansion table.opex-table th:first-child{ text-align:left; }
+  .slide-results .money-table th{ font-size:.52rem; }
+  .slide-results .money-table td{ font-size:.62rem; }
+  .positive{ color:#008000; font-weight:700; }
+  .negative{ color:#b42318; font-weight:700; }
+  .slide-expansion{ align-items:center; justify-content:center; padding:4.2vw 6vw; }
+  .expansion-wrap{ width:min(1120px,100%); margin:0 auto; }
+  .expansion-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-top:1.6rem; align-items:start; }
+  .expansion-card{ background:#fff; border:1px solid rgba(31,79,38,.12); border-radius:1.1rem; padding:1rem; box-shadow:0 12px 32px -24px rgba(31,79,38,.35); }
+  .expansion-card h3{ color:var(--ns-green-deep); font-weight:800; margin-bottom:.65rem; }
+  .executive-slide{ background:#f4f8f6; color:#26364b; padding:0; display:block; overflow:hidden; }
+  .exec-header{ background:#00452d; color:#fff; padding:1.2rem 3rem .95rem; display:flex; align-items:flex-start; justify-content:space-between; gap:1.5rem; }
+  .exec-title{ font-family:'Inter',sans-serif; font-size:1.55rem; line-height:1.1; font-weight:800; margin:0; }
+  .exec-subtitle{ font-size:.78rem; color:#dfeee6; margin-top:.45rem; }
+  .exec-status{ background:#eaf4ee; color:#007a3d; border-radius:.45rem; padding:.55rem 1.15rem; font-size:.7rem; font-weight:800; white-space:nowrap; }
+  .exec-body{ padding:1.45rem 3rem 2rem; display:grid; grid-template-columns:1.05fr 1.4fr 1.2fr; gap:1.6rem; }
+  .exec-card{ background:#fff; border:1px solid rgba(31,79,38,.10); border-radius:.85rem; padding:1.45rem 1.55rem; box-shadow:0 2px 7px rgba(31,79,38,.08); }
+  .exec-card h3{ font-family:'Inter',sans-serif; font-weight:800; font-size:1rem; margin:0 0 1rem; color:#26364b; }
+  .exec-progress-num{ font-size:3rem; line-height:1; font-weight:900; color:#007a3d; text-align:center; margin:1.15rem 0; }
+  .exec-bar{ height:.72rem; background:#dff2e7; overflow:hidden; border-radius:0; margin:.35rem 1rem 1rem; }
+  .exec-bar span{ display:block; height:100%; width:88%; background:#00823e; }
+  .exec-muted{ font-size:.72rem; line-height:1.35; color:#5c6572; text-align:center; }
+  .work-row{ display:grid; grid-template-columns:1fr 70px 90px; gap:.7rem; align-items:center; font-size:.68rem; font-weight:700; border:1px solid #d8e7ea; border-radius:.35rem; padding:.55rem .65rem; margin-bottom:.6rem; background:#eaf9f1; }
+  .work-row.process{ background:#fff5e7; }
+  .work-row.next{ background:#edf4fb; }
+  .work-status{ color:#007a3d; text-align:center; }
+  .work-note{ color:#607082; text-align:right; font-size:.62rem; }
+  .exec-list{ list-style:none; margin:0; padding:0; font-size:.84rem; line-height:1.35; }
+  .exec-list li{ margin:.55rem 0; padding-left:.8rem; position:relative; }
+  .exec-list li::before{ content:'•'; position:absolute; left:0; color:#00823e; font-weight:900; }
+  .exec-wide{ grid-column:span 1; }
+  .exec-bottom{ padding:0 3rem 2rem; display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; }
+  .milestones{ display:grid; grid-template-columns:1fr 1fr; gap:1.65rem 2.6rem; margin-top:.7rem; }
+  .milestone{ display:grid; grid-template-columns:42px 1fr; gap:.9rem; align-items:start; }
+  .milestone-num{ width:42px; height:42px; border-radius:999px; background:#00823e; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; }
+  .milestone-title{ font-size:.78rem; font-weight:800; color:#26364b; }
+  .milestone-sub{ font-size:.65rem; color:#7a5169; margin-top:.25rem; }
+  .exec-message{ margin-top:1.25rem; background:#e3f2e9; color:#007a3d; font-size:.72rem; font-weight:700; text-align:center; border-radius:.35rem; padding:.55rem .8rem; }
+  @media (max-width:1000px){ .slide-expansion{ overflow-y:auto; justify-content:flex-start; } .expansion-grid{ grid-template-columns:1fr; } .executive-slide{ overflow-y:auto; } .exec-body,.exec-bottom{ grid-template-columns:1fr; } .exec-wide{ grid-column:auto; } }
+  @media (max-width:900px){ .slide-results{ overflow-y:auto; justify-content:flex-start; } .slide-results .kpi-grid{ grid-template-columns:1fr; } }
+
+
+  /* Ajuste final: ultimo slider con estilo OPEX y cuadro en esquina */
+  .final-exec-slide{ align-items:center; justify-content:center; padding:3.8vw 4.8vw; position:relative; }
+  .final-exec-wrap{ width:min(1080px,100%); margin:0 auto; }
+  .final-exec-title{ white-space:nowrap; text-align:center; font-size:2.45rem; }
+  .next-bonita-box{ position:absolute; right:14px; bottom:14px; background:var(--cream); border:1px solid rgba(31,79,38,.16); border-radius:.95rem; padding:.65rem .85rem; box-shadow:0 12px 32px -24px rgba(31,79,38,.35); width:230px; z-index:5; }
+  .next-bonita-box .label{ font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--fresh-green); font-weight:900; }
+  .next-bonita-box .text{ margin-top:.25rem; font-weight:900; color:var(--ns-green-deep); font-size:.86rem; line-height:1.2; }
+  .simple-gemso-slide{ text-align:center; }
+  @media (max-width:1100px){ .final-exec-title{ white-space:normal; } .next-bonita-box{ right:12px; bottom:12px; width:210px; } }
+
+
+.home-btn{display:inline-flex;align-items:center;justify-content:center;padding:.55rem .9rem;background:rgba(255,252,235,.92);color:#307338;font-weight:800;border:1px solid rgba(31,79,38,.18);border-radius:.75rem;text-decoration:none;box-shadow:0 8px 20px -18px rgba(31,79,38,.35);font-size:.78rem;} .home-btn:hover{background:#FFFCEB;color:#1F4F26;}
 </style>
 </head>
 <body>
   <div class="blob-field" aria-hidden="true"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
 
   <div class="slides-track" id="track">
-
-    <!-- SLIDE 1 — Portada -->
+    <!-- SLIDE 1 — Portada principal -->
     <section class="slide" data-slide>
-      <div class="slide-in">
-        <p class="eyebrow text-fresh-green">Sistema Ridder</p>
-        <h1 class="font-display text-5xl md:text-6xl font-extrabold mt-4">Costos de Mano de Obra</h1>
-        <p class="mt-6 max-w-xl text-lg text-ns-green-deep/80">Cómo controlamos la eficiencia del personal, medimos el desempeño real en campo y pagamos de forma justa por resultados.</p>
-        <div class="mt-8 flex items-center gap-2">
+      <div class="slide-in text-center mx-auto max-w-4xl">
+        <p class="eyebrow text-fresh-green">Implementación Labor Cost</p>
+        <h1 class="font-display text-6xl md:text-7xl font-extrabold mt-4">Labor Cost</h1>
+        <p class="mt-7 text-xl md:text-2xl text-ns-green-deep/80 max-w-3xl mx-auto">Implementación en Invernadero H de JVA e Invernadero 2 de Sonora.</p>
+        <div class="mt-9 flex items-center justify-center gap-2">
           <span class="yellow-dot"></span>
-          <span class="text-sm font-semibold text-ns-green">Portal de Excelencia Operativa · OPEX</span>
+          <span class="text-sm font-semibold text-ns-green">Sistema Ridder · Control de mano de obra</span>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 2 — El reto -->
-    <section class="slide" data-slide>
-      <div class="slide-in max-w-4xl">
-        <p class="eyebrow text-fresh-green">El reto</p>
-        <h2 class="font-display text-4xl md:text-5xl font-bold mt-4">Cada jornal cuenta en el campo</h2>
-        <p class="mt-6 text-lg text-ns-green-deep/80 max-w-2xl">La mano de obra es el costo variable más grande de la operación agrícola. Sin una forma objetiva de medir el avance real por persona y por actividad, es difícil saber si el presupuesto se está usando bien o si el pago refleja el desempeño verdadero de cada trabajador.</p>
-        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="stat-card">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#307338" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-            <p class="mt-3 font-semibold">El costo cambia cada semana</p>
-            <p class="text-sm text-ns-green-deep/70 mt-1">Sin datos por semana, el presupuesto se ajusta a ciegas.</p>
-          </div>
-          <div class="stat-card">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#307338" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M7 19V9"/><path d="M12 19V5"/><path d="M17 19v-7"/></svg>
-            <p class="mt-3 font-semibold">Medir desempeño real</p>
-            <p class="text-sm text-ns-green-deep/70 mt-1">No todas las cuadrillas rinden igual por surco o por hora.</p>
-          </div>
-          <div class="stat-card">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#307338" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 5.5L20 8l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>
-            <p class="mt-3 font-semibold">Pago justo</p>
-            <p class="text-sm text-ns-green-deep/70 mt-1">El salario debería reconocer el resultado, no solo la hora trabajada.</p>
-          </div>
+    <!-- SLIDE 2 — Resumen Invernadero H -->
+    <section class="slide slide-results" data-slide>
+      <div class="slide-in results-wrap">
+        <div class="results-head">
+          <p class="eyebrow text-fresh-green">Datos y resultados · Invernadero H JVA</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold mt-3">Resultados acumulados semanas 15 a 27</h2>
+          <p class="mt-3 text-base text-ns-green-deep/80 max-w-3xl">Información consolidada del Invernadero H: eficiencia por actividad y comparativo de presupuesto, costo real y ahorro.</p>
         </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 3 — Qué es Ridder -->
-    <section class="slide" data-slide>
-      <div class="slide-in max-w-4xl">
-        <p class="eyebrow text-fresh-green">El sistema</p>
-        <h2 class="font-display text-4xl md:text-5xl font-bold mt-4">Ridder, control de mano de obra basado en datos</h2>
-        <p class="mt-6 text-lg text-ns-green-deep/80 max-w-2xl">Ridder es la herramienta que hoy usamos para registrar, semana a semana, el avance de cada cuadrilla por actividad — anillo, bajada de tomate, desbrote, deshoje, despunte — y compararlo contra un histórico y un presupuesto.</p>
-        <ul class="mt-8 space-y-4 max-w-xl">
-          <li class="flex items-start gap-3">
-            <svg class="mt-1 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#79BF00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-            <span>Registra surcos promedio por persona en cada actividad, cada semana.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="mt-1 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#79BF00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-            <span>Calcula jornales equivalentes reales frente a los jornales presupuestados.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="mt-1 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#79BF00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-            <span>Compara el costo por surco real contra el histórico, actividad por actividad.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="mt-1 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#79BF00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-            <span>Sirve como base objetiva para esquemas de pago por desempeño.</span>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- SLIDE 4 — Cómo medimos -->
-    <section class="slide" data-slide>
-      <div class="slide-in max-w-4xl">
-        <p class="eyebrow text-fresh-green">Cómo medimos</p>
-        <h2 class="font-display text-4xl md:text-5xl font-bold mt-4">Tres métricas, un mismo objetivo</h2>
-        <p class="mt-4 text-lg text-ns-green-deep/80 max-w-2xl">Pagar por resultado empieza por medir lo mismo, de la misma forma, todas las semanas.</p>
-        <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="stat-card">
-            <p class="pill">Eficiencia</p>
-            <p class="mt-3 text-sm text-ns-green-deep/80">Surcos promedio por persona en la semana, comparados contra la mediana histórica de cada actividad.</p>
-          </div>
-          <div class="stat-card">
-            <p class="pill">Jornales equivalentes</p>
-            <p class="mt-3 text-sm text-ns-green-deep/80">Jornales realmente usados frente a los jornales presupuestados por actividad.</p>
-          </div>
-          <div class="stat-card">
-            <p class="pill">Costo por surco</p>
-            <p class="mt-3 text-sm text-ns-green-deep/80">Costo real por surco trabajado, comparado contra el costo histórico de referencia.</p>
-          </div>
+        <div class="kpi-grid">
+          <div class="stat-card text-center"><p class="stat-num text-4xl text-ns-green">82%</p><p class="mt-2 text-sm text-ns-green-deep/70">Mejora promedio de eficiencia</p></div>
+          <div class="stat-card text-center"><p class="stat-num text-4xl text-ns-green">47%</p><p class="mt-2 text-sm text-ns-green-deep/70">Reducción de jornales por actividad</p></div>
+          <div class="stat-card text-center"><p class="stat-num text-4xl text-ns-green">$166,289.67</p><p class="mt-2 text-sm text-ns-green-deep/70">Ahorro vs presupuesto</p></div>
         </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 5 — Datos y resultados -->
-    <section class="slide" data-slide>
-      <div class="slide-in max-w-5xl">
-        <p class="eyebrow text-fresh-green">Datos y resultados</p>
-        <h2 class="font-display text-4xl md:text-5xl font-bold mt-4">Resultados de la semana 25</h2>
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="stat-card text-center">
-            <p class="stat-num text-4xl text-ns-green">101%</p>
-            <p class="mt-2 text-sm text-ns-green-deep/70">Mejora promedio de eficiencia</p>
-          </div>
-          <div class="stat-card text-center">
-            <p class="stat-num text-4xl text-ns-green">56%</p>
-            <p class="mt-2 text-sm text-ns-green-deep/70">Reducción de jornales por actividad</p>
-          </div>
-          <div class="stat-card text-center">
-            <p class="stat-num text-4xl text-ns-green">$89,166</p>
-            <p class="mt-2 text-sm text-ns-green-deep/70">Ahorro acumulado vs. presupuesto</p>
-          </div>
-        </div>
-        <div class="mt-8 overflow-x-auto">
+        <div class="mt-5 table-panel overflow-x-auto">
+          <p class="panel-title">Detalle por actividad</p>
           <table class="opex-table">
-            <tr><th>Actividad</th><th>Eficiencia histórica</th><th>Eficiencia sem. 25</th><th>% Mejora</th></tr>
-            <tr><td>Anillo</td><td>36</td><td>63.19</td><td>76%</td></tr>
-            <tr><td>Bajada de tomate</td><td>112</td><td>180.90</td><td>62%</td></tr>
-            <tr><td>Desbrote de tomate</td><td>67</td><td>201.09</td><td>200%</td></tr>
-            <tr><td>Deshoje de 3 a 4 hojas</td><td>42</td><td>69.76</td><td>66%</td></tr>
-            <tr><td>Despunte de 1 a 3 brazos</td><td>63</td><td>—</td><td>—</td></tr>
+            <tr><th>Actividad</th><th>Efic. prom. sem. histórica 2025</th><th>Eficiencia promedio Labor Cost</th><th>% Mejora</th><th>Jornales prom. histórico 2025</th><th>Jornales prom. Labor Cost sem.</th><th>Costo/surco histórico</th><th>Costo/surco real sem. promedio</th></tr>
+            <tr><td>Z- Anillo</td><td>36</td><td>64.66</td><td class="positive">80%</td><td>5.58</td><td>3.01</td><td>$67.13</td><td>$56.78</td></tr>
+            <tr><td>Z- Bajada Tomate</td><td>112</td><td>171.10</td><td class="positive">53%</td><td>1.79</td><td>1.19</td><td>$28.50</td><td>$25.55</td></tr>
+            <tr><td>Z- Desbrote Tomate</td><td>67</td><td>149.82</td><td class="positive">124%</td><td>3.00</td><td>1.29</td><td>$35.92</td><td>$29.71</td></tr>
+            <tr><td>Z- Deshoje de 3 a 4 hojas</td><td>42</td><td>67.92</td><td class="positive">62%</td><td>4.79</td><td>2.98</td><td>$53.35</td><td>$42.86</td></tr>
+            <tr><td>Z- Despunte de 1 a 3 brazos</td><td>63</td><td>120.35</td><td class="positive">91%</td><td>3.19</td><td>1.34</td><td>$35.57</td><td>$28.88</td></tr>
+          </table>
+        </div>
+        <div class="mt-4 table-panel overflow-x-auto">
+          <p class="panel-title">Presupuesto, real y ahorro por semana</p>
+          <table class="opex-table money-table">
+            <tr><th>Concepto</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th></tr>
+            <tr><td>Presupuesto Neto</td><td>$66,989.78</td><td>$75,363.51</td><td>$75,363.51</td><td>$89,319.71</td><td>$97,693.44</td><td>$97,693.44</td><td>$97,693.44</td><td>$97,693.44</td><td>$97,693.44</td><td>$97,693.44</td><td>$97,693.44</td><td>$97,693.44</td><td>$97,693.44</td></tr>
+            <tr><td>Costo Neto Real</td><td>$45,890.81</td><td>$53,754.91</td><td>$73,843.26</td><td>$97,038.58</td><td>$82,905.31</td><td>$90,865.96</td><td>$83,797.26</td><td>$82,473.49</td><td>$78,800.85</td><td>$85,203.97</td><td>$84,442.45</td><td>$83,487.38</td><td>$77,483.53</td></tr>
+            <tr><td>Ahorro</td><td class="positive">$21,098.97</td><td class="positive">$21,608.60</td><td class="positive">$1,520.25</td><td class="negative">-$7,718.87</td><td class="positive">$14,788.13</td><td class="positive">$6,827.48</td><td class="positive">$13,896.18</td><td class="positive">$15,219.94</td><td class="positive">$18,892.58</td><td class="positive">$12,489.47</td><td class="positive">$13,250.99</td><td class="positive">$14,206.05</td><td class="positive">$20,209.90</td></tr>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 6 — Antes vs Después -->
-    <section class="slide" data-slide>
-      <div class="slide-in max-w-5xl">
-        <p class="eyebrow text-fresh-green">Antes vs. después</p>
-        <h2 class="font-display text-4xl md:text-5xl font-bold mt-4">De la mediana histórica al desempeño real</h2>
-        <div class="mt-8 overflow-x-auto">
-          <table class="opex-table">
-            <tr><th>Actividad</th><th>Jornales hist.</th><th>Jornales sem. 25</th><th>Costo/surco hist.</th><th>Costo/surco sem. 25</th></tr>
-            <tr><td>Anillo</td><td>5.58</td><td>3.36</td><td>$67.13</td><td>$61.64</td></tr>
-            <tr><td>Bajada de tomate</td><td>1.79</td><td>1.16</td><td>$28.50</td><td>$27.20</td></tr>
-            <tr><td>Desbrote de tomate</td><td>3.00</td><td>1.04</td><td>$35.92</td><td>$29.70</td></tr>
-            <tr><td>Deshoje de 3 a 4 hojas</td><td>4.79</td><td>2.97</td><td>$53.35</td><td>$44.32</td></tr>
-            <tr><td>Despunte de 1 a 3 brazos</td><td>3.19</td><td>0.00</td><td>$35.57</td><td>—</td></tr>
-          </table>
+    
+    <!-- SLIDE 3 — Invernadero 2 Sonora -->
+    <section class="slide slide-results" data-slide>
+      <div class="slide-in results-wrap">
+        <div class="results-head">
+          <p class="eyebrow text-fresh-green">Datos y resultados · Invernadero 2 Sonora</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold mt-3">Resultados semanas 20 a 27</h2>
         </div>
-        <p class="mt-6 text-sm text-ns-green-deep/70 max-w-2xl">En cuatro de cinco actividades, menos jornales lograron el mismo o más avance que el histórico, con un costo por surco igual o menor.</p>
+        <div class="kpi-grid">
+          <div class="stat-card text-center"><p class="stat-num text-4xl text-ns-green">117%</p><p class="mt-2 text-sm">Mejora promedio de eficiencia</p></div>
+          <div class="stat-card text-center"><p class="stat-num text-4xl text-ns-green">42%</p><p class="mt-2 text-sm">Reducción de jornales por actividad</p></div>
+          <div class="stat-card text-center"><p class="stat-num text-4xl text-ns-green">$10,957.82</p><p class="mt-2 text-sm">Ahorro acumulado vs presupuesto</p></div>
+        </div>
+        <div class="mt-5 table-panel overflow-x-auto"><p class="panel-title">Detalle por actividad</p>
+        <table class="opex-table">
+        <tr><th>Actividad</th><th>Efic. Histórica 2025</th><th>Eficiencia Labor Cost</th><th>% Mejora</th><th>Jornales Históricos</th><th>Jornales Sem 27</th><th>Costo Histórico</th><th>Costo Real Sem 27</th></tr>
+        <tr><td>Z-Anillo</td><td>36</td><td>65.63</td><td class="positive">82%</td><td>4.56</td><td>2.59</td><td>$67.97</td><td>$54.31</td></tr>
+        <tr><td>Z-Bajada</td><td>81</td><td>125.47</td><td class="positive">55%</td><td>2.02</td><td>0.82</td><td>$37.99</td><td>$33.16</td></tr>
+        <tr><td>Z-Desbrote</td><td>30</td><td>78.31</td><td class="positive">161%</td><td>5.47</td><td>2.17</td><td>$74.69</td><td>$54.27</td></tr>
+        <tr><td>Z-Deshoje de 3 a 4 hojas</td><td>22</td><td>59.76</td><td class="positive">172%</td><td>5.13</td><td>2.84</td><td>$71.39</td><td>$56.86</td></tr>
+        </table></div>
+        <div class="mt-4 table-panel overflow-x-auto"><p class="panel-title">Presupuesto, real y ahorro por semana</p>
+        <table class="opex-table money-table">
+        <tr><th>Concepto</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th></tr>
+        <tr><td>Presupuesto Neto</td><td>$108,511.18</td><td>$108,511.18</td><td>$108,511.18</td><td>$108,511.18</td><td>$108,511.18</td><td>$108,511.18</td><td>$108,511.18</td><td>$108,511.18</td></tr>
+        <tr><td>Costo Neto Real</td><td>$104,414.39</td><td>$95,429.33</td><td>$109,902.71</td><td>$113,523.88</td><td>$124,150.20</td><td>$102,121.52</td><td>$112,014.46</td><td>$95,575.11</td></tr>
+        <tr><td>Ahorros</td><td class="positive">$4,096.79</td><td class="positive">$13,081.85</td><td class="negative">-$1,391.53</td><td class="negative">-$5,012.70</td><td class="negative">-$15,639.02</td><td class="positive">$6,389.66</td><td class="negative">-$3,503.28</td><td class="positive">$12,936.07</td></tr>
+        </table></div>
       </div>
     </section>
 
-    <!-- SLIDE 7 — Próximos pasos -->
+<!-- SLIDE 3 — Siguientes implementaciones Labor Cost -->
+    <section class="slide slide-expansion" data-slide>
+      <div class="slide-in expansion-wrap">
+        <p class="eyebrow text-fresh-green">Siguientes implementaciones</p>
+        <h2 class="font-display text-4xl md:text-5xl font-bold mt-3 text-center">Expansión Labor Cost</h2>
+        <p class="mt-3 text-base text-ns-green-deep/80 max-w-3xl mx-auto text-center">Plan de arranque por sitio, cultivo, invernadero y semana.</p>
+        <div class="expansion-grid">
+          <div class="expansion-card">
+            <h3>JVA · Labor Cost</h3>
+            <table class="opex-table">
+              <tr><th>Cultivo</th><th>Invernadero</th><th>Semana</th></tr>
+              <tr><td>Tomate</td><td>G</td><td>18</td></tr>
+              <tr><td>Tomate</td><td>E</td><td>22</td></tr>
+              <tr><td>Tomate</td><td>5</td><td>23</td></tr>
+              <tr><td>Tomate</td><td>6</td><td>24</td></tr>
+              <tr><td>Pepino</td><td>D</td><td>22</td></tr>
+              <tr><td>Pepino</td><td>F</td><td>23</td></tr>
+            </table>
+          </div>
+          <div class="expansion-card">
+            <h3>GAF · Labor Cost Pimiento</h3>
+            <table class="opex-table">
+              <tr><th>Invernadero</th><th>Semana</th></tr>
+              <tr><td>4</td><td>16</td></tr>
+              <tr><td>5</td><td>22</td></tr>
+              <tr><td>6</td><td>22</td></tr>
+              <tr><td>1</td><td>25</td></tr>
+              <tr><td>2</td><td>26</td></tr>
+            </table>
+          </div>
+          <div class="expansion-card">
+            <h3>Sonora · Labor Cost Tomate</h3>
+            <table class="opex-table">
+              <tr><th>Invernadero</th><th>Semana</th></tr>
+              <tr><td>4</td><td>26</td></tr>
+              <tr><td>1A</td><td>27</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4 — Resultados imagen adjunta -->
+    <section class="slide slide-results" data-slide>
+      <div class="slide-in results-wrap">
+        <div class="results-head">
+          <p class="eyebrow text-fresh-green">Datos y resultados general del Labor Cost Tomate JVA</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold mt-3">Resultados acumulados semanas 15 a 27</h2>
+          <p class="mt-3 text-base text-ns-green-deep/80 max-w-3xl">Resumen general del Labor Cost Tomate JVA.</p>
+        </div>
+        <div class="kpi-grid">
+          <div class="stat-card text-center"><p class="stat-num text-4xl text-ns-green">71%</p><p class="mt-2 text-sm text-ns-green-deep/70">Mejora promedio de eficiencia</p></div>
+          <div class="stat-card text-center"><p class="stat-num text-4xl text-ns-green">42%</p><p class="mt-2 text-sm text-ns-green-deep/70">Reducción de jornales por actividad</p></div>
+          <div class="stat-card text-center"><p class="stat-num text-4xl text-ns-green">$394,807.07</p><p class="mt-2 text-sm text-ns-green-deep/70">Ahorro vs presupuesto</p></div>
+        </div>
+        <div class="mt-5 table-panel overflow-x-auto">
+          <p class="panel-title">Detalle por actividad</p>
+          <table class="opex-table">
+            <tr><th>Actividad</th><th>Efic. prom. semanal histórica 2025</th><th>Eficiencia promedio Labor Cost</th><th>% Mejora</th><th>Jornales prom. histórico 2025</th><th>Jornales prom. Labor Cost sem.</th><th>Costo/surco histórico</th><th>Costo/surco real sem. promedio</th></tr>
+            <tr><td>Z- Anillo</td><td>36</td><td>60.93</td><td class="positive">69%</td><td>5.58</td><td>2.79</td><td>$67.13</td><td>$57.24</td></tr>
+            <tr><td>Z- Bajada Tomate</td><td>112</td><td>158.87</td><td class="positive">42%</td><td>1.79</td><td>1.29</td><td>$28.50</td><td>$25.60</td></tr>
+            <tr><td>Z- Desbrote Tomate</td><td>67</td><td>124.54</td><td class="positive">86%</td><td>3</td><td>1.56</td><td>$35.92</td><td>$33.46</td></tr>
+            <tr><td>Z- Deshoje de 3 a 4 hojas</td><td>42</td><td>66.82</td><td class="positive">59%</td><td>4.79</td><td>2.68</td><td>$53.35</td><td>$43.56</td></tr>
+            <tr><td>Z- Despunte de 1 a 3 brazos</td><td>63</td><td>125.06</td><td class="positive">99%</td><td>3.19</td><td>1.91</td><td>$35.57</td><td>$29.33</td></tr>
+          </table>
+        </div>
+        <div class="mt-4 table-panel overflow-x-auto">
+          <p class="panel-title">Presupuesto, real y ahorro por semana</p>
+          <table class="opex-table money-table">
+            <tr><th>Concepto</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th></tr>
+            <tr><td>Presupuesto Neto</td><td>$66,989.78</td><td>$75,363.51</td><td>$75,363.51</td><td>$187,013.15</td><td>$195,386.87</td><td>$195,386.87</td><td>$195,386.87</td><td>$290,289.06</td><td>$387,982.50</td><td>$485,675.93</td><td>$488,467.18</td><td>$488,467.18</td><td>$488,467.18</td></tr>
+            <tr><td>Costo Neto Real</td><td>$45,890.81</td><td>$53,754.91</td><td>$73,843.26</td><td>$200,270.94</td><td>$186,018.95</td><td>$205,595.94</td><td>$216,513.93</td><td>$249,243.35</td><td>$336,617.69</td><td>$436,073.52</td><td>$420,762.55</td><td>$404,482.25</td><td>$396,364.41</td></tr>
+            <tr><td>Ahorros</td><td class="positive">$21,098.97</td><td class="positive">$21,608.60</td><td class="positive">$1,520.25</td><td class="negative">-$13,257.79</td><td class="positive">$9,367.92</td><td class="negative">-$10,209.07</td><td class="negative">-$21,127.06</td><td class="positive">$41,045.71</td><td class="positive">$51,364.81</td><td class="positive">$49,602.41</td><td class="positive">$67,704.62</td><td class="positive">$83,984.92</td><td class="positive">$92,102.76</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5 — Próximos pasos -->
     <section class="slide" data-slide>
       <div class="slide-in max-w-4xl">
         <p class="eyebrow text-fresh-green">Próximos pasos</p>
         <h2 class="font-display text-4xl md:text-5xl font-bold mt-4">Hacia dónde vamos</h2>
         <ul class="mt-8 space-y-4 max-w-xl">
-          <li class="flex items-start gap-3">
-            <svg class="mt-1 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#307338" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            <span>Extender el registro de Ridder a más actividades y a otros cultivos del rancho.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="mt-1 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#307338" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            <span>Capacitar a supervisores de campo en la captura semanal de datos.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="mt-1 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#307338" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            <span>Ligar bonos de desempeño a las métricas de eficiencia y costo por surco.</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="mt-1 shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#307338" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            <span>Consolidar un tablero semanal único para todas las cuadrillas y turnos.</span>
-          </li>
+          <li class="flex items-start gap-3"><span class="yellow-dot mt-2"></span><span>Labor Cost en todos los invernaderos (2026–2027)</span></li>
+          <li class="flex items-start gap-3"><span class="yellow-dot mt-2"></span><span>Labor Cost en Gemso (2027)</span></li>
+          <li class="flex items-start gap-3"><span class="yellow-dot mt-2"></span><span>Labor Cost PGA (2027)</span></li>
+          <li class="flex items-start gap-3"><span class="yellow-dot mt-2"></span><span>Labor Cost Empaques (2027)</span></li>
         </ul>
       </div>
     </section>
 
-    <!-- SLIDE 8 — Cierre -->
-    <section class="slide" data-slide>
-      <div class="slide-in">
-        <p class="eyebrow text-fresh-green">Cierre</p>
-        <h2 class="font-display text-4xl md:text-5xl font-bold mt-4 max-w-2xl">Medir mejor, para pagar mejor</h2>
-        <p class="mt-6 max-w-xl text-lg text-ns-green-deep/80">Ridder nos da los datos; la disciplina semanal de captura y análisis es lo que convierte esos datos en decisiones justas para el negocio y para cada trabajador.</p>
-        <div class="mt-8 flex items-center gap-2">
-          <span class="yellow-dot"></span>
-          <span class="text-sm font-semibold text-ns-green">Gracias — Portal OPEX, GHVeggies</span>
-        </div>
+    <!-- SLIDE 6 — Implementación Ridder Gemso -->
+    <section class="slide simple-gemso-slide" data-slide>
+      <div class="slide-in mx-auto max-w-4xl">
+        <p class="eyebrow text-fresh-green">Implementación</p>
+        <h2 class="font-display text-5xl md:text-6xl font-bold mt-4">Implementación Ridder Gemso</h2>
       </div>
     </section>
 
+    <!-- SLIDE 7 — Resumen ejecutivo Ridder Productive Gemso -->
+    <section class="slide final-exec-slide" data-slide>
+      <div class="slide-in final-exec-wrap">
+        <div class="text-center mx-auto max-w-6xl">
+          <p class="eyebrow text-fresh-green">Resumen ejecutivo</p>
+          <h2 class="font-display font-bold mt-3 final-exec-title">Implementación Ridder Productive Gemso</h2>
+          <p class="mt-3 text-base text-ns-green-deep/80">Gantt ejecutivo de avance y próximos hitos · Estatus: <span class="font-bold text-ns-green">En control</span></p>
+        </div>
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="stat-card text-center"><p class="stat-num text-5xl text-ns-green">85–90%</p><p class="mt-2 text-sm text-ns-green-deep/70">Avance general estimado</p></div>
+          <div class="stat-card text-center"><p class="stat-num text-5xl text-ns-green">100%</p><p class="mt-2 text-sm text-ns-green-deep/70">Configuración y pruebas funcionales</p></div>
+          <div class="stat-card text-center"><p class="stat-num text-5xl text-ns-green">4</p><p class="mt-2 text-sm text-ns-green-deep/70">Próximos hitos ejecutivos</p></div>
+        </div>
+        <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="table-panel overflow-x-auto"><p class="panel-title">Estado por frente de trabajo</p><table class="opex-table"><tr><th>Frente</th><th>Avance / Estado</th><th>Detalle</th></tr><tr><td>Configuración del sistema</td><td class="positive">100%</td><td>Completada</td></tr><tr><td>Pruebas funcionales</td><td class="positive">100%</td><td>Completada</td></tr><tr><td>Análisis y reportes</td><td>En proceso</td><td>Nómina / Power BI</td></tr><tr><td>Capacitación operativa</td><td>En proceso</td><td>Usuarios finales</td></tr><tr><td>Puesta en marcha</td><td>Próxima</td><td>Corrida paralela</td></tr></table></div>
+          <div class="table-panel"><p class="panel-title">Pendientes</p><ul class="space-y-3 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Ajuste de tabuladores de pago.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Generar reportes de eficiencias y pago de nómina.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Asegurar adopción con supervisores y operación.</span></li></ul></div>
+        </div>
+        <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="table-panel"><p class="panel-title">Logros principales</p><ul class="space-y-2 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Servidor SQL, conectividad y estructura base habilitados.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Layout productivo, invernaderos, surcos y centros de costo configurados.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Alta de empleados y estructura organizacional completadas.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Actividades, rendimientos, cultivos y bonos de productividad definidos.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Pruebas funcionales iniciales del sistema ejecutadas satisfactoriamente.</span></li></ul></div>
+          <div class="table-panel"><p class="panel-title">Próximos hitos ejecutivos</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm"><div class="stat-card"><p class="pill">1</p><p class="mt-2 font-semibold">Capacitación final</p><p class="text-xs text-ns-green-deep/60">Usuarios y supervisores</p></div><div class="stat-card"><p class="pill">2</p><p class="mt-2 font-semibold">Pruebas en campo</p><p class="text-xs text-ns-green-deep/60">Validación operativa</p></div><div class="stat-card"><p class="pill">3</p><p class="mt-2 font-semibold">Corrida paralela</p><p class="text-xs text-ns-green-deep/60">Sys21 vs. Ridder</p></div><div class="stat-card"><p class="pill">4</p><p class="mt-2 font-semibold">Liberación productiva</p><p class="text-xs text-ns-green-deep/60">Cierre y estabilización</p></div></div></div>
+        </div>
+      </div>
+      <a class="home-btn" href="https://ghveggies-bi.github.io/OPEX/" target="_top" style="position:absolute;right:18px;top:18px;z-index:6;">Volver al índice principal</a><div class="next-bonita-box"><div class="label">Siguientes pasos</div><div class="text">Implementación Ridder Bonita</div></div>
+    </section>
   </div>
 
   <button class="nav-arrow prev" id="prevBtn" aria-label="Anterior">
