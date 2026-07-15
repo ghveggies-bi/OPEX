@@ -140,7 +140,45 @@
   @media (max-width:1100px){ .final-exec-title{ white-space:normal; } .next-bonita-box{ right:12px; bottom:12px; width:210px; } }
 
 
+
+  /* Slide dividida: Areas de oportunidad y compromisos */
+  .opportunity-slide{ align-items:center; justify-content:center; padding:4.2vw 6vw; }
+  .opportunity-wrap{ width:min(1120px,100%); margin:0 auto; }
+  .opportunity-title{ text-align:center; }
+  .opportunity-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1.6rem; margin-top:2rem; min-height:390px; }
+  .opportunity-card{ background:#fff; border:1px solid rgba(31,79,38,.12); border-radius:1.25rem; padding:2rem; box-shadow:0 12px 32px -24px rgba(31,79,38,.35); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; overflow:hidden; }
+  .opportunity-card::before{ content:''; position:absolute; top:0; left:0; right:0; height:8px; background:linear-gradient(90deg,var(--fresh-green),var(--ns-yellow)); }
+  .opportunity-card h3{ font-family:'Playfair Display',serif; font-size:2.25rem; line-height:1.05; font-weight:800; color:var(--ns-green-deep); margin:0; }
+  .opportunity-card .mini-line{ width:72px; height:4px; border-radius:9999px; background:var(--ns-yellow); margin:1.25rem auto 0; }
+  @media (max-width:900px){ .opportunity-slide{ overflow-y:auto; justify-content:flex-start; } .opportunity-grid{ grid-template-columns:1fr; min-height:auto; } }
+
 .home-btn{display:inline-flex;align-items:center;justify-content:center;padding:.55rem .9rem;background:rgba(255,252,235,.92);color:#307338;font-weight:800;border:1px solid rgba(31,79,38,.18);border-radius:.75rem;text-decoration:none;box-shadow:0 8px 20px -18px rgba(31,79,38,.35);font-size:.78rem;} .home-btn:hover{background:#FFFCEB;color:#1F4F26;}
+
+  /* Detalle oculto: servidor exclusivo Ridder */
+  .details-btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;padding:.65rem 1.05rem;background:var(--ns-green);color:#fff;font-weight:900;border:1px solid rgba(31,79,38,.18);border-radius:.85rem;text-decoration:none;box-shadow:0 10px 24px -16px rgba(31,79,38,.55);font-size:.85rem;cursor:pointer;}
+  .details-btn:hover{background:var(--ns-green-deep);}
+  .details-btn.subtle{background:rgba(255,252,235,.95);color:var(--ns-green);}
+  .details-btn.subtle:hover{background:#FFFCEB;color:var(--ns-green-deep);}
+  .server-detail-slide{align-items:center;justify-content:center;padding:3.4vw 4.6vw;}
+  .server-detail-wrap{width:min(1180px,100%);margin:0 auto;}
+  .server-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.4rem;}
+  .server-card{background:#fff;border:1px solid rgba(31,79,38,.12);border-radius:1.25rem;padding:1.4rem;box-shadow:0 12px 32px -24px rgba(31,79,38,.35);position:relative;overflow:hidden;}
+  .server-card::before{content:'';position:absolute;top:0;left:0;right:0;height:7px;background:linear-gradient(90deg,var(--fresh-green),var(--ns-yellow));}
+  .server-card h3{font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:800;color:var(--ns-green-deep);margin:0 0 1rem;}
+  .server-list{list-style:none;margin:0;padding:0;display:grid;gap:.72rem;font-size:.86rem;line-height:1.32;color:rgba(31,79,38,.82);}
+  .server-list li{display:flex;gap:.55rem;align-items:flex-start;}
+  .server-list .icon{width:1.25rem;height:1.25rem;min-width:1.25rem;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;margin-top:.02rem;}
+  .server-list .warn{background:#fff3cd;color:#8a6100;}
+  .server-list .ok{background:#e4f4e8;color:#007a3d;}
+  .server-image-panel{margin-top:1.15rem;background:#fff;border:1px solid rgba(31,79,38,.12);border-radius:1.1rem;padding:.85rem;box-shadow:0 12px 32px -24px rgba(31,79,38,.35);}
+  .server-image-panel img{display:block;width:100%;height:auto;max-height:185px;object-fit:contain;border-radius:.65rem;border:1px solid rgba(31,79,38,.08);background:#fff;}
+  .server-actions{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1.1rem;}
+  @media (max-width:1000px){.server-detail-slide{overflow-y:auto;justify-content:flex-start;}.server-compare-grid{grid-template-columns:1fr;}.server-actions{flex-direction:column;align-items:stretch;}.server-image-panel img{max-height:none;}}
+
+
+  .details-btn.inline-small{margin-left:auto;padding:.38rem .72rem;background:rgba(255,252,235,.92);color:var(--ns-green);border:1px solid rgba(31,79,38,.16);box-shadow:none;font-size:.72rem;border-radius:.65rem;white-space:nowrap;}
+  .details-btn.inline-small:hover{background:#FFFCEB;color:var(--ns-green-deep);}
+
 </style>
 </head>
 <body>
@@ -348,7 +386,26 @@
       </div>
     </section>
 
-    <!-- SLIDE 7 — Próximos pasos -->
+    <!-- SLIDE 7 — Áreas de oportunidad y compromisos -->
+    <section class="slide opportunity-slide" data-slide>
+      <div class="slide-in opportunity-wrap">
+        <div class="opportunity-title">
+          <p class="eyebrow text-fresh-green">Seguimiento ejecutivo</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold mt-3">Áreas de oportunidad y compromisos</h2>
+        </div>
+        <div class="opportunity-grid">
+          <div class="opportunity-card">
+            <h3>Áreas de oportunidad</h3>
+            <div class="mini-line"></div>
+          </div>
+          <div class="opportunity-card">
+            <h3>Compromisos</h3>
+            <div class="mini-line"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- SLIDE 8 — Próximos pasos -->
     <section class="slide" data-slide>
       <div class="slide-in max-w-4xl">
         <p class="eyebrow text-fresh-green">Próximos pasos</p>
@@ -363,7 +420,7 @@
       </div>
     </section>
 
-    <!-- SLIDE 8 — Implementación Ridder Productive Gemso -->
+    <!-- SLIDE 9 — Implementación Ridder Productive Gemso -->
     <section class="slide simple-gemso-slide" data-slide>
       <div class="slide-in mx-auto max-w-4xl">
         <p class="eyebrow text-fresh-green">Implementación</p>
@@ -371,8 +428,8 @@
       </div>
     </section>
 
-    <!-- SLIDE 9 — Resumen ejecutivo Ridder Productive Gemso -->
-    <section class="slide final-exec-slide" data-slide>
+    <!-- SLIDE 10 — Resumen ejecutivo Ridder Productive Gemso -->
+    <section class="slide final-exec-slide" data-slide id="summaryRidderGemso">
       <div class="slide-in final-exec-wrap">
         <div class="text-center mx-auto max-w-6xl">
           <p class="eyebrow text-fresh-green">Resumen ejecutivo</p>
@@ -386,7 +443,7 @@
         </div>
         <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
           <div class="table-panel overflow-x-auto"><p class="panel-title">Estado por frente de trabajo</p><table class="opex-table"><tr><th>Frente</th><th>Avance / Estado</th><th>Detalle</th></tr><tr><td>Configuración del sistema</td><td class="positive">100%</td><td>Completada</td></tr><tr><td>Pruebas funcionales</td><td class="positive">100%</td><td>Completada</td></tr><tr><td>Análisis y reportes</td><td>En proceso</td><td>Nómina / Power BI</td></tr><tr><td>Capacitación operativa</td><td>En proceso</td><td>Usuarios finales</td></tr><tr><td>Puesta en marcha</td><td>Próxima</td><td>Corrida paralela</td></tr></table></div>
-          <div class="table-panel"><p class="panel-title">Pendientes</p><ul class="space-y-3 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Ajuste de tabuladores de pago.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Generar reportes de eficiencias y pago de nómina.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Asegurar adopción con supervisores y operación.</span></li></ul></div>
+          <div class="table-panel"><p class="panel-title">Pendientes</p><ul class="space-y-3 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Ajuste de tabuladores de pago.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Generar reportes de eficiencias y pago de nómina.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Asegurar adopción con supervisores y operación.</span></li><li class="flex gap-2 items-center"><span class="yellow-dot mt-1"></span><span>Servidor exclusivo para Ridder.</span><button type="button" class="details-btn inline-small details-nav" data-go="serverDetail">Más detalles</button></li></ul></div>
         </div>
         <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
           <div class="table-panel"><p class="panel-title">Logros principales</p><ul class="space-y-2 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Servidor SQL, conectividad y estructura base habilitados.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Layout productivo, invernaderos, surcos y centros de costo configurados.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Alta de empleados y estructura organizacional completadas.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Actividades, rendimientos, cultivos y bonos de productividad definidos.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Pruebas funcionales iniciales del sistema ejecutadas satisfactoriamente.</span></li></ul></div>
@@ -394,6 +451,43 @@
         </div>
       </div>
       <a class="home-btn" href="https://ghveggies-bi.github.io/OPEX/" target="_top" style="position:absolute;right:18px;top:18px;z-index:6;">Volver al índice principal</a><div class="next-bonita-box"><div class="label">Siguientes pasos</div><div class="text">Implementación Ridder Bonita</div></div>
+    </section>
+
+    <!-- SLIDE OCULTO — Servidor exclusivo para Ridder -->
+    <section class="slide server-detail-slide" data-slide data-hidden="true" id="serverDetail">
+      <div class="slide-in server-detail-wrap">
+        <div class="text-center mx-auto max-w-5xl">
+          <p class="eyebrow text-fresh-green">Detalle técnico</p>
+          <h2 class="font-display text-4xl md:text-5xl font-bold mt-3">Servidor exclusivo para Ridder Productive</h2>
+          <p class="mt-3 text-base text-ns-green-deep/80">Situación actual vs beneficios esperados con servidor exclusivo y licencia de Windows y SQL.</p>
+        </div>
+        <div class="server-compare-grid">
+          <div class="server-card">
+            <h3>Actual</h3>
+            <ul class="server-list">
+              <li><span class="icon warn">!</span><span>Servidor compartido con Sys21 y otros programas/servicios del predio.</span></li>
+              <li><span class="icon warn">!</span><span>Recurso compartido: las políticas de seguridad interfieren actualmente con la conexión directa desde equipos de Vhggies.</span></li>
+              <li><span class="icon warn">!</span><span>No se tiene una copia de seguridad automática.</span></li>
+              <li><span class="icon warn">!</span><span>SQL Express limitado a 10 GB en la base de datos, con riesgo de bloqueo de Ridder.</span></li>
+              <li><span class="icon warn">!</span><span>Windows Server 2016 sin licencia activa.</span></li>
+            </ul>
+          </div>
+          <div class="server-card">
+            <h3>Con servidor exclusivo</h3>
+            <ul class="server-list">
+              <li><span class="icon ok">✓</span><span>Menor probabilidad de que servicios y programas interfieran en la funcionalidad de Ridder.</span></li>
+              <li><span class="icon ok">✓</span><span>NS podría agregar conexión directa al servidor sin interferir con programas o servicios actuales del predio.</span></li>
+              <li><span class="icon ok">✓</span><span>Copias de seguridad automáticas diarias en un servicio independiente para restaurar el sistema en otro servidor si fuera necesario.</span></li>
+              <li><span class="icon ok">✓</span><span>SQL completo: sin límite en la base de datos y sin riesgos de bloqueo o pérdida de información.</span></li>
+              <li><span class="icon ok">✓</span><span>Windows Server 2019 con soporte del proveedor y compatibilidad completa con apps de Ridder en versión de escritorio.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="server-actions">
+          <button type="button" class="details-btn subtle details-nav" data-go="summaryRidderGemso">Volver al resumen</button>
+          <a class="details-btn subtle details-nav" href="https://ghveggies-bi.github.io/OPEX/" target="_top">Volver al índice principal</a>
+        </div>
+      </div>
     </section>
   </div>
 
@@ -411,29 +505,45 @@
   <script>
     const track = document.getElementById('track');
     const slides = [...document.querySelectorAll('.slide')];
+    const visibleSlides = slides.filter(s => s.dataset.hidden !== 'true');
+    const visibleIndexes = visibleSlides.map(s => slides.indexOf(s));
     const counter = document.getElementById('counter');
     const scrub = document.getElementById('scrub');
     const scrubThumb = document.getElementById('scrubThumb');
     let i = 0;
+    function visiblePosition(idx){ return visibleIndexes.indexOf(idx); }
     function render(){
       track.style.transform = `translateX(-${i * 100}vw)`;
       slides.forEach((s, idx) => s.classList.toggle('is-active', idx === i));
-      counter.textContent = `${String(i+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
-      const thumbWidth = 100 / slides.length;
+      const pos = visiblePosition(i);
+      counter.textContent = pos >= 0 ? `${String(pos+1).padStart(2,'0')} / ${String(visibleSlides.length).padStart(2,'0')}` : `Detalle / ${String(visibleSlides.length).padStart(2,'0')}`;
+      const thumbWidth = 100 / visibleSlides.length;
       scrubThumb.style.width = `${thumbWidth}%`;
-      scrubThumb.style.left = `${i * thumbWidth}%`;
+      scrubThumb.style.left = `${(pos >= 0 ? pos : visibleSlides.length - 1) * thumbWidth}%`;
     }
-    function go(delta){ i = Math.min(Math.max(i + delta, 0), slides.length - 1); render(); }
+    function go(delta){
+      const pos = visiblePosition(i);
+      if (pos >= 0){
+        const nextPos = Math.min(Math.max(pos + delta, 0), visibleSlides.length - 1);
+        i = visibleIndexes[nextPos];
+      } else {
+        i = delta < 0 ? visibleIndexes[visibleIndexes.length - 1] : i;
+      }
+      render();
+    }
     function goTo(idx){ i = Math.min(Math.max(idx, 0), slides.length - 1); render(); }
+    function goToSlideById(id){ const idx = slides.findIndex(s => s.id === id); if (idx >= 0) goTo(idx); }
     function scrubToClientX(clientX){
       const r = scrub.getBoundingClientRect();
       const ratio = Math.min(Math.max((clientX - r.left) / r.width, 0), 1);
-      goTo(Math.floor(ratio * slides.length));
+      const target = Math.min(Math.floor(ratio * visibleSlides.length), visibleSlides.length - 1);
+      goTo(visibleIndexes[target]);
     }
     document.getElementById('nextBtn').addEventListener('click', () => go(1));
     document.getElementById('prevBtn').addEventListener('click', () => go(-1));
     document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(1); if (e.key === 'ArrowLeft') go(-1); });
-    document.addEventListener('click', (e) => { if (e.target.closest('.nav-arrow') || e.target.closest('.slide-scrub')) return; go(1); });
+    document.querySelectorAll('[data-go]').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); goToSlideById(btn.dataset.go); }));
+    document.addEventListener('click', (e) => { if (e.target.closest('.nav-arrow') || e.target.closest('.slide-scrub') || e.target.closest('.details-nav') || e.target.closest('a')) return; go(1); });
     document.querySelectorAll('.nav-arrow').forEach((btn) => {
       btn.addEventListener('mousemove', (e) => {
         const r = btn.getBoundingClientRect();
