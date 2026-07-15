@@ -140,6 +140,38 @@
     mask-composite:exclude;
   }
   .card:hover .card-glow{ opacity:1; }
+
+  /* tarjeta interactiva — conserva el diseño y habilita apertura por clic o teclado */
+  .card-clickable{
+    cursor:pointer;
+    transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  }
+  .card-clickable:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 30px -18px rgba(31,79,38,.26);
+    border-color:#D7E6C8;
+  }
+  .card-clickable:focus-visible{
+    outline:2px solid rgba(121,191,0,.7);
+    outline-offset:4px;
+  }
+  .card-hover-hint{
+    position:absolute; top:12px; left:50%; z-index:6;
+    transform:translate(-50%,-5px);
+    display:inline-flex; align-items:center;
+    padding:.28rem .58rem; border-radius:9999px;
+    background:rgba(29,51,35,.94); color:#ffffff;
+    font-family:'Inter',sans-serif; font-size:.61rem; font-weight:600;
+    letter-spacing:.03em; white-space:nowrap;
+    opacity:0; pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease;
+    box-shadow:0 5px 14px -7px rgba(22,36,26,.45);
+  }
+  .card-clickable:hover .card-hover-hint,
+  .card-clickable:focus-visible .card-hover-hint{
+    opacity:1; transform:translate(-50%,0);
+  }
+
   @media (prefers-reduced-motion:reduce){ .card-glow{ display:none; } }
 
   .bar-track{ background:#EEF1EC; border-radius:9999px; overflow:hidden; height:8px; }
@@ -236,6 +268,12 @@
   }
   .lightbox-figure.is-text::-webkit-scrollbar{ display:none; }
   .lightbox-figure.is-text figcaption{ display:none; }
+  .lightbox-figure.is-text.is-wide{
+    width:min(980px,94vw);
+    max-width:min(980px,94vw);
+    max-height:88vh;
+    padding:22px 24px 18px;
+  }
 
   .lb-doc{ font-family:'Inter',sans-serif; }
   .lb-doc .lb-eyebrow{
@@ -246,6 +284,8 @@
     font-family:'Playfair Display',serif; font-weight:700; font-size:1.05rem;
     color:var(--ink); margin-bottom:1.1rem; line-height:1.3;
   }
+  .lb-doc h3.lb-project-title{ color:var(--verde); font-size:1.22rem; margin-bottom:.35rem; }
+  .lb-doc .lb-project-subtitle{ font-size:.78rem; font-weight:700; color:var(--ink); margin-bottom:1rem; }
 
   /* cada bloque (CTS / Fuera de alcance) vive en su propia caja, para que se distingan a simple vista */
   .lb-section{ border-radius:12px; padding:.9rem 1rem; margin-bottom:.65rem; }
@@ -286,6 +326,32 @@
     font-style:italic; font-size:.72rem; color:var(--muted); opacity:.8;
     line-height:1.5; margin-top:1rem; padding-top:.85rem; border-top:1px solid #EAEFE9;
   }
+
+  .lb-status-row{
+    display:grid; grid-template-columns:1fr 1fr; gap:.55rem; margin-bottom:.85rem;
+  }
+  .lb-status-card{
+    border:1px solid #E2ECD8; background:#F8FBF4; border-radius:10px;
+    padding:.65rem .75rem;
+  }
+  .lb-status-label{
+    display:block; font-size:.58rem; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--muted); margin-bottom:.2rem;
+  }
+  .lb-status-value{ font-size:.76rem; font-weight:700; color:var(--ink); }
+  .lb-status-value--ok{ color:var(--verde); }
+  .lb-deviation{
+    border:1px solid #EAEFE9; border-left:3px solid var(--verde-claro);
+    border-radius:11px; padding:.85rem .95rem; margin-bottom:.65rem; background:#ffffff;
+  }
+  .lb-deviation h4{ font-size:.76rem; margin-bottom:.55rem; }
+  .lb-field{ margin-top:.48rem; }
+  .lb-field-label{
+    display:block; font-size:.59rem; text-transform:uppercase; letter-spacing:.09em;
+    font-weight:700; color:var(--verde); margin-bottom:.18rem;
+  }
+  .lb-field p{ font-size:.74rem; line-height:1.52; color:var(--muted); }
+  .lb-field strong{ color:var(--ink); }
 
   /* enlace sutil, casi imperceptible — solo un guion punteado tenue */
   .subtle-link{
@@ -502,7 +568,8 @@
           <div class="grid md:grid-cols-2 gap-6">
 
             <!-- BI Mano de Obra -->
-            <div class="card card--milestone p-7">
+            <div class="card card--milestone card-clickable p-7" id="biLaborCard" role="button" tabindex="0" aria-label="Abrir detalle del proyecto BI Mano de Obra">
+              <span class="card-hover-hint">Abrir detalle</span>
               <div class="card-glow"></div>
               <div class="flex items-start justify-between mb-5">
                 <h2 class="f-subtitle text-lg" style="color:var(--ink)">BI Mano de Obra</h2>
@@ -533,7 +600,8 @@
             </div>
 
             <!-- DataWarehouse -->
-            <div class="card p-7">
+            <div class="card card-clickable p-7" id="stemCard" role="button" tabindex="0" aria-label="Abrir detalle del proyecto STEM">
+              <span class="card-hover-hint">Abrir detalle</span>
               <div class="card-glow"></div>
               <div class="flex items-start justify-between mb-5">
                 <h2 class="f-subtitle text-lg" style="color:var(--ink)">STEM</h2>
@@ -586,10 +654,11 @@
                 </div>
               </div>
               <span class="subtle-link" id="workstreamLink" style="display:inline-block; margin-top:.2rem; font-size:.68rem; color:var(--verde-claro); border-bottom-color:rgba(121,191,0,.4)">Ver desglose de tareas →</span>
-              <p class="f-body mt-3 pt-3" style="color:var(--muted); opacity:.55; font-size:.65rem; border-top:1px solid #EAEFE9">
-                Fecha compromiso: 21 de agosto de 2026 — el proyecto continúa el resto del
-                año; esta etapa acelera la base.
-              </p>
+              <div class="mt-3 pt-3" style="border-top:1px solid #EAEFE9">
+                <p class="f-body" style="color:var(--muted); opacity:.62; font-size:.65rem">
+                  Estado general: <strong style="color:var(--verde); font-weight:600">En tiempo</strong> · Fecha compromiso: 21 de agosto de 2026.
+                </p>
+              </div>
             </div>
 
           </div>
@@ -860,12 +929,37 @@ graph LR
 
           </div>
 
-          <div class="flex flex-wrap items-start gap-x-8 gap-y-2 mt-4 pt-3" style="border-top:1px solid #EAEFE9">
-            <div class="f-body text-xs max-w-md" style="color:var(--muted)">
-              <strong style="color:var(--ink)">Recurso solicitado:</strong> licencia Claude Pro como apoyo de arquitectura y diseño del proyecto — no es la herramienta de consulta final para el usuario de negocio, que será resuelta con otra plataforma.
+          <div class="grid md:grid-cols-2 gap-3 mt-4 pt-3" style="border-top:1px solid #EAEFE9">
+            <div class="rounded-xl p-4" style="background:#F5F9EF; border:1px solid #DCEBC8">
+              <p class="f-subtitle text-xs mb-2.5" style="color:var(--verde)">Recursos solicitados</p>
+              <ul class="space-y-2 f-body text-xs" style="color:var(--muted)">
+                <li class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde-claro)"></span>
+                  <span><strong style="color:var(--ink)">Licencia Claude Pro</strong> como apoyo de arquitectura y diseño del proyecto — no es la herramienta de consulta final para el usuario de negocio, que será resuelta con otra plataforma.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde-claro)"></span>
+                  <span><strong style="color:var(--ink)">Capacitación y asesoramiento</strong> para integrar nuestro DataWarehouse a un LLM que nos ayudará a incorporar un chat de consulta para toda la información.</span>
+                </li>
+              </ul>
             </div>
-            <div class="f-body text-xs max-w-md" style="color:var(--muted)">
-              <strong style="color:var(--ink)">Capacitación en curso:</strong> el equipo ya está capacitándose en la práctica — esta misma presentación se construyó con apoyo de IA (Claude) y se publica directamente en GitHub.
+
+            <div class="rounded-xl p-4" style="background:#ffffff; border:1px solid #EAEFE9">
+              <p class="f-subtitle text-xs mb-2.5" style="color:var(--verde-claro)">En curso</p>
+              <ul class="space-y-2 f-body text-xs" style="color:var(--muted)">
+                <li class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde-claro)"></span>
+                  <span><strong style="color:var(--ink)">IA + Sistemas de Información:</strong> trabajo con Adaviv, de forma gratuita.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde-claro)"></span>
+                  <span><strong style="color:var(--ink)">IA + Ridder:</strong> trabajo con Blue Radix y Sera.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style="background:var(--verde-claro)"></span>
+                  <span><strong style="color:var(--ink)">GitHub + Claude + Copilot:</strong> esta presentación se construyó con apoyo de IA y fue publicada en GitHub.</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -1057,11 +1151,11 @@ graph LR
       setTimeout(() => {
         lightbox.hidden = true;
         lightboxBody.innerHTML = '';
-        document.getElementById('lightboxFigure').classList.remove('is-diagram', 'is-text');
+        document.getElementById('lightboxFigure').classList.remove('is-diagram', 'is-text', 'is-wide');
       }, 320);
     }
     function openLightboxImage(src, alt){
-      document.getElementById('lightboxFigure').classList.remove('is-diagram', 'is-text');
+      document.getElementById('lightboxFigure').classList.remove('is-diagram', 'is-text', 'is-wide');
       lightboxBody.innerHTML = '';
       const img = document.createElement('img');
       img.src = src; img.alt = alt;
@@ -1084,9 +1178,11 @@ graph LR
       lightboxBody.appendChild(clone);
       showLightbox('Diagrama de Arquitectura — DataWarehouse GHVeggies');
     }
-    function openLightboxText(html){
-      document.getElementById('lightboxFigure').classList.remove('is-diagram');
-      document.getElementById('lightboxFigure').classList.add('is-text');
+    function openLightboxText(html, wide = false){
+      const figure = document.getElementById('lightboxFigure');
+      figure.classList.remove('is-diagram', 'is-wide');
+      figure.classList.add('is-text');
+      if(wide) figure.classList.add('is-wide');
       lightboxBody.innerHTML = html;
       showLightbox('');
     }
@@ -1236,6 +1332,87 @@ graph LR
       </div>
     `;
 
+    // ---------- contenido: seguimiento de BI Mano de Obra ----------
+    const BI_LABOR_DETAIL_HTML = `
+      <div class="lb-doc">
+        <h3 class="lb-project-title">BI Mano de Obra · Seguimiento</h3>
+
+        <div class="lb-status-row">
+          <div class="lb-status-card">
+            <span class="lb-status-label">Estado general</span>
+            <span class="lb-status-value lb-status-value--ok">Completo</span>
+          </div>
+          <div class="lb-status-card">
+            <span class="lb-status-label">Fecha de compromiso</span>
+            <span class="lb-status-value">Mayo de 2026</span>
+          </div>
+        </div>
+
+        <div class="lb-deviation">
+          <h4>Resultado del proyecto</h4>
+          <div class="lb-field">
+            <p>Los 7 módulos se encuentran operando y dan visibilidad diaria de costo y productividad en campo, desde la asistencia hasta el jornal, con datos consistentes para la toma de decisiones.</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // ---------- contenido: desviaciones y plan de acción de STEM ----------
+    const STEM_DEVIATIONS_HTML = `
+      <div class="lb-doc">
+        <h3 class="lb-project-title">Proyecto STEM . Seguimiento</h3>
+
+        <div class="lb-status-row">
+          <div class="lb-status-card">
+            <span class="lb-status-label">Estado general</span>
+            <span class="lb-status-value lb-status-value--ok">En tiempo</span>
+          </div>
+          <div class="lb-status-card">
+            <span class="lb-status-label">Fecha de compromiso</span>
+            <span class="lb-status-value">21 de agosto de 2026</span>
+          </div>
+        </div>
+
+        <p class="lb-project-subtitle">Desviaciones y Plan de Acción:</p>
+
+        <div class="lb-deviation">
+          <h4>Desviación 1: Transformación de Datos</h4>
+          <div class="lb-field">
+            <span class="lb-field-label">Contexto</span>
+            <p>Anteriormente, la estructura se mantuvo en SharePoint y se cargó a un modelo semántico en Power BI con el único fin de reducir la complejidad en la transformación de los datos que alimentaban los reportes en BI. Actualmente, la actualización tarda 32 minutos y el tiempo sigue en aumento.</p>
+          </div>
+          <div class="lb-field">
+            <span class="lb-field-label">Compromiso</span>
+            <p>Crear e implementar el DataWarehouse definitivo que permita una estructura ideal para la consulta de información y mejore los tiempos de actualización actuales.</p>
+          </div>
+        </div>
+
+        <div class="lb-deviation">
+          <h4>Desviación 2: Alineación de los archivos de Excel al Modelo SQL por áreas operativas</h4>
+          <div class="lb-field">
+            <span class="lb-field-label">Causa Raíz</span>
+            <p>La aplicación de una plantilla estándar para la base de datos SQL modificará los archivos de Excel que actualmente se editan y alojan en SharePoint. Esto generará un nuevo archivo de captura y una estructura diferente para el capturista del área.</p>
+          </div>
+          <div class="lb-field">
+            <span class="lb-field-label">Compromiso</span>
+            <p>Tocar base con las áreas involucradas para presentar los nuevos ajustes, explicar la ruta de trabajo y detallar los cambios operativos.</p>
+          </div>
+        </div>
+
+        <div class="lb-deviation">
+          <h4>Desviación 3: Capacidad de ejecución del proyecto</h4>
+          <div class="lb-field">
+            <span class="lb-field-label">Causa Raíz</span>
+            <p>Anteriormente, una sola persona estaba asignada para implementar todo el Data Warehouse, lo cual implica el mapeo de procesos, inventarios, el modelo de transformación, la creación de la base de datos, la reconexión a BI, el desarrollo de visualizaciones y el recálculo de toda la programación bajo la nueva estructura.</p>
+          </div>
+          <div class="lb-field">
+            <span class="lb-field-label">Compromiso</span>
+            <p>Con la asignación de Fernando de Santiago (Ingeniería de Datos), Avelina Paz (Analista de Datos) y José Armando Gaytán Márquez (Tech Lead y Ciencia de Datos), se logrará la aceleración del proyecto STEM mediante una moderna infraestructura de datos para el Reporte de Operaciones, el Reporte de Mano de Obra y el Reporte Cultivando Resultados. Al término del proyecto, la estructura entregada será capaz de conectarse con múltiples sistemas, Inteligencia Artificial y Workflows, manteniendo un histórico íntegro de 2025.</p>
+          </div>
+        </div>
+      </div>
+    `;
+
     // ---------- contenido: desglose de tareas del DataWarehouse (lenguaje no técnico) ----------
     const WORKSTREAMS_HTML = `
       <div class="lb-doc">
@@ -1290,6 +1467,20 @@ graph LR
         <p class="lb-note">Sin porcentaje individual por frente todavía — el 30% de avance es del proyecto en conjunto.</p>
       </div>
     `;
+
+    function bindProjectCard(cardId, openDetail){
+      const card = document.getElementById(cardId);
+      card.addEventListener('click', openDetail);
+      card.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          openDetail();
+        }
+      });
+    }
+
+    bindProjectCard('biLaborCard', () => openLightboxText(BI_LABOR_DETAIL_HTML, true));
+    bindProjectCard('stemCard', () => openLightboxText(STEM_DEVIATIONS_HTML, true));
 
     document.getElementById('govLink').addEventListener('click', (e) => {
       e.stopPropagation();
