@@ -195,6 +195,21 @@
   .opportunity-slide-wide .op-subline{display:block;margin-left:1.1rem;margin-top:.12rem;}
   @media (max-width:1050px){.opportunity-slide-wide{overflow-y:auto;justify-content:flex-start;}.opportunity-slide-wide .opportunity-grid{grid-template-columns:1fr;}.opportunity-slide-wide .op-content{font-size:.85rem;}}
 
+
+  /* Ajuste final slider 7: alineacion especifica Labor Cost Sonora */
+  .opportunity-slide-wide .op-list.sonora-list li{grid-template-columns:14px 1fr;column-gap:.55rem;align-items:start;}
+  .opportunity-slide-wide .op-list.sonora-list .yellow-dot{width:8px;height:8px;margin-top:.36rem;justify-self:start;}
+  .opportunity-slide-wide .op-list.sonora-list span:last-child{padding-left:0;text-indent:0;}
+  .opportunity-slide-wide .op-list.sonora-list .op-subline{display:block;margin-left:0;padding-left:0;text-indent:0;}
+
+
+  /* Ajuste reforzado slider 7: Labor Cost Sonora alineado */
+  .opportunity-slide-wide .op-list.sonora-list{display:grid;gap:.42rem;margin-top:.25rem;padding:0;list-style:none;}
+  .opportunity-slide-wide .op-list.sonora-list li{display:grid !important;grid-template-columns:10px minmax(0,1fr) !important;column-gap:.58rem !important;align-items:flex-start !important;margin:0 !important;padding:0 !important;}
+  .opportunity-slide-wide .op-list.sonora-list li>.yellow-dot{width:8px;height:8px;margin-top:.34rem !important;justify-self:start;flex:none;}
+  .opportunity-slide-wide .op-list.sonora-list li>span:last-child{display:block !important;margin:0 !important;padding:0 !important;text-indent:0 !important;line-height:1.32;}
+  .opportunity-slide-wide .op-list.sonora-list .op-subline{display:block;margin-left:0 !important;padding-left:0 !important;text-indent:0 !important;line-height:1.28;}
+
 </style>
 </head>
 <body>
@@ -414,7 +429,7 @@
             <h3>Áreas de oportunidad</h3>
             <div class="mini-line"></div>
             <div class="op-content">
-              <p class="op-section-title">JVA Labor Cost Pepino</p>
+              <p class="op-section-title">Labor Cost Pepino JVA</p>
               <ul class="op-list">
                 <li><span class="yellow-dot"></span><span>Tiempo extra en actividades para ponerse al día debido a atrasos iniciales.</span></li>
                 <li><span class="yellow-dot"></span><span>Generar 2 targets para deshoje (sano / MIP).</span></li>
@@ -422,12 +437,12 @@
                 <li><span class="yellow-dot"></span><span>Target de cosecha.</span></li>
                 <li><span class="yellow-dot"></span><span>Evaluar Pepino Baby.</span></li>
               </ul>
-              <p class="op-section-title">JVA Labor Cost Tomate</p>
+              <p class="op-section-title">Labor Cost Tomate JVA</p>
               <ul class="op-list">
                 <li><span class="yellow-dot"></span><span>Target de cosecha.</span></li>
               </ul>
               <p class="op-section-title">Labor Cost Sonora</p>
-              <ul class="op-list">
+              <ul class="op-list sonora-list">
                 <li><span class="yellow-dot"></span><span>Poder asignar actividades adicionales al personal en el nuevo modelo Labor Cost. Se ha observado una buena aceptación por parte de los empleados, impulsando una mayor productividad en otras actividades.</span></li>
                 <li><span class="yellow-dot"></span><span>Añadir la actividad <strong>“Desbrote abajo”</strong>. La aceptación de las actividades implementadas indica una oportunidad para incorporar esta actividad, generando beneficios para el trabajador y para la planta:<span class="op-subline">1º Mayor vigor.</span><span class="op-subline">2º Disminución de paglas.</span></span></li>
               </ul>
@@ -437,7 +452,7 @@
             <h3>Compromisos</h3>
             <div class="mini-line"></div>
             <div class="op-content">
-              <p class="op-section-title">JVA Labor Cost Pepino</p>
+              <p class="op-section-title">Labor Cost Pepino JVA</p>
               <ul class="op-list">
                 <li><span class="yellow-dot"></span><span>Definir las eventualidades y acciones para cada eventualidad (atraso) (SISSO).</span></li>
                 <li><span class="yellow-dot"></span><span>Reevaluar target / generar nuevo target para Deshoje MIP (Corynespora).</span></li>
@@ -445,9 +460,14 @@
                 <li><span class="yellow-dot"></span><span>Evaluar y analizar target de cosecha.</span></li>
                 <li><span class="yellow-dot"></span><span>Evaluar y analizar targets de diferente variedad.</span></li>
               </ul>
-              <p class="op-section-title">JVA Labor Cost Tomate</p>
+              <p class="op-section-title">Labor Cost Tomate JVA</p>
               <ul class="op-list">
                 <li><span class="yellow-dot"></span><span>Evaluar y analizar target de cosecha.</span></li>
+              </ul>
+              <p class="op-section-title">Labor Cost Sonora</p>
+              <ul class="op-list sonora-list">
+                <li><span class="yellow-dot"></span><span>Evaluar y definir si, al realizar una segunda actividad y haber cerrado el objetivo de la primera, se puede pagar el target desde el surco 1 en la segunda actividad.</span></li>
+                <li><span class="yellow-dot"></span><span>Evaluar y analizar target para la actividad de desbrote abajo.</span></li>
               </ul>
             </div>
           </div>
