@@ -36,7 +36,7 @@
 
   /* Carril de slides: avanzan hacia la derecha */
   .slides-track{ display:flex; height:100vh; transition:transform .6s cubic-bezier(.22,1,.36,1); will-change:transform; }
-  .slide{ min-width:100vw; height:100vh; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; padding:6vw 8vw; }
+  .slide{ min-width:100vw; height:100vh; display:flex; flex-direction:column; justify-content:center; position:relative; z-index:1; padding:6vw 8vw; overflow-y:auto; }
   @media (prefers-reduced-motion:reduce){ .slides-track{ transition:none; } }
 
   .slide-in{ opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
@@ -55,6 +55,10 @@
 
   /* Numeración real de slide */
   .slide-counter{ position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:20; font-size:.75rem; letter-spacing:.12em; color:var(--ns-green); font-weight:600; }
+
+  /* Barra de scroll para recorrer slides (útil al hacer zoom, cuando el clic/flechas quedan fuera de vista) */
+  .slide-scrub{ position:fixed; left:5%; right:5%; bottom:8px; height:6px; border-radius:9999px; background:rgba(31,79,38,.12); z-index:20; cursor:pointer; }
+  .slide-scrub-thumb{ position:absolute; top:0; left:0; height:100%; border-radius:9999px; background:var(--fresh-green); transition:left .25s ease; pointer-events:none; }
 
   .eyebrow{ letter-spacing:.18em; text-transform:uppercase; font-size:.78rem; font-weight:600; }
 
@@ -387,22 +391,34 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F4F26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
   </button>
   <div class="slide-counter" id="counter">01 / 0N</div>
+  <div class="slide-scrub" id="scrub"><div class="slide-scrub-thumb" id="scrubThumb"></div></div>
 
   <script>
     const track = document.getElementById('track');
     const slides = [...document.querySelectorAll('.slide')];
     const counter = document.getElementById('counter');
+    const scrub = document.getElementById('scrub');
+    const scrubThumb = document.getElementById('scrubThumb');
     let i = 0;
     function render(){
       track.style.transform = `translateX(-${i * 100}vw)`;
       slides.forEach((s, idx) => s.classList.toggle('is-active', idx === i));
       counter.textContent = `${String(i+1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+      const thumbWidth = 100 / slides.length;
+      scrubThumb.style.width = `${thumbWidth}%`;
+      scrubThumb.style.left = `${i * thumbWidth}%`;
     }
     function go(delta){ i = Math.min(Math.max(i + delta, 0), slides.length - 1); render(); }
+    function goTo(idx){ i = Math.min(Math.max(idx, 0), slides.length - 1); render(); }
+    function scrubToClientX(clientX){
+      const r = scrub.getBoundingClientRect();
+      const ratio = Math.min(Math.max((clientX - r.left) / r.width, 0), 1);
+      goTo(Math.floor(ratio * slides.length));
+    }
     document.getElementById('nextBtn').addEventListener('click', () => go(1));
     document.getElementById('prevBtn').addEventListener('click', () => go(-1));
     document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(1); if (e.key === 'ArrowLeft') go(-1); });
-    document.addEventListener('click', (e) => { if (e.target.closest('.nav-arrow')) return; go(1); });
+    document.addEventListener('click', (e) => { if (e.target.closest('.nav-arrow') || e.target.closest('.slide-scrub')) return; go(1); });
     document.querySelectorAll('.nav-arrow').forEach((btn) => {
       btn.addEventListener('mousemove', (e) => {
         const r = btn.getBoundingClientRect();
@@ -410,6 +426,13 @@
         btn.style.setProperty('--my', `${e.clientY - r.top}px`);
       });
     });
+    let scrubbing = false;
+    scrub.addEventListener('mousedown', (e) => { scrubbing = true; scrubToClientX(e.clientX); });
+    document.addEventListener('mousemove', (e) => { if (scrubbing) scrubToClientX(e.clientX); });
+    document.addEventListener('mouseup', () => { scrubbing = false; });
+    scrub.addEventListener('touchstart', (e) => { scrubbing = true; scrubToClientX(e.touches[0].clientX); }, {passive:true});
+    scrub.addEventListener('touchmove', (e) => { if (scrubbing) scrubToClientX(e.touches[0].clientX); }, {passive:true});
+    scrub.addEventListener('touchend', () => { scrubbing = false; });
     render();
   </script>
 </body>
