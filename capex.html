@@ -408,7 +408,13 @@
     const dotsWrap = document.getElementById('dots');
     const counter = document.getElementById('counter');
     let current = 0;
-
+    
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+      window.location.href = 'https://ghveggies-bi.github.io/OPEX/';
+      }
+    });
+    
     for(let i = 0; i < total; i++){
       const d = document.createElement('span');
       d.className = 'dot' + (i === 0 ? ' active' : '');
