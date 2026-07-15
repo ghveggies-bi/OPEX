@@ -971,12 +971,21 @@ graph LR
   <script>
     mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', flowchart: { htmlLabels: false, padding: 12, useMaxWidth: true } });
 
-   //--ESC Salir a index.html 
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    window.location.href = 'https://ghveggies-bi.github.io/OPEX/';
-  }
-});
+   //--ESC para regresar
+  window.addEventListener(
+    'keydown',
+    function (event) {
+      if (event.key === 'Escape' || event.key === 'Esc' || event.code === 'Escape') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        window.location.assign('https://ghveggies-bi.github.io/OPEX/index.html');
+      }
+    },
+    true
+  );
+
+  
 
 // ---------- placeholders de imagen ----------
     
