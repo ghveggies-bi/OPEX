@@ -971,7 +971,15 @@ graph LR
   <script>
     mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', flowchart: { htmlLabels: false, padding: 12, useMaxWidth: true } });
 
-    // ---------- placeholders de imagen ----------
+   //--ESC Salir a index.html 
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    window.location.href = 'https://ghveggies-bi.github.io/OPEX/';
+  }
+});
+
+// ---------- placeholders de imagen ----------
+    
     function phFallback(img){
       img.style.display = 'none';
       const ph = img.nextElementSibling;
