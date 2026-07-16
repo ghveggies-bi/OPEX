@@ -537,6 +537,19 @@
   @media (prefers-reduced-motion:reduce){ .blob{ animation:none; } }
   #sliderContainer{ position:relative; z-index:1; }
 
+
+  .ws-link{
+    color:var(--verde);
+    font-weight:700;
+    text-decoration:none;
+    border-bottom:1px dotted rgba(48,115,56,.42);
+    transition:color .2s ease,border-color .2s ease;
+  }
+  .ws-link:hover{
+    color:var(--verde-claro);
+    border-bottom-color:var(--verde-claro);
+  }
+
 </style>
 </head>
 <body class="relative">
@@ -654,21 +667,21 @@
               <div class="space-y-3 mb-3">
                 <div>
                   <div class="flex items-center justify-between mb-1 f-body" style="color:var(--muted); font-size:.72rem">
-                    <span>WS1 · Descubrimiento y Diseño</span>
+                    <span><a class="ws-link" href="https://ghveggies-bi.github.io/stem-presentacion/STEM_Sprint0_Checklist.html" target="_blank" rel="noopener noreferrer">WS1</a> · Descubrimiento y Diseño</span>
                     <span style="color:var(--ink)">53% <span style="opacity:.6">· 47/88 hitos</span></span>
                   </div>
                   <div class="bar-track" style="height:5px"><div class="bar-fill" style="width:53%"></div></div>
                 </div>
                 <div>
                   <div class="flex items-center justify-between mb-1 f-body" style="color:var(--muted); font-size:.72rem">
-                    <span>WS2 · Ingeniería de Datos y ETL-DWH</span>
+                    <span><a class="ws-link" href="https://ghveggies-bi.github.io/stem-presentacion/STEM_Sprint0_Checklist.html" target="_blank" rel="noopener noreferrer">WS2</a> · Ingeniería de Datos y ETL-DWH</span>
                     <span style="color:var(--ink)">9% <span style="opacity:.6">· 7/80 hitos</span></span>
                   </div>
                   <div class="bar-track" style="height:5px"><div class="bar-fill" style="width:9%"></div></div>
                 </div>
                 <div>
                   <div class="flex items-center justify-between mb-1 f-body" style="color:var(--muted); font-size:.72rem">
-                    <span>WS3 · Capa Semántica y Consumo</span>
+                    <span><a class="ws-link" href="https://ghveggies-bi.github.io/stem-presentacion/STEM_Sprint0_Checklist.html" target="_blank" rel="noopener noreferrer">WS3</a> · Capa Semántica y Consumo</span>
                     <span style="color:var(--ink)">0% <span style="opacity:.6">· 0/34 hitos</span></span>
                   </div>
                   <div class="bar-track" style="height:5px"><div class="bar-fill" style="width:0%"></div></div>
@@ -1534,7 +1547,14 @@ graph LR
       e.stopPropagation();
       openLightboxText(GOVERNANCE_HTML);
     });
-    document.getElementById('workstreamLink').addEventListener('click', (e) => {
+    
+    document.querySelectorAll('.ws-link').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    });
+
+document.getElementById('workstreamLink').addEventListener('click', (e) => {
       e.stopPropagation();
       openLightboxText(WORKSTREAMS_HTML);
     });
