@@ -210,6 +210,31 @@
   .opportunity-slide-wide .op-list.sonora-list li>span:last-child{display:block !important;margin:0 !important;padding:0 !important;text-indent:0 !important;line-height:1.32;}
   .opportunity-slide-wide .op-list.sonora-list .op-subline{display:block;margin-left:0 !important;padding-left:0 !important;text-indent:0 !important;line-height:1.28;}
 
+
+  /* Slider 7: matriz alineada Áreas de oportunidad vs Compromisos */
+  .paired-opportunity-slide{padding:2.1vw 3vw;}
+  .paired-opportunity-slide .opportunity-wrap{width:min(1320px,100%);}
+  .paired-board{margin-top:1.15rem;background:#fff;border:1px solid rgba(31,79,38,.12);border-radius:1.25rem;box-shadow:0 12px 32px -24px rgba(31,79,38,.35);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;align-items:stretch;}
+  .paired-head{font-family:'Playfair Display',serif;font-size:1.58rem;font-weight:800;text-align:center;color:var(--ns-green-deep);padding:.85rem 1rem;background:#fff;position:relative;}
+  .paired-head::before{content:'';position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(90deg,var(--fresh-green),var(--ns-yellow));}
+  .paired-head.area-head{border-right:1px solid rgba(31,79,38,.12);}
+  .paired-section{background:var(--cream);border-top:1px solid rgba(31,79,38,.12);border-bottom:1px solid rgba(31,79,38,.08);padding:.48rem .9rem;font-weight:900;font-size:.76rem;color:#1F4F26;letter-spacing:.01em;}
+  .paired-section-right{border-left:1px solid rgba(31,79,38,.12);}
+  .paired-cell{display:grid;grid-template-columns:12px 1fr;column-gap:.5rem;align-items:start;padding:.52rem .9rem;border-bottom:1px solid rgba(31,79,38,.08);font-size:.72rem;line-height:1.25;color:#1F4F26;min-height:3.05rem;}
+  .paired-cell:nth-child(even){border-left:1px solid rgba(31,79,38,.12);}
+  .paired-cell .yellow-dot{margin-top:.32rem;justify-self:start;}
+  .paired-cell .op-subline{display:block;margin-left:0;margin-top:.1rem;line-height:1.22;}
+  @media (max-width:1050px){.paired-opportunity-slide{overflow-y:auto;justify-content:flex-start;}.paired-board{grid-template-columns:1fr;}.paired-head.area-head,.paired-section-right,.paired-cell:nth-child(even){border-left:0;border-right:0}.paired-cell{font-size:.84rem;}}
+
+
+  .paired-cell-blank .yellow-dot{display:none;}
+  .paired-cell-blank{background:rgba(255,252,235,.35);}
+
+
+  .next-steps-box{width:285px;}
+  .next-steps-box ol{margin:.25rem 0 0 1.05rem;padding:0;display:grid;gap:.18rem;}
+  .next-steps-box li{font-size:.78rem;line-height:1.2;font-weight:900;color:var(--ns-green-deep);}
+
 </style>
 </head>
 <body>
@@ -417,64 +442,55 @@
       </div>
     </section>
 
-    <!-- SLIDE 7 — Áreas de oportunidad y compromisos -->
-    <section class="slide opportunity-slide opportunity-slide-wide" data-slide>
-      <div class="slide-in opportunity-wrap">
-        <div class="opportunity-title">
-          <p class="eyebrow text-fresh-green">Seguimiento ejecutivo</p>
-          <h2 class="font-display text-4xl md:text-5xl font-bold mt-3">Áreas de oportunidad y compromisos</h2>
-        </div>
-        <div class="opportunity-grid">
-          <div class="opportunity-card">
-            <h3>Áreas de oportunidad</h3>
-            <div class="mini-line"></div>
-            <div class="op-content">
-              <p class="op-section-title">Labor Cost Pepino JVA</p>
-              <ul class="op-list">
-                <li><span class="yellow-dot"></span><span>Tiempo extra en actividades para ponerse al día debido a atrasos iniciales.</span></li>
-                <li><span class="yellow-dot"></span><span>Generar 2 targets para deshoje (sano / MIP) (deshoje actividad normal y deshoje para cuando se tiene infectado de Corynespora).</span></li>
-                <li><span class="yellow-dot"></span><span>Target de bajada: actualmente no se está cumpliendo.</span></li>
-                <li><span class="yellow-dot"></span><span>Target de cosecha.</span></li>
-                <li><span class="yellow-dot"></span><span>Evaluar Pepino Baby.</span></li>
-              </ul>
-              <p class="op-section-title">Labor Cost Tomate JVA</p>
-              <ul class="op-list">
-                <li><span class="yellow-dot"></span><span>Target de cosecha.</span></li>
-              </ul>
-              <p class="op-section-title">Labor Cost Sonora</p>
-              <ul class="op-list sonora-list">
-                <li><span class="yellow-dot"></span><span>Poder asignar actividades adicionales al personal en el nuevo modelo Labor Cost. Se ha observado una buena aceptación por parte de los empleados, impulsando una mayor productividad en otras actividades.</span></li>
-                <li><span class="yellow-dot"></span><span>Añadir la actividad <strong>“Desbrote abajo”</strong>. La aceptación de las actividades implementadas indica una oportunidad para incorporar esta actividad, generando beneficios para el trabajador y para la planta:<span class="op-subline">1º Mayor vigor.</span><span class="op-subline">2º Disminución de paglas.</span></span></li>
-              </ul>
-            </div>
-          </div>
-          <div class="opportunity-card">
-            <h3>Compromisos</h3>
-            <div class="mini-line"></div>
-            <div class="op-content">
-              <p class="op-section-title">Labor Cost Pepino JVA</p>
-              <ul class="op-list">
-                <li><span class="yellow-dot"></span><span>Definir las eventualidades y acciones para cada eventualidad (atraso) (SISSO).</span></li>
-                <li><span class="yellow-dot"></span><span>Reevaluar target / generar nuevo target para Deshoje MIP (Corynespora).</span></li>
-                <li><span class="yellow-dot"></span><span>Reevaluar target y presentar propuesta (2 vueltas &amp; 1.5 vueltas).</span></li>
-                <li><span class="yellow-dot"></span><span>Evaluar y analizar target de cosecha.</span></li>
-                <li><span class="yellow-dot"></span><span>Evaluar y analizar targets de diferente variedad.</span></li>
-              </ul>
-              <p class="op-section-title">Labor Cost Tomate JVA</p>
-              <ul class="op-list">
-                <li><span class="yellow-dot"></span><span>Evaluar y analizar target de cosecha.</span></li>
-              </ul>
-              <p class="op-section-title">Labor Cost Sonora</p>
-              <ul class="op-list sonora-list">
-                <li><span class="yellow-dot"></span><span>Evaluar y definir si, al realizar una segunda actividad y haber cerrado el objetivo de la primera, se puede pagar el target desde el surco 1 en la segunda actividad.</span></li>
-                <li><span class="yellow-dot"></span><span>Evaluar y analizar target para la actividad de desbrote abajo.</span></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
+        <!-- SLIDE 7 — Áreas de oportunidad y compromisos -->  
+    <section class="slide opportunity-slide opportunity-slide-wide paired-opportunity-slide" data-slide>  
+      <div class="slide-in opportunity-wrap">  
+        <div class="opportunity-title">  
+          <p class="eyebrow text-fresh-green">Seguimiento ejecutivo</p>  
+          <h2 class="font-display text-4xl md:text-5xl font-bold mt-3">Áreas de oportunidad y compromisos</h2>  
+        </div>  
+        <div class="paired-board">  
+          <div class="paired-head area-head">Áreas de oportunidad</div>  
+          <div class="paired-head commitment-head">Compromisos</div>  
+
+          <div class="paired-section">Labor Cost Pepino JVA</div>  
+          <div class="paired-section paired-section-right">Labor Cost Pepino JVA</div>  
+
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Generar 2 targets para deshoje (sano / MIP) (deshoje actividad normal y deshoje para cuando se tiene infectado de Corynespora).</span></div>  
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Reevaluar target / generar nuevo target para Deshoje MIP (Corynespora).</span></div>  
+
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Target de bajada: actualmente no se está cumpliendo.</span></div>  
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Reevaluar target y presentar propuesta (2 vueltas &amp; 1.5 vueltas).</span></div>  
+
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Target de cosecha.</span></div>  
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Analizar y evaluar target para cosecha de pepino.</span></div>  
+
+          <div class="paired-section">Labor Cost Tomate JVA</div>  
+          <div class="paired-section paired-section-right">Labor Cost Tomate JVA</div>  
+
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Target de cosecha.</span></div>  
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Revisar y validar target con la operación.</span></div>  
+
+          <div class="paired-section">Labor Cost JVA</div>  
+          <div class="paired-section paired-section-right">Labor Cost JVA</div>  
+
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Invernaderos con variedades diferentes a las actuales dentro del Labor Cost.</span></div>  
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Analizar y evaluar variedades existentes para Labor Cost (Glorys, pimiento, TOV, etc.).</span></div>  
+
+          <div class="paired-section">Labor Cost Sonora</div>  
+          <div class="paired-section paired-section-right">Labor Cost Sonora</div>  
+
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Poder asignar actividades adicionales al personal en el nuevo modelo Labor Cost. Se ha observado una buena aceptación por parte de los empleados, impulsando una mayor productividad en otras actividades.</span></div>  
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Evaluar y definir si, al realizar una segunda actividad y haber cerrado el objetivo de la primera, se puede pagar el target desde el surco 1 en la segunda actividad.</span></div>  
+
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Añadir la actividad <strong>“Desbrote abajo”</strong>. La aceptación de las actividades implementadas indica una oportunidad para incorporar esta actividad, generando beneficios para el trabajador y para la planta:<span class="op-subline">1º Mayor vigor.</span><span class="op-subline">2º Disminución de plagas.</span></span></div>  
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Evaluar y analizar target para la actividad de desbrote abajo.</span></div>  
+
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Evaluar target de cosecha con el Labor Cost.</span></div>  
+          <div class="paired-cell"><span class="yellow-dot"></span><span>Revisar y validar target con la operación.</span></div>  
+        </div>  
+      </div>  
+    </section>      
 <!-- SLIDE 8 — Próximos pasos -->
     <section class="slide" data-slide>
       <div class="slide-in max-w-4xl">
@@ -507,20 +523,20 @@
           <p class="mt-3 text-base text-ns-green-deep/80">Gantt ejecutivo de avance y próximos hitos · Estatus: <span class="font-bold text-ns-green">En control</span></p>
         </div>
         <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="stat-card text-center"><p class="stat-num text-5xl text-ns-green">85–90%</p><p class="mt-2 text-sm text-ns-green-deep/70">Avance general estimado</p></div>
+          <div class="stat-card text-center"><p class="stat-num text-5xl text-ns-green">85%</p><p class="mt-2 text-sm text-ns-green-deep/70">Avance general estimado</p></div>
           <div class="stat-card text-center"><p class="stat-num text-5xl text-ns-green">100%</p><p class="mt-2 text-sm text-ns-green-deep/70">Configuración y pruebas funcionales</p></div>
           <div class="stat-card text-center"><p class="stat-num text-5xl text-ns-green">4</p><p class="mt-2 text-sm text-ns-green-deep/70">Próximos hitos ejecutivos</p></div>
         </div>
         <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
           <div class="table-panel overflow-x-auto"><p class="panel-title">Estado por frente de trabajo</p><table class="opex-table"><tr><th>Frente</th><th>Avance / Estado</th><th>Detalle</th></tr><tr><td>Configuración del sistema</td><td class="positive">100%</td><td>Completada</td></tr><tr><td>Pruebas funcionales</td><td class="positive">100%</td><td>Completada</td></tr><tr><td>Análisis y reportes</td><td>En proceso</td><td>Nómina / Power BI</td></tr><tr><td>Capacitación operativa</td><td>En proceso</td><td>Usuarios finales</td></tr><tr><td>Puesta en marcha</td><td>Próxima</td><td>Corrida paralela</td></tr></table></div>
-          <div class="table-panel"><p class="panel-title">Pendientes</p><ul class="space-y-3 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Ajuste de tabuladores de pago (reducción de 25 tabuladores actuales a 15 tabuladores).</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Generar reportes de eficiencias y pago de nómina.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Asegurar adopción con supervisores y operación.</span></li><li class="flex gap-2 items-center"><span class="yellow-dot mt-1"></span><span><strong><u>Servidor exclusivo para Ridder.</u></strong></span><button type="button" class="details-btn inline-small details-nav" data-go="serverDetail">Más detalles</button></li></ul></div>
+          <div class="table-panel"><p class="panel-title">Pendientes</p><ul class="space-y-3 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Ajuste de tabuladores de pago (reducción de 25 tabuladores actuales a 15 tabuladores).</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Generar reportes de eficiencias y pago de nómina.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Capacitación de la operación, tanto a supervisores como a las áreas de staff.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Asegurar adopción con supervisores y operación.</span></li><li class="flex gap-2 items-center"><span class="yellow-dot mt-1"></span><span><strong><u>Servidor exclusivo para Ridder.</u></strong></span><button type="button" class="details-btn inline-small details-nav" data-go="serverDetail">Más detalles</button></li></ul></div>
         </div>
         <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
           <div class="table-panel"><p class="panel-title">Logros principales</p><ul class="space-y-2 text-sm text-ns-green-deep/80"><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Configuración de servidor SQL y estructura base habilitados.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Layout de invernaderos, áreas overhead y surcos configurados.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Configuración de actividades, rendimientos y bonos de productividad definidos.</span></li><li class="flex gap-2"><span class="yellow-dot mt-1"></span><span>Prueba de funcionalidad y conectividad con tabletas, ejecutada satisfactoriamente.</span></li></ul></div>
           <div class="table-panel"><p class="panel-title">Próximos hitos ejecutivos</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm"><div class="stat-card"><p class="pill">1</p><p class="mt-2 font-semibold">Capacitación final</p><p class="text-xs text-ns-green-deep/60">Usuarios y supervisores</p></div><div class="stat-card"><p class="pill">2</p><p class="mt-2 font-semibold">Pruebas en campo</p><p class="text-xs text-ns-green-deep/60">Validación operativa</p></div><div class="stat-card"><p class="pill">3</p><p class="mt-2 font-semibold">Corrida paralela</p><p class="text-xs text-ns-green-deep/60">Sys21 vs. Ridder</p></div><div class="stat-card"><p class="pill">4</p><p class="mt-2 font-semibold">Liberación productiva</p><p class="text-xs text-ns-green-deep/60">Cierre y estabilización</p></div></div></div>
         </div>
       </div>
-      <a class="home-btn" href="https://ghveggies-bi.github.io/OPEX/" target="_top" style="position:absolute;right:18px;top:18px;z-index:6;">Volver al índice principal</a><div class="next-bonita-box"><div class="label">Siguientes pasos</div><div class="text">Implementación Ridder Bonita</div></div>
+      <a class="home-btn" href="https://ghveggies-bi.github.io/OPEX/" target="_top" style="position:absolute;right:18px;top:18px;z-index:6;">Volver al índice principal</a><div class="next-bonita-box next-steps-box"><div class="label">Siguientes pasos</div><div class="text"><ol><li>Labor Cost en Gemso (2026–2027).</li><li>Implementación de Ridder en Bonita.</li></ol></div></div>
     </section>
 
     <!-- SLIDE OCULTO — Servidor exclusivo para Ridder -->
@@ -538,7 +554,7 @@
               <li><span class="icon warn">!</span><span>Servidor compartido con Sys21 y otros programas/servicios del predio.</span></li>
               <li><span class="icon warn">!</span><span>Recurso compartido: las políticas de seguridad de NS interfieren actualmente con la conexión directa desde equipos de Ghveggies.</span></li>
               <li><span class="icon warn">!</span><span>No se tiene una copia de seguridad automática.</span></li>
-              <li><span class="icon warn">!</span><span>SQL Express limitado a 10 GB en la base de datos, con riesgo de bloqueo de Ridder.</span></li>
+              <li><span class="icon warn">!</span><span>SQL Express (gratuito) limitado a 10 GB en la base de datos, con riesgo de bloqueo de Ridder.</span></li>
               <li><span class="icon warn">!</span><span>Windows Server 2016 sin licencia activa.</span></li>
             </ul>
           </div>
